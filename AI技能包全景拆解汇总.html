@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Skill Archives</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F5F4ED;
+            --bg-dark: #E8E6DC;
+            --surface: #FDFCFA;
+            --text: #1A1A18;
+            --text-secondary: #5C5346;
+            --text-muted: #87867F;
+            --border: rgba(26,26,24,0.08);
+            --accent: #C96442;
+            --accent-light: #D97757;
+            --shadow-card: 0 2px 8px rgba(26,24,20,0.06);
+            --shadow-hover: 0 20px 60px -12px rgba(26,24,24,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-h: 100dvh;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Ambient background */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+        }
+
+        .orb-1 {
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%);
+            top: -300px;
+            right: -200px;
+            animation: drift 30s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #D97757 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            opacity: 0.2;
+            animation: drift 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -40px) rotate(5deg); }
+            66% { transform: translate(-20px, 30px) rotate(-3deg); }
+        }
+
+        /* Hero */
+        .hero {
+            min-h: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 100px 24px 140px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'Clash Display', 'Outfit', sans-serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            line-height: 1.05;
+            margin-bottom: 28px;
+            color: var(--text);
+            text-wrap: balance;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+            color: var(--text-secondary);
+            max-width: 560px;
+            font-weight: 400;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 10px 18px;
+            border-radius: 100px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            letter-spacing: 0.02em;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .badge:hover {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+            transform: translateY(-2px);
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 56px;
+            padding-top: 48px;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-item .num {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover .num {
+            transform: scale(1.05);
+            color: var(--accent);
+        }
+
+        .stat-item .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* Sections */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 140px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            margin-bottom: 100px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 44px;
+        }
+
+        .section-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .section-icon:hover {
+            transform: scale(1.08) rotate(4deg);
+            border-color: var(--accent);
+            box-shadow: 0 8px 24px rgba(201,100,66,0.15);
+        }
+
+        .section-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+
+        /* Grid - asymmetric */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .category-grid .package-card:first-child {
+            grid-column: span 2;
+        }
+
+        .package-card {
+            display: block;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 32px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            box-shadow: var(--shadow-card);
+            min-height: 220px;
+        }
+
+        .package-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 28px;
+            background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 0;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+            border-color: transparent;
+        }
+
+        .package-card:hover::before {
+            opacity: 1;
+        }
+
+        .package-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .package-card:hover h3,
+        .package-card:hover p,
+        .package-card:hover .meta,
+        .package-card:hover .category-tag {
+            color: white;
+        }
+
+        .package-card:hover .category-tag {
+            background: rgba(255,255,255,0.2);
+            border-color: transparent;
+        }
+
+        .package-card:hover .icon {
+            background: rgba(255,255,255,0.2);
+            border-color: transparent;
+        }
+
+        .package-card .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .package-card .icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .package-card:hover .icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .package-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            transition: color 0.3s ease;
+        }
+
+        .package-card .category-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 10px;
+            background: var(--bg-dark);
+            color: var(--text-muted);
+            margin-bottom: 18px;
+            letter-spacing: 0.04em;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .package-card p {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 24px;
+            transition: color 0.3s ease;
+        }
+
+        .package-card .meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            transition: color 0.3s ease;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .package-card:hover .meta {
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        /* Quick Access */
+        .quick-section {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            margin-top: 48px;
+        }
+
+        .quick-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 28px 16px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            text-align: center;
+            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quick-card:hover {
+            color: var(--text);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent);
+        }
+
+        .quick-card:hover .icon {
+            transform: scale(1.15) rotate(8deg);
+            color: var(--accent);
+        }
+
+        .quick-card .icon {
+            font-size: 26px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .quick-card h4 {
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 100px 24px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
+            background: var(--bg-dark);
+        }
+
+        /* Loading skeleton */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg) 25%, var(--bg-dark) 50%, var(--bg) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 1024px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .category-grid .package-card:first-child {
+                grid-column: span 1;
+            }
+            .quick-section {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding: 80px 20px 100px; }
+            .stats-row { flex-wrap: wrap; gap: 32px; }
+            .category-grid { grid-template-columns: 1fr; }
+            .quick-section { grid-template-columns: repeat(2, 1fr); }
+            .ambient-bg { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="ambient-bg">
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-content">
+            <div class="badge-row">
+                <span class="badge">11 Packages</span>
+                <span class="badge">200+ Skills</span>
+                <span class="badge">Updated 2025</span>
+            </div>
+            <h1>AI Skill Archives</h1>
+            <p class="subtitle">A visual panorama of AI skill packages across development, design, product, and content creation.</p>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="num">11</span>
+                    <span class="label">Packages</span>
+                </div>
+                <div class="stat-item">
+                    <span class="num">200+</span>
+                    <span class="label">Sub-skills</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Frameworks -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"></rect></svg>
+                </div>
+                <h2 class="section-title">Frameworks</h2>
+            </div>
+            <div class="category-grid">
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/impeccable-main/public/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">🎬</div>
+                        <h3>Impeccable</h3>
+                    </div>
+                    <span class="category-tag">Video Processing</span>
+                    <p>AI video generation with WebCodecs hardware acceleration and FFmpeg pipelines.</p>
+                    <div class="meta">
+                        <span>6 Layers</span>
+                        <span>Core Functions</span>
+                    </div>
+                </a>
+
+                <a href="file:///Users/flora/Desktop/代码库可视化全景结构图/MiroFish-main/frontend/public/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">🐟</div>
+                        <h3>MiroFish</h3>
+                    </div>
+                    <span class="category-tag">Swarm Intelligence</span>
+                    <p>Multi-agent simulation engine with WASM performance.</p>
+                    <div class="meta">
+                        <span>Multi-agent</span>
+                        <span>WASM</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Agents -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+                </div>
+                <h2 class="section-title">Agents</h2>
+            </div>
+            <div class="category-grid">
+                <a href="file:///Users/flora/.claude/plugins/marketplaces/superpowers/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">⚡</div>
+                        <h3>Superpowers</h3>
+                    </div>
+                    <span class="category-tag">Claude Code Plugin</span>
+                    <p>50+ elite AI skill commands for code review, debugging, and UI design.</p>
+                    <div class="meta">
+                        <span>50+ Skills</span>
+                        <span>MCP</span>
+                    </div>
+                </a>
+
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/Agent-Skills/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">📚</div>
+                        <h3>Agent Skills</h3>
+                    </div>
+                    <span class="category-tag">Google Engineering</span>
+                    <p>AI coding agent engineering package with 20 specialized skills.</p>
+                    <div class="meta">
+                        <span>20 Skills</span>
+                        <span>7 Commands</span>
+                    </div>
+                </a>
+
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/gstack/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">🚀</div>
+                        <h3>gstack</h3>
+                    </div>
+                    <span class="category-tag">YC CEO Virtual Team</span>
+                    <p>Turns Claude Code into a virtual engineering team with 27 skills.</p>
+                    <div class="meta">
+                        <span>27 Skills</span>
+                        <span>7 Roles</span>
+                    </div>
+                </a>
+
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/taste-skill/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">🎨</div>
+                        <h3>Taste Skill</h3>
+                    </div>
+                    <span class="category-tag">Frontend Design</span>
+                    <p>Premium frontend code generation with 9 design styles.</p>
+                    <div class="meta">
+                        <span>9 Styles</span>
+                        <span>3 Parameters</span>
+                    </div>
+                </a>
+
+                <a href="file:///Users/flora/.claude/skills/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">🎯</div>
+                        <h3>Claude Code Built-in</h3>
+                    </div>
+                    <span class="category-tag">Anthropic</span>
+                    <p>33 built-in AI skills covering UI/UX, development, and review.</p>
+                    <div class="meta">
+                        <span>12 Design</span>
+                        <span>8 Dev</span>
+                    </div>
+                </a>
+
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/open-design/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">🎬</div>
+                        <h3>Open Design</h3>
+                    </div>
+                    <span class="category-tag">Open Claude Design</span>
+                    <p>Open-source Claude Design alternative with 16 agents and 31 skills.</p>
+                    <div class="meta">
+                        <span>16 Agents</span>
+                        <span>31 Skills</span>
+                    </div>
+                </a>
+
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/pixelle-video/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">🎥</div>
+                        <h3>Pixelle-Video</h3>
+                    </div>
+                    <span class="category-tag">AI Video</span>
+                    <p>Automated short video engine from topic to finished video.</p>
+                    <div class="meta">
+                        <span>5 Steps</span>
+                        <span>3+ Models</span>
+                    </div>
+                </a>
+
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/design-md-google/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">📐</div>
+                        <h3>DESIGN.md</h3>
+                    </div>
+                    <span class="category-tag">Google Design Spec</span>
+                    <p>AI coding agent design system format specification.</p>
+                    <div class="meta">
+                        <span>4 CLI</span>
+                        <span>Token</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Product -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect></svg>
+                </div>
+                <h2 class="section-title">Product</h2>
+            </div>
+            <div class="category-grid">
+                <a href="file:///Users/flora/Downloads/Product-Manager-Skills-main/index-viz.html" class="package-card" target="_blank">
+                    <div class="header">
+                        <div class="icon">💼</div>
+                        <h3>Product Manager Skills</h3>
+                    </div>
+                    <span class="category-tag">PM Framework</span>
+                    <p>46 practical skills for AI product managers from top frameworks.</p>
+                    <div class="meta">
+                        <span>46 Skills</span>
+                        <span>6 Commands</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Quick Access -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <h2 class="section-title">Quick Access</h2>
+            </div>
+            <div class="quick-section">
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/taste-skill/index-viz.html" class="quick-card" target="_blank">
+                    <span class="icon">🎨</span>
+                    <h4>Taste</h4>
+                </a>
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/gstack/index-viz.html" class="quick-card" target="_blank">
+                    <span class="icon">🚀</span>
+                    <h4>gstack</h4>
+                </a>
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/impeccable-main/public/index-viz.html" class="quick-card" target="_blank">
+                    <span class="icon">🎬</span>
+                    <h4>Impeccable</h4>
+                </a>
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/open-design/index-viz.html" class="quick-card" target="_blank">
+                    <span class="icon">📐</span>
+                    <h4>Open Design</h4>
+                </a>
+                <a href="file:///Users/flora/Desktop/代码库可视化全景拆解结构图/pixelle-video/index-viz.html" class="quick-card" target="_blank">
+                    <span class="icon">🎥</span>
+                    <h4>Pixelle</h4>
+                </a>
+                <a href="file:///Users/flora/.claude/skills/index-viz.html" class="quick-card" target="_blank">
+                    <span class="icon">🎯</span>
+                    <h4>Claude</h4>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>11 Skill Packages / Ongoing 2025</p>
+    </div>
+</body>
+</html>
