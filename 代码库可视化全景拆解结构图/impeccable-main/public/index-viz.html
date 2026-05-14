@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impeccable 技能拆解全景图 - 像搭积木一样看懂这个系统</title>
+    <style>
+        :root {
+            /* Impeccable Design System - Light Mode */
+            --parchment: #f5f4ed;
+            --ivory: #faf9f5;
+            --warm-sand: #e8e6dc;
+            --border-cream: #f0eee6;
+            --border-warm: #e8e6dc;
+            --charcoal-warm: #4d4c48;
+            --olive-gray: #5e5d59;
+            --stone-gray: #87867f;
+            --terracotta: #c96442;
+            --coral: #d97757;
+            --deep-dark: #141413;
+            --dark-surface: #30302e;
+            --focus-blue: #3898ec;
+            --error-crimson: #b53333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--parchment);
+            color: var(--deep-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 24px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--parchment) 0%, var(--ivory) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(201, 100, 66, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(93, 93, 89, 0.05) 0%, transparent 50%);
+            animation: heroFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-2%, -2%); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--deep-dark);
+            letter-spacing: -0.02em;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--olive-gray);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: var(--terracotta);
+            color: var(--ivory);
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Navigation */
+        .nav {
+            position: sticky;
+            top: 0;
+            background: var(--parchment);
+            border-bottom: 1px solid var(--border-cream);
+            padding: 16px 24px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(245, 244, 237, 0.95);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--deep-dark);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--olive-gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--terracotta);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+            color: var(--deep-dark);
+        }
+
+        .section-header p {
+            color: var(--olive-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Architecture Layers - Stacked Cards */
+        .architecture-layers {
+            position: relative;
+            padding: 60px 0;
+        }
+
+        .layer-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .layer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .layer-card.level-1 {
+            margin-left: 0;
+            z-index: 5;
+            border-left: 4px solid var(--terracotta);
+        }
+
+        .layer-card.level-2 {
+            margin-left: 40px;
+            z-index: 4;
+            border-left: 4px solid var(--coral);
+            background: linear-gradient(135deg, var(--ivory) 0%, #fdfcfa 100%);
+        }
+
+        .layer-card.level-3 {
+            margin-left: 80px;
+            z-index: 3;
+            border-left: 4px solid var(--olive-gray);
+            background: linear-gradient(135deg, var(--ivory) 0%, #fcfbf9 100%);
+        }
+
+        .layer-card.level-4 {
+            margin-left: 120px;
+            z-index: 2;
+            border-left: 4px solid var(--stone-gray);
+            background: linear-gradient(135deg, var(--ivory) 0%, #fbfafa 100%);
+        }
+
+        .layer-card.level-5 {
+            margin-left: 160px;
+            z-index: 1;
+            border-left: 4px solid var(--dark-surface);
+            background: linear-gradient(135deg, var(--ivory) 0%, #faf9f8 100%);
+        }
+
+        .layer-label {
+            display: inline-block;
+            background: var(--warm-sand);
+            color: var(--charcoal-warm);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .layer-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--deep-dark);
+        }
+
+        .layer-card p {
+            color: var(--olive-gray);
+            font-size: 0.95rem;
+        }
+
+        .layer-icon {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: var(--warm-sand);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Chat Communication Flow */
+        .chat-section {
+            background: var(--deep-dark);
+            color: var(--ivory);
+            padding: 100px 24px;
+            margin: 0;
+            max-width: 100%;
+        }
+
+        .chat-section .section-header h2 {
+            color: var(--ivory);
+        }
+
+        .chat-section .section-header p {
+            color: var(--stone-gray);
+        }
+
+        .chat-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar.stripe { background: #635bff; }
+        .chat-avatar.supabase { background: #3ecf8e; }
+        .chat-avatar.cloudflare { background: #f38020; }
+        .chat-avatar.bun { background: #f8af00; }
+        .chat-avatar.user { background: var(--terracotta); }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 20px;
+            max-width: 600px;
+        }
+
+        .chat-bubble.paid {
+            border-left: 3px solid #635bff;
+        }
+
+        .chat-bubble.license {
+            border-left: 3px solid #3ecf8e;
+        }
+
+        .chat-bubble.deploy {
+            border-left: 3px solid #f38020;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .chat-text {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+        }
+
+        .chat-timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .chat-timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #635bff, #3ecf8e, #f38020);
+        }
+
+        /* Core Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--terracotta);
+        }
+
+        .feature-card.featured {
+            border-color: var(--terracotta);
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--ivory) 0%, rgba(201, 100, 66, 0.05) 100%);
+        }
+
+        .feature-number {
+            display: inline-block;
+            background: var(--terracotta);
+            color: var(--ivory);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--deep-dark);
+        }
+
+        .feature-card p {
+            color: var(--olive-gray);
+            font-size: 0.95rem;
+        }
+
+        .feature-example {
+            background: var(--warm-sand);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 0.85rem;
+            color: var(--charcoal-warm);
+        }
+
+        /* SaaS Toolbox */
+        .toolbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover {
+            border-color: var(--terracotta);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .tool-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .tool-logo.bun { background: #f8af00; }
+        .tool-logo.cloudflare { background: #f38020; }
+        .tool-logo.supabase { background: #3ecf8e; }
+        .tool-logo.stripe { background: #635bff; }
+
+        .tool-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--deep-dark);
+        }
+
+        .tool-role {
+            font-size: 0.85rem;
+            color: var(--stone-gray);
+        }
+
+        .tool-desc {
+            color: var(--olive-gray);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .tool-pricing {
+            background: var(--warm-sand);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .pricing-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--stone-gray);
+            margin-bottom: 4px;
+        }
+
+        .pricing-free {
+            color: #3ecf8e;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .pricing-paid {
+            color: var(--charcoal-warm);
+            font-size: 0.9rem;
+        }
+
+        .pricing-upgrade {
+            font-size: 0.8rem;
+            color: var(--olive-gray);
+            margin-top: 8px;
+        }
+
+        .tool-relation {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-cream);
+            font-size: 0.85rem;
+            color: var(--stone-gray);
+        }
+
+        .tool-relation strong {
+            color: var(--terracotta);
+        }
+
+        /* Plain Explanations */
+        .explain-section {
+            background: var(--ivory);
+            padding: 100px 24px;
+        }
+
+        .explain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .explain-card {
+            background: var(--parchment);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .explain-term {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--terracotta);
+            margin-bottom: 16px;
+        }
+
+        .explain-analogy {
+            color: var(--deep-dark);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .explain-analogy::before {
+            content: '💡 ';
+        }
+
+        /* Footer */
+        footer {
+            background: var(--deep-dark);
+            color: var(--stone-gray);
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--ivory);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--terracotta);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .layer-card.level-1,
+            .layer-card.level-2,
+            .layer-card.level-3,
+            .layer-card.level-4,
+            .layer-card.level-5 {
+                margin-left: 0;
+            }
+
+            .layer-card.level-2 {
+                margin-left: 20px;
+            }
+
+            .layer-card.level-3 {
+                margin-left: 40px;
+            }
+
+            .layer-card.level-4 {
+                margin-left: 60px;
+            }
+
+            .layer-card.level-5 {
+                margin-left: 80px;
+            }
+
+            .feature-card.featured {
+                grid-column: span 1;
+            }
+
+            .chat-message {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-content">
+            <span class="badge">🎨 Impeccable 技能拆解全景图</span>
+            <h1>像搭积木一样<br>看懂这个系统</h1>
+            <p class="subtitle">这个项目是给 AI 编程工具用的"设计教练"，帮它做出漂亮的网页。不用懂代码，看完这张图你就明白了。</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">🏗️ 项目架构</a>
+            <ul class="nav-links">
+                <li><a href="#architecture">分层架构</a></li>
+                <li><a href="#features">核心功能</a></li>
+                <li><a href="#toolbox">工具箱</a></li>
+                <li><a href="#chat">怎么"聊天"</a></li>
+                <li><a href="#explain">大白话解释</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Architecture Layers -->
+    <section id="architecture">
+        <div class="section-header">
+            <h2>🏗️ 五层积木塔</h2>
+            <p>这个系统像一栋五层的房子，每层有不同的功能。越往上越接近用户，越往下越底层。</p>
+        </div>
+
+        <div class="architecture-layers">
+            <!-- 第5层：用户界面 -->
+            <div class="layer-card level-1">
+                <span class="layer-label">第 5 层 · 门面</span>
+                <div class="layer-icon">🎨</div>
+                <h3>网站展示层 (public/)</h3>
+                <p>你在浏览器里看到的网页。包括首页、案例展示、反面教材页面。你能访问的一切都在这里。</p>
+            </div>
+
+            <!-- 第4层：技能和命令 -->
+            <div class="layer-card level-2">
+                <span class="layer-label">第 4 层 · 工具箱</span>
+                <div class="layer-icon">🛠️</div>
+                <h3>编译输出层 (dist/)</h3>
+                <p>把源文件变成不同 AI 工具能用的格式。比如给 Cursor 用的、给 Claude Code 用的、给 Gemini 用的 —— 同一个人化不同的妆。</p>
+            </div>
+
+            <!-- 第3层：技能定义 -->
+            <div class="layer-card level-3">
+                <span class="layer-label">第 3 层 · 菜谱</span>
+                <div class="layer-icon">📖</div>
+                <h3>源技能层 (source/skills/)</h3>
+                <p>20 个设计"口诀"。比如 /audit 是"挑毛病"、/polish 是"打磨细节"、/delight 是"加点惊喜"。每个技能都有详细的指导手册。</p>
+            </div>
+
+            <!-- 第2层：构建系统 -->
+            <div class="layer-card level-4">
+                <span class="layer-label">第 2 层 · 工厂</span>
+                <div class="layer-icon">🏭</div>
+                <h3>构建系统 (scripts/, lib/)</h3>
+                <p>自动化流水线。把技能从"一份原版"复制编译成"多份定制版"，适配不同 AI 工具的格式要求。</p>
+            </div>
+
+            <!-- 第1层：基础设施 -->
+            <div class="layer-card level-5">
+                <span class="layer-label">第 1 层 · 地基</span>
+                <div class="layer-icon">🧱</div>
+                <h3>基础设施 (server/, functions/)</h3>
+                <p>运行在云端的服务器。处理网站访问、文件下载、用户反馈等请求。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features -->
+    <section id="features">
+        <div class="section-header">
+            <h2>⚡ 核心功能场景</h2>
+            <p>这个工具能做什么？按重要程度排序，最常用的排在最前面。</p>
+        </div>
+
+        <div class="features-grid">
+            <!-- #1 最重要的功能 -->
+            <div class="feature-card featured">
+                <span class="feature-number">1</span>
+                <h3>🎨 指导 AI 做出漂亮网页</h3>
+                <p>这是 Impeccable 的核心超能力。它教会 AI 什么该做、什么不该做。比如"别用 Inter 字体"、"别在彩色背景上用灰色字"、"别把所有东西都塞进卡片里"。</p>
+                <div class="feature-example">/frontend-design → 生成一个"看起来像人做的"网页</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">2</span>
+                <h3>🔍 审计体检</h3>
+                <p>像体检一样全面检查网页。看看颜色对比够不够、响应式有没有问题、加载快不快。</p>
+                <div class="feature-example">/audit → "报告：发现 5 个问题"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">3</span>
+                <h3>✨ 打磨抛光</h3>
+                <p>出货前的最后一道工序。对齐像素、调整间距、统一字体。让细节经得起放大镜看。</p>
+                <div class="feature-example">/polish → "好了，可以发货了"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">4</span>
+                <h3>🎭 风格改造</h3>
+                <p>把平淡的设计变得有趣。或者把太花哨的弄得更低调。完全看你需要。</p>
+                <div class="feature-example">/bolder → "再大胆一点！"<br>/quieter → "低调一点"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">5</span>
+                <h3>🎬 加点"魔法"</h3>
+                <p>加上恰到好处的动画。让页面动起来，但不要太过分。</p>
+                <div class="feature-example">/animate → "给按钮加个hover效果"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">6</span>
+                <h3>📝 文字润色</h3>
+                <p>把"技术黑话"变成人话。让按钮文字、提示信息更容易懂。</p>
+                <div class="feature-example">/clarify → "别叫 Error 404 了，说'页面消失了'"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">7</span>
+                <h3>🧩 组件提取</h3>
+                <p>把重复的代码变成可复用的零件。一次编写，到处使用。</p>
+                <div class="feature-example">/extract → "这个按钮我以后还要用"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">8</span>
+                <h3>📱 响应式适配</h3>
+                <p>让同一个页面在手机、平板、电脑上都好看。不是简单缩小，而是因地制宜。</p>
+                <div class="feature-example">/adapt → "手机上这样排"</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SaaS Toolbox -->
+    <section id="toolbox">
+        <div class="section-header">
+            <h2>🧰 SaaS 工具箱</h2>
+            <p>这个项目用了哪些"外包服务"？它们各自干什么活？为什么免费？什么时候需要花钱？</p>
+        </div>
+
+        <div class="toolbox-grid">
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo bun">B</div>
+                    <div>
+                        <div class="tool-name">Bun</div>
+                        <div class="tool-role">运行环境和打包工具</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像厨房里的料理机。帮你快速运行代码、装依赖包、打包文件。项目里的 npm/yarn 命令它都能干，而且 快得多。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 完全免费</div>
+                    <div class="pricing-paid">目前个人使用完全免费</div>
+                    <div class="pricing-upgrade">什么时候升级：暂无付费计划，一直免费用</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Cloudflare Pages（部署）
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo cloudflare">CF</div>
+                    <div>
+                        <div class="tool-name">Cloudflare Pages</div>
+                        <div class="tool-role">网站托管和 CDN</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像租了一个铺面。它把你的网页放在全球各地的服务器上，有人访问就就近分发，速度快，还抗打（防DDoS）。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 500分钟/月</div>
+                    <div class="pricing-paid">付费版：$5/月起，无限分钟</div>
+                    <div class="pricing-upgrade">什么时候升级：流量大时（每月超过 500 分钟）</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Bon（触发构建）、用户（访问）
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo supabase">S</div>
+                    <div>
+                        <div class="tool-name">Supabase</div>
+                        <div class="tool-role">数据库和认证</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像租了一个仓库存东西。用户数据、许可证状态、付费记录都存在这里。免费版足够个人项目用。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 500MB 存储 + 无限 API 请求</div>
+                    <div class="pricing-paid">付费版：$25/月起，8GB 存储</div>
+                    <div class="pricing-upgrade">什么时候升级：数据超过 500MB 或需要更多项目</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Stripe（付款）、用户（登录）
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo stripe">S</div>
+                    <div>
+                        <div class="tool-name">Stripe</div>
+                        <div class="tool-role">支付网关</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像雇了个收银员。用户刷卡付钱，它负责安全处理付款信息，然后通知"钱到了，可以发货"。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">收费</div>
+                    <div class="pricing-free">✅ 首年免收年费</div>
+                    <div class="pricing-paid">手续费：每笔交易 2.9% + $0.3</div>
+                    <div class="pricing-upgrade">什么时候升级：交易量大可谈更低费率</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Supabase（记录）、Cloudflare（展示）
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Communication - Complete Workflow -->
+    <div class="chat-section" id="chat">
+        <div class="section-header">
+            <h2>💬 这群"人"是怎么配合干活的？</h2>
+            <p>一个开发者用 Impeccable 做一个漂亮的官网。完整展示每个环节谁在干活。</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-timeline">
+                <!-- 第1步：开始 -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"帮我做个官网，要那种看起来不像 AI 做的。"</div>
+                    </div>
+                </div>
+
+                <!-- 第2步：Frontend Design 技能 -->
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🎨</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/frontend-design（设计教练）</div>
+                        <div class="chat-text">"收到！先用这个技能。需要知道：谁来用这个产品？想表达什么感觉？"<br><br>开发者："给设计师用的工具，要专业、简洁、有品味。"</div>
+                    </div>
+                </div>
+
+                <!-- 第3步：Bun 打包 -->
+                <div class="chat-message">
+                    <div class="chat-avatar bun">🍡</div>
+                    <div class="chat-bubble deploy">
+                        <div class="chat-name">Bun（料理机）</div>
+                        <div class="chat-text">"[执行] 好嘞！把源技能编译成 Cursor 能读懂的格式，放到 dist/ 目录。"</div>
+                    </div>
+                </div>
+
+                <!-- 第4步：生成初版 -->
+                <div class="chat-message">
+                    <div class="chat-avatar cloudflare">🏠</div>
+                    <div class="chat-bubble deploy">
+                        <div class="chat-name">AI 生成网页</div>
+                        <div class="chat-text">"初版好了！先给你看效果。"</div>
+                    </div>
+                </div>
+
+                <!-- 第5步：Audit 审计 -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/audit"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🔍</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/audit（体检医生）</div>
+                        <div class="chat-text">"报告：发现 3 个问题<br>1. 按钮颜色对比度不够<br>2. 手机端导航有点挤<br>3. 加载慢了一点点"</div>
+                    </div>
+                </div>
+
+                <!-- 第6步：Polish 打磨 -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/polish"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">✨</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/polish（打磨匠）</div>
+                        <div class="chat-text">"好了！像素对齐、间距统一、字体大小调匀，细节都修好了。"</div>
+                    </div>
+                </div>
+
+                <!-- 第7步：Bolder 风格改造 -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/bolder"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🎭</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/bolder（风格大师）</div>
+                        <div class="chat-text">"收到！加大标题、加粗重点、颜色再鲜明一点。"</div>
+                    </div>
+                </div>
+
+                <!-- 第8步：Animate 加动画 -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/animate"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🎬</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/animate（动画师）</div>
+                        <div class="chat-text">"来了！页面进入加交错效果，按钮 hover 加微动效。"</div>
+                    </div>
+                </div>
+
+                <!-- 第9步：Cloudflare 部署 -->
+                <div class="chat-message">
+                    <div class="chat-avatar bun">🚀</div>
+                    <div class="chat-bubble deploy">
+                        <div class="chat-name">Bun（打包）</div>
+                        <div class="chat-text">"bun run build && wrangler pages deploy"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar cloudflare">☁️</div>
+                    <div class="chat-bubble deploy">
+                        <div class="chat-name">Cloudflare Pages（铺面）</div>
+                        <div class="chat-text">"网站上线了！全球 CDN 分发，访问速度有保障。"</div>
+                    </div>
+                </div>
+
+                <!-- 第10步：Supabase 记录 -->
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🗄️</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">Supabase（数据库）</div>
+                        <div class="chat-text">"[记录] 构建历史已存：谁改的、什么时候、改了啥，方便回溯。"</div>
+                    </div>
+                </div>
+
+                <!-- 第11步：可选技能 Clarify -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/clarify 按钮文字"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">📝</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/clarify（文字润色师）</div>
+                        <div class="chat-text">"别写'Submit'了，改成'发送消息'更易懂。"</div>
+                    </div>
+                </div>
+
+                <!-- 第12步：可选技能 Extract -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/extract 按钮组件"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🧩</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/extract（组件提取师）</div>
+                        <div class="chat-text">"提取成功！这个按钮以后可以复用。"</div>
+                    </div>
+                </div>
+
+                <!-- 第13步：可选技能 Adapt -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/adapt 手机端"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">📱</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/adapt（响应式大师）</div>
+                        <div class="chat-text">"手机端重新排版：导航收进汉堡菜单，卡片改成纵向。"</div>
+                    </div>
+                </div>
+
+                <!-- 第14步：Quieter 降噪（可选） -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/quieter"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🤫</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/quieter（降噪师）</div>
+                        <div class="chat-text">"收到！去掉一些装饰，把空间让给内容。"</div>
+                    </div>
+                </div>
+
+                <!-- 第15步：Stripe 付费（最后） -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"这个工具真好用，我想付费支持！"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar stripe">💳</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">Stripe（收银员）</div>
+                        <div class="chat-text">"钱收到了！@Supabase，给这个用户开通 Pro 版。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🎉</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">Supabase</div>
+                        <div class="chat-text">"[记录] Pro license 已开通！"</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plain Explanations -->
+        </div>
+    </div>
+
+    <!-- Plain Explanations -->
+    <section class="explain-section" id="explain">
+        <div class="section-header">
+            <h2>📚 大白话百科</h2>
+            <p>这些词儿到底什么意思？用日常例子讲给你听。</p>
+        </div>
+
+        <div class="explain-grid">
+            <div class="explain-card">
+                <div class="explain-term">WebCodecs</div>
+                <div class="explain-analogy">
+                    像视频网站的"播放器内核"。网页要播视频，得有个东西来解压缩视频文件、把一帧帧画面显示出来。WebCodecs 就是浏览器内置的这个播放器底层。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">FFmpeg</div>
+                <div class="explain-analogy">
+                    像视频届的"瑞士军刀"。能转换格式、剪辑、加字幕、做特效。命令行工具，很强大但需要学习。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">H.264</div>
+                <div class="explain-analogy">
+                    像视频的"压缩算法"。一段 1GB 的视频，用 H.264 压完可能就 100MB 了，但看起来差不多。几乎是所有视频网站通用的格式。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">30fps</div>
+                <div class="explain-analogy">
+                    像翻书的速度。每秒翻 30 页，书里的内容就像动起来一样。电影一般是 24fps，网页动画 30fps 就挺流畅了。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Mux</div>
+                <div class="explain-analogy">
+                    像视频托管商。帮你存视频、CDN 分发、还提供播放统计数据。收费但省心。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">MP4 容器</div>
+                <div class="explain-analogy">
+                    像快递盒。把视频文件、音频文件、字幕"打包"成一个文件。MP4 就是最常见的那个"盒子"。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Motion</div>
+                <div class="explain-analogy">
+                    动效库，像做动画的"画具"。帮你做交错入场、滚动视差、页面转场等效果。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Playwright</div>
+                <div class="explain-analogy">
+                    像自动化测试员。帮你模拟点击、填表、截图，检测网页是否正常工作。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>基于 <a href="https://impeccable.style">Impeccable</a> 项目 · 设计系统参考 <a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design">Anthropic</a></p>
+        <p style="margin-top: 16px; font-size: 0.85rem;">本文档用大白话解释这个系统的运作方式，面向非技术读者。设计风格参考 Claude AI 官网。</p>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Reveal animations on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.layer-card, .feature-card, .tool-card, .explain-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // Chat message stagger animation
+        document.querySelectorAll('.chat-message').forEach((msg, i) => {
+            msg.style.animationDelay = `${i * 0.3}s`;
+        });
+    </script>
+</body>
+</html>

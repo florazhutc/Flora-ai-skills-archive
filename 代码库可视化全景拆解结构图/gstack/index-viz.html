@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gstack - Y Combinator CEO 的超级技能包 | 可视化拆解</title>
+    <style>
+        :root {
+            --parchment: #f5f4ed;
+            --white: #ffffff;
+            --terracotta: #c96442;
+            --terracotta-light: rgba(201, 100, 66, 0.1);
+            --text: #2c2416;
+            --text-secondary: #5c5346;
+            --ring-shadow: 0px 0px 0px 1px rgba(44, 36, 22, 0.1), 0px 1px 2px rgba(44, 36, 22, 0.05), 0px 2px 4px rgba(44, 36, 22, 0.05), 0px 4px 8px rgba(44, 36, 22, 0.05), 0px 8px 16px rgba(44, 36, 22, 0.05);
+            --ring-shadow-sm: 0px 0px 0px 1px rgba(44, 36, 22, 0.08), 0px 1px 2px rgba(44, 36, 22, 0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: var(--parchment);
+            color: var(--text);
+            line-height: 1.60;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+        /* ========== Hero ========== */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--white);
+            border-radius: 0 0 32px 32px;
+            box-shadow: var(--ring-shadow);
+            margin-bottom: 48px;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 400;
+            color: var(--text);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span { color: var(--terracotta); font-style: italic; }
+
+        .hero .subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 24px;
+        }
+
+        .hero-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 640px;
+            margin: 0 auto 32px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .hero-quote {
+            background: var(--parchment);
+            padding: 20px 30px;
+            border-radius: 12px;
+            margin: 0 auto 32px;
+            max-width: 700px;
+            font-style: italic;
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-family: -apple-system, sans-serif;
+        }
+
+        .hero-quote .author {
+            font-size: 13px;
+            margin-top: 10px;
+            color: var(--terracotta);
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+        }
+
+        .stat-item { text-align: center; }
+        .stat-item .num { font-size: 40px; font-weight: 400; color: var(--terracotta); }
+        .stat-item .label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; font-family: -apple-system, sans-serif; }
+
+        /* ========== Section ========== */
+        .section { margin: 48px 0; }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(44, 36, 22, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--terracotta);
+            border-radius: 2px;
+        }
+
+        /* ========== Architecture ========== */
+        .arch-layer {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--ring-shadow-sm);
+            position: relative;
+        }
+
+        .arch-layer::before {
+            content: attr(data-layer);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--terracotta);
+            color: white;
+            font-size: 11px;
+            font-family: -apple-system, sans-serif;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .arch-layer h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .arch-layer p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .arch-layer ul {
+            margin-top: 12px;
+            padding-left: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .arch-layer ul li { margin-bottom: 4px; }
+
+        .arch-layer .arrow-down {
+            text-align: center;
+            color: var(--terracotta);
+            font-size: 20px;
+            margin: -8px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== Features ========== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .feature-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card h4 .icon {
+            width: 24px;
+            height: 24px;
+            background: var(--terracotta-light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+        }
+
+        /* ========== Toolbox ========== */
+        .toolbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .tool-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--ring-shadow-sm);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .tool-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .tool-card .cmd {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            background: var(--parchment);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            color: var(--terracotta);
+            overflow-x: auto;
+        }
+
+        .tool-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* ========== Chat Scenario ========== */
+        .chat-scenario {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .chat-message:last-child { margin-bottom: 0; }
+
+        .chat-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--terracotta-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .chat-bubble {
+            flex: 1;
+            background: var(--parchment);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+        }
+
+        .chat-message.user .chat-avatar {
+            background: var(--terracotta);
+            color: white;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: var(--terracotta-light);
+        }
+
+        /* ========== Plain Explanation ========== */
+        .explanation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .explanation-item {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .explanation-item h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--terracotta);
+        }
+
+        .explanation-item p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+        }
+
+        .explanation-item .tech-term {
+            background: var(--parchment);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+        }
+
+        /* ========== Footer ========== */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .footer a { color: var(--terracotta); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 40px; }
+            .features-grid, .toolbox-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <div class="hero">
+        <h1>g<span>stack</span></h1>
+        <p class="subtitle">Y Combinator CEO 的超级技能包</p>
+        <p class="hero-desc">Garry Tan 用 20 年工程经验打造的 AI 编码代理系统。把 Claude Code 变成一个虚拟工程团队——CEO、架构师、设计师、工程师、QA、安全官、发布工程师。60 天写了 60 万行代码！</p>
+        <div class="hero-quote">
+            "I don't think I've typed like a line of code probably since December, basically, which is an extremely large change."
+            <div class="author">— Andrej Karpathy (OpenAI 联合创始人)</div>
+        </div>
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="num">27</div>
+                <div class="label">种技能</div>
+            </div>
+            <div class="stat-item">
+                <div class="num">27</div>
+                <div class="label">个命令</div>
+            </div>
+            <div class="stat-item">
+                <div class="num">7</div>
+                <div class="label">种角色</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 分层架构图 -->
+        <div class="section">
+            <h2 class="section-title">📐 分层架构</h2>
+
+            <div class="arch-layer" data-layer="第 7 层">
+                <h4>🚀 发布工程师角色</h4>
+                <p>负责代码发布、上线部署、监控系统。</p>
+                <ul>
+                    <li>/ship - 一键发布</li>
+                    <li>/land-and-deploy - 部署上线</li>
+                    <li>/canary - 金丝雀监控</li>
+                    <li>/retro - 每周回顾</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 6 层">
+                <h4>🛡️ 安全官角色</h4>
+                <p>负责安全审计、漏洞检查。</p>
+                <ul>
+                    <li>/cso - 首席安全官模式</li>
+                    <li>OWASP Top 10 审计</li>
+                    <li>STRIDE 威胁建模</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 5 层">
+                <h4>🧪 QA 角色</h4>
+                <p>负责测试网站、找 bug、性能检测。</p>
+                <ul>
+                    <li>/qa - 测试并修复 bug</li>
+                    <li>/qa-only - 只报告问题</li>
+                    <li>/browse - 无头浏览器</li>
+                    <li>/benchmark - 性能回归检测</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 4 层">
+                <h4>👨‍💻 工程师角色</h4>
+                <p>负责代码审查、调试、问题排查。</p>
+                <ul>
+                    <li>/review - 代码审查</li>
+                    <li>/investigate - 系统调试</li>
+                    <li>/codex - Codex 深度审查</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 3 层">
+                <h4>🎨 设计师角色</h4>
+                <p>负责界面审核、用户体验评估。</p>
+                <ul>
+                    <li>/design-review - 设计 QA</li>
+                    <li>/plan-design-review - 交互式设计评审</li>
+                    <li>/design-consultation - 设计咨询</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 2 层">
+                <h4>🏗️ 架构师角色</h4>
+                <p>负责技术方案评审、架构锁定。</p>
+                <ul>
+                    <li>/plan-eng-review - 工程计划审查</li>
+                    <li>架构、数据流、API 图表</li>
+                    <li>技术选型评估</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 1 层">
+                <h4>👔 CEO 角色</h4>
+                <p>负责产品战略思考、商业价值评估。</p>
+                <ul>
+                    <li>/office-hours - YC 导师模式</li>
+                    <li>/plan-ceo-review - CEO 计划审查</li>
+                    <li>六个尖锐问题</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 核心功能 -->
+        <div class="section">
+            <h2 class="section-title">⚡ 核心功能</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4><span class="icon">👔</span> YC Office Hours</h4>
+                    <p><span class="tech-term">/office-hours</span> - 六个尖锐问题，暴露需求真实性、产品市场契合度、竞争壁垒。像 YC 导师一样拷问你的产品想法。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🏗️</span> 工程计划审查</h4>
+                    <p><span class="tech-term">/plan-eng-review</span> - 锁定执行计划：架构、数据流、API 图表、技术选型。 像技术总监一样评审技术方案。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🎨</span> 设计 QA</h4>
+                    <p><span class="tech-term">/design-review</span> - 找出视觉不一致、间距问题、层级问题、AI slop 痕迹。像请了个设计总监来审核界面。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🔍</span> 代码审查</h4>
+                    <p><span class="tech-term">/review</span> - 分析 diff 对比 base branch，SQL 安全、LLM trust boundary、格式规范。帮你 review 代码改动。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🧪</span> 系统化 QA</h4>
+                    <p><span class="tech-term">/qa</span> - 系统化测试 Web 应用并修复发现的 bug，迭代式测试和修复。帮你测试网站有没有 bug。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🚀</span> 一键发布</h4>
+                    <p><span class="tech-term">/ship</span> - 检测+合并 base branch，运行测试，审查 diff，bump VERSION，更新 CHANGE LOG。一键发布代码改动。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 工具箱 -->
+        <div class="section">
+            <h2 class="section-title">🛠️ 核心命令工具箱</h2>
+            <div class="toolbox-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/office-hours</h4>
+                    </div>
+                    <div class="cmd">YC 导师模式</div>
+                    <p>用 YC 的六个尖锐问题拷问你的产品想法：目标用户是谁？市场规模多大？竞争壁垒是什么？</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/plan-ceo-review</h4>
+                    </div>
+                    <div class="cmd">CEO 评审</div>
+                    <p>从商业角度评估功能价值和优先级，找 10 星产品，挑战前提假设。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/design-review</h4>
+                    </div>
+                    <div class="cmd">设计评审</div>
+                    <p>从设计师角度审核界面：视觉一致性、间距、层级、AI slop 痕迹。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/review</h4>
+                    </div>
+                    <div class="cmd">代码审查</div>
+                    <p>审查代码改动，找安全问题、SQL 注入、性能问题、格式规范。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/qa</h4>
+                    </div>
+                    <div class="cmd">QA 测试</div>
+                    <p>系统化测试网站并修复发现的 bug，迭代式测试和修复。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/ship</h4>
+                    </div>
+                    <div class="cmd">一键发布</div>
+                    <p>完整发布流程：合并分支→运行测试→审查 diff→更新版本→发布上线。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 聊天比喻场景 -->
+        <div class="section">
+            <h2 class="section-title">💬 聊天比喻场景</h2>
+            <div class="chat-scenario">
+                <div class="chat-message">
+                    <div class="chat-avatar">👔</div>
+                    <div class="chat-bubble">
+                        Hey 团队，我想做一个 AI 写作助手，能帮我评估一下这个想法有没有商业价值？
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🧠</div>
+                    <div class="chat-bubble">
+                        我是 <strong>/office-hours</strong>！让我用 YC 的六个尖锐问题来拷问你的想法：目标用户是谁？市场规模多大？竞争壁垒是什么？
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">👔</div>
+                    <div class="chat-bubble">
+                        好的，我现在要做技术方案了，谁能帮我评估一下技术选型？
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🏗️</div>
+                    <div class="chat-bubble">
+                        我是 <strong>/plan-eng-review</strong>！让我帮你锁定技术架构：前端用什么？后端用什么？数据库选型？API 设计？
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">👨‍💻</div>
+                    <div class="chat-bubble">
+                        代码写完了，<strong>/review</strong> 帮你做代码审查！看看有没有安全问题、SQL 注入、性能问题。
+                    </div>
+                </div>
+                <div class="chat-message user">
+                    <div class="chat-avatar">👤</div>
+                    <div class="chat-bubble">
+                        测试没问题，现在可以发布了。
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🚀</div>
+                    <div class="chat-bubble">
+                        我是 <strong>/ship</strong>！执行发布流程：合并分支→运行测试→审查 diff→更新版本→发布上线。
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">📊</div>
+                    <div class="chat-bubble">
+                        我是 <strong>/canary</strong>！监控上线后的系统：console 有没有错误？加载速度有没有变慢？
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 大白话解释 -->
+        <div class="section">
+            <h2 class="section-title">📖 大白话解释</h2>
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <h4>gstack 是什么？</h4>
+                    <p>想象你是一家 startup 的 CEO，有一个完整的工程团队帮你干活：有人做战略规划（CEO）、有人做技术架构（架构师）、有人做界面设计（设计师）、有人写代码（工程师）、有人测试（QA）、有人管安全（安全官）、有人上线发布（发布工程师）。<span class="tech-term">gstack</span> 就是把这整团队"压缩"进 Claude Code，一个命令就能叫对应的"人"出来帮忙。</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>YC Office Hours 是什么？</h4>
+                    <p>YC 是全世界最著名的创业孵化器，每次"毕业演示"都像选秀一样严格。<span class="tech-term">/office-hours</span> 就是把 YC 导师的"面试技巧"学来了，会用六个尖锐问题拷问你的产品想法：谁是你的用户？市场有多大？为什么是你做而不是别人？这些问题是创业者最怕但也最需要的。</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>AI slop 是什么？</h4>
+                    <p><span class="tech-term">AI slop</span> 就是 AI 生成的"垃圾设计"——那种看起来还行但透着一股廉价感的界面。/design-review 就是帮你识别这种痕迹：是不是用了太多渐变？是不是按钮圆角都一样？是不是配色太"AI"了？</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>金丝雀发布是什么？</h4>
+                    <p>以前矿工下井会带金丝雀，如果鸟死了说明有瓦斯泄漏。<span class="tech-term">金丝雀发布</span> 就是先让一小部分用户用新版本，观察有没有问题，如果没问题再全面铺开。/canary 就是帮你监控这个"鸟"还活着没有。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>📊 gstack 可视化拆解 | 由 Garry Tan (Y Combinator CEO) 创建</p>
+        <p style="margin-top: 8px;">MIT 许可证 • 60 天写 60 万行代码的男人</p>
+    </div>
+</body>
+</html>

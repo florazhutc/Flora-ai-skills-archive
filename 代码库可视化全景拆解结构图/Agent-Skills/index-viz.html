@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Skills - Google 工程技能包 | 可视化拆解</title>
+    <style>
+        :root {
+            --parchment: #f5f4ed;
+            --white: #ffffff;
+            --terracotta: #c96442;
+            --terracotta-light: rgba(201, 100, 66, 0.1);
+            --text: #2c2416;
+            --text-secondary: #5c5346;
+            --ring-shadow: 0px 0px 0px 1px rgba(44, 36, 22, 0.1), 0px 1px 2px rgba(44, 36, 22, 0.05), 0px 2px 4px rgba(44, 36, 22, 0.05), 0px 4px 8px rgba(44, 36, 22, 0.05), 0px 8px 16px rgba(44, 36, 22, 0.05);
+            --ring-shadow-sm: 0px 0px 0px 1px rgba(44, 36, 22, 0.08), 0px 1px 2px rgba(44, 36, 22, 0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: var(--parchment);
+            color: var(--text);
+            line-height: 1.60;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+        /* ========== Hero ========== */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--white);
+            border-radius: 0 0 32px 32px;
+            box-shadow: var(--ring-shadow);
+            margin-bottom: 48px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 400;
+            color: var(--text);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span { color: var(--terracotta); font-style: italic; }
+
+        .hero .subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 24px;
+        }
+
+        .hero-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 640px;
+            margin: 0 auto 32px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .install-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 0;
+            background: var(--text);
+            color: var(--white);
+            border-radius: 8px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 14px;
+            overflow: hidden;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .install-box .dollar { padding: 12px 16px; background: var(--terracotta); }
+        .install-box .cmd { padding: 12px 16px; }
+
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+        }
+
+        .stat-item { text-align: center; }
+        .stat-item .num { font-size: 40px; font-weight: 400; color: var(--terracotta); }
+        .stat-item .label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; font-family: -apple-system, sans-serif; }
+
+        /* ========== Section ========== */
+        .section { margin: 48px 0; }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(44, 36, 22, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--terracotta);
+            border-radius: 2px;
+        }
+
+        /* ========== Architecture ========== */
+        .arch-layer {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--ring-shadow-sm);
+            position: relative;
+        }
+
+        .arch-layer::before {
+            content: attr(data-layer);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--terracotta);
+            color: white;
+            font-size: 11px;
+            font-family: -apple-system, sans-serif;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .arch-layer h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .arch-layer p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .arch-layer ul {
+            margin-top: 12px;
+            padding-left: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .arch-layer ul li { margin-bottom: 4px; }
+
+        .arch-layer .arrow-down {
+            text-align: center;
+            color: var(--terracotta);
+            font-size: 20px;
+            margin: -8px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== Features ========== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .feature-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card h4 .icon {
+            width: 24px;
+            height: 24px;
+            background: var(--terracotta-light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+        }
+
+        /* ========== Toolbox ========== */
+        .toolbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .tool-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--ring-shadow-sm);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .tool-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .tool-card .cmd {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            background: var(--parchment);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            color: var(--terracotta);
+            overflow-x: auto;
+        }
+
+        .tool-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* ========== Chat Scenario ========== */
+        .chat-scenario {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .chat-message:last-child { margin-bottom: 0; }
+
+        .chat-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--terracotta-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .chat-bubble {
+            flex: 1;
+            background: var(--parchment);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+        }
+
+        .chat-message.user .chat-avatar {
+            background: var(--terracotta);
+            color: white;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: var(--terracotta-light);
+        }
+
+        /* ========== Plain Explanation ========== */
+        .explanation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .explanation-item {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .explanation-item h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--terracotta);
+        }
+
+        .explanation-item p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+        }
+
+        .explanation-item .tech-term {
+            background: var(--parchment);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+        }
+
+        /* ========== Footer ========== */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .footer a { color: var(--terracotta); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            .features-grid, .toolbox-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <div class="hero">
+        <h1>Agent<span>Skills</span></h1>
+        <p class="subtitle">Google 出品的 AI 编码代理工程技能包</p>
+        <p class="hero-desc">20 个经过实战检验的工程技能 + 7 个命令，覆盖开发全流程：规划、构建、验证、审查、发布。来自 Google 最佳工程实践。</p>
+        <div class="install-box">
+            <span class="dollar">$</span>
+            <span class="cmd">npx agent-skills install</span>
+        </div>
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="num">20</div>
+                <div class="label">技能</div>
+            </div>
+            <div class="stat-item">
+                <div class="num">7</div>
+                <div class="label">命令</div>
+            </div>
+            <div class="stat-item">
+                <div class="num">6</div>
+                <div class="label">开发阶段</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 分层架构图 -->
+        <div class="section">
+            <h2 class="section-title">📐 分层架构</h2>
+
+            <div class="arch-layer" data-layer="第 6 层">
+                <h4>🎯 Slash 命令层</h4>
+                <p>用户直接调用的快捷入口，一个命令自动调用一组相关技能。</p>
+                <ul>
+                    <li>/spec - 定义规范</li>
+                    <li>/plan - 规划任务</li>
+                    <li>/build - 开始构建</li>
+                    <li>/test - 测试验证</li>
+                    <li>/review - 代码审查</li>
+                    <li>/ship - 发布上线</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 5 层">
+                <h4>🔧 垂直技能层 - Ship 发布</h4>
+                <p>发布阶段的完整技能集。</p>
+                <ul>
+                    <li>git-workflow-and-versioning - Git 工作流</li>
+                    <li>ci-cd-and-automation - 自动化流水线</li>
+                    <li>deprecation-and-migration - 废弃与迁移</li>
+                    <li>documentation-and-adrs - 文档与决策记录</li>
+                    <li>shipping-and-launch - 发布与上线</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 4 层">
+                <h4>🔍 垂直技能层 - Review 审查</h4>
+                <p>代码质量把控层。</p>
+                <ul>
+                    <li>code-review-and-quality - 代码审查</li>
+                    <li>code-simplification - 代码简化</li>
+                    <li>security-and-hardening - 安全加固</li>
+                    <li>performance-optimization - 性能优化</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 3 层">
+                <h4>🧪 垂直技能层 - Verify 验证</h4>
+                <p>证明代码真的能工作。</p>
+                <ul>
+                    <li>browser-testing-with-devtools - 浏览器测试</li>
+                    <li>debugging-and-error-recovery - 调试与错误恢复</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 2 层">
+                <h4>🛠️ 垂直技能层 - Build 构建</h4>
+                <p>核心编码技能。</p>
+                <ul>
+                    <li>incremental-implementation - 增量实现</li>
+                    <li>test-driven-development - TDD 测试驱动</li>
+                    <li>context-engineering - 上下文工程</li>
+                    <li>source-driven-development - 源码驱动</li>
+                    <li>frontend-ui-engineering - 前端工程</li>
+                    <li>api-and-interface-design - API 设计</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 1 层">
+                <h4>📋 垂直技能层 - Define & Plan 定义规划</h4>
+                <p>把想法变成可执行计划的技能。</p>
+                <ul>
+                    <li>idea-refine - 想法精炼</li>
+                    <li>spec-driven-development - 规范驱动开发</li>
+                    <li>planning-and-task-breakdown - 任务拆分</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 核心功能 -->
+        <div class="section">
+            <h2 class="section-title">⚡ 核心功能</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4><span class="icon">📋</span> 规范驱动开发</h4>
+                    <p><span class="tech-term">Spec-Driven Development</span> - 在写代码前先写 PRD，包含目标、结构、代码风格、测试和边界。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🧩</span> 增量实现</h4>
+                    <p><span class="tech-term">Incremental Implementation</span> - 薄垂直切片：实现→测试→验证→提交，功能开关、安全默认值。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🧪</span> TDD 测试驱动</h4>
+                    <p><span class="tech-term">Test-Driven Development</span> - 红-绿-重构，测试金字塔（80/15/5），先写测试再写代码。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🔒</span> 安全加固</h4>
+                    <p><span class="tech-term">Security & Hardening</span> - OWASP Top 10 预防、认证模式、密钥管理、三层边界系统。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🚀</span> 自动化发布</h4>
+                    <p><span class="tech-term">CI/CD & Automation</span> - 左移、质量门禁流水线、功能开关、分阶段发布、回滚方案。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">📝</span> 代码审查</h4>
+                    <p><span class="tech-term">Code Review</span> - 五轴审查，变更大小约 100 行，严重性标签，审查速度规范。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 工具箱 -->
+        <div class="section">
+            <h2 class="section-title">🛠️ Slash 命令工具箱</h2>
+            <div class="toolbox-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/spec</h4>
+                    </div>
+                    <div class="cmd">Define 规范</div>
+                    <p>在写代码前先定义清楚要做什么，包含目标、验收标准和实现方案。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/plan</h4>
+                    </div>
+                    <div class="cmd">Plan 规划</div>
+                    <p>把大需求拆成小任务，排好顺序和依赖关系，形成可执行计划。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/build</h4>
+                    </div>
+                    <div class="cmd">Build 构建</div>
+                    <p>增量实现，每次只做一小块，确保每次提交都能跑通测试。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/test</h4>
+                    </div>
+                    <div class="cmd">Test 测试</div>
+                    <p>证明功能真的能用，写测试用例，覆盖各种边界情况。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/review</h4>
+                    </div>
+                    <div class="cmd">Review 审查</div>
+                    <p>代码质量审查，检查安全性、性能、可维护性和代码规范。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>/ship</h4>
+                    </div>
+                    <div class="cmd">Ship 发布</div>
+                    <p>执行发布流程：检查单→分阶段发布→监控设置→回滚方案。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 聊天比喻场景 -->
+        <div class="section">
+            <h2 class="section-title">💬 聊天比喻场景</h2>
+            <div class="chat-scenario">
+                <div class="chat-message">
+                    <div class="chat-avatar">👨‍💻</div>
+                    <div class="chat-bubble">
+                        Hey 团队，我要做一个用户登录功能，新用户能注册、登录、登出，怎么弄？
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">📋</div>
+                    <div class="chat-bubble">
+                        我是 <strong>/plan</strong>！先把需求拆成小任务：数据库设计→注册 API→登录 API→前端表单→测试。
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🛠️</div>
+                    <div class="chat-bubble">
+                        我是 <strong>api-and-interface-design</strong>！先设计 API 契约：用户注册需要什么字段？返回什么格式？错误怎么处理？
+                    </div>
+                </div>
+                <div class="chat-message user">
+                    <div class="chat-avatar">👤</div>
+                    <div class="chat-bubble">
+                        OK，那开始写代码吧，一次做一点。
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">⚙️</div>
+                    <div class="chat-bubble">
+                        我是 <strong>incremental-implementation</strong>！薄切片实现——每次只做一个功能点，能跑通再提交。
+                    </div>
+                </div>
+                <div class="chat-message user">
+                    <div class="chat-avatar">👤</div>
+                    <div class="chat-bubble">
+                        写完了，帮我测试一下有没有 bug。
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🧪</div>
+                    <div class="chat-bubble">
+                        我是 <strong>test-driven-development</strong>！先写测试用例，再写实现代码，确保每个场景都覆盖到。
+                    </div>
+                </div>
+                <div class="chat-message user">
+                    <div class="chat-avatar">👤</div>
+                    <div class="chat-bubble">
+                        测试通过！现在可以合并到主分支了。
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🔍</div>
+                    <div class="chat-bubble">
+                        我是 <strong>code-review-and-quality</strong>！帮你审查代码质量、潜在安全问题和性能问题。
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🚀</div>
+                    <div class="chat-bubble">
+                        我是 <strong>/ship</strong>！执行发布流程：检查单→分阶段发布→监控→回滚方案准备。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 大白话解释 -->
+        <div class="section">
+            <h2 class="section-title">📖 大白话解释</h2>
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <h4>什么是 Agent Skills？</h4>
+                    <p>想象你开了一家软件公司，<span class="tech-term">Agent Skills</span> 就是你雇的一群超级专业的工程师：有人专门做设计规划，有人专门写代码，有人专门测试，有人专门做安全审查。遇到什么问题，就叫对应的工程师来处理。</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>Slash 命令是什么？</h4>
+                    <p>就像在Slack里打 <code style="background:var(--parchment);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;">/call</code> 能叫人来开会一样，输入 <code style="background:var(--parchment);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;">/plan</code> 就能叫"规划师"来帮你拆任务，输入 <code style="background:var(--parchment);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;">/review</code> 就能叫"审查员"来帮你审查代码。</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>薄切片实现是什么？</h4>
+                    <p>就像吃披萨，一口吃不完，要切成一小块一小块吃。<span class="tech-term">Incremental Implementation</span> 就是这个意思：不要憋一个大功能写半天，而是分成很小很小的功能点，每个点都能独立运行、独立测试。这样好处是：哪里出问题一眼就能看出来。</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>TDD 为什么要先写测试？盖房子先做模型？</h4>
+                    <p>就像盖房子前先做模型测试风阻一样，<span class="tech-term">TDD (Test-Driven Development)</span> 要求先写测试再写代码。这样做的好处是：你得先想清楚"什么才算成功"，然后再奔着那个目标去实现，不会写着写着跑偏了。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>📊 Agent Skills 可视化拆解 | 由 Google/Addy Osmani 创建</p>
+        <p style="margin-top: 8px;">MIT 许可证 • 基于 Google 工程实践</p>
+    </div>
+</body>
+</html>

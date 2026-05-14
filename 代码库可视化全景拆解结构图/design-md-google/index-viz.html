@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DESIGN.md - Google 设计系统规范 | 可视化拆解</title>
+    <style>
+        :root {
+            --parchment: #f5f4ed;
+            --white: #ffffff;
+            --terracotta: #c96442;
+            --terracotta-light: rgba(201, 100, 66, 0.1);
+            --text: #2c2416;
+            --text-secondary: #5c5346;
+            --ring-shadow: 0px 0px 0px 1px rgba(44, 36, 22, 0.1), 0px 1px 2px rgba(44, 36, 22, 0.05), 0px 2px 4px rgba(44, 36, 22, 0.05), 0px 4px 8px rgba(44, 36, 22, 0.05), 0px 8px 16px rgba(44, 36, 22, 0.05);
+            --ring-shadow-sm: 0px 0px 0px 1px rgba(44, 36, 22, 0.08), 0px 1px 2px rgba(44, 36, 22, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: var(--parchment);
+            color: var(--text);
+            line-height: 1.60;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ========== Hero ========== */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--white);
+            border-radius: 0 0 32px 32px;
+            box-shadow: var(--ring-shadow);
+            margin-bottom: 48px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 400;
+            color: var(--text);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            color: var(--terracotta);
+            font-style: italic;
+        }
+
+        .hero .subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 24px;
+        }
+
+        .hero-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 640px;
+            margin: 0 auto 32px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .install-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 0;
+            background: var(--text);
+            color: var(--white);
+            border-radius: 8px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 14px;
+            overflow: hidden;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .install-box .dollar {
+            padding: 12px 16px;
+            background: var(--terracotta);
+        }
+
+        .install-box .cmd {
+            padding: 12px 16px;
+        }
+
+        /* ========== Section ========== */
+        .section {
+            margin: 48px 0;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(44, 36, 22, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--terracotta);
+            border-radius: 2px;
+        }
+
+        /* ========== Architecture - 分层架构图 ========== */
+        .arch-layer {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--ring-shadow-sm);
+            position: relative;
+        }
+
+        .arch-layer::before {
+            content: attr(data-layer);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--terracotta);
+            color: white;
+            font-size: 11px;
+            font-family: -apple-system, sans-serif;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .arch-layer h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .arch-layer p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .arch-layer ul {
+            margin-top: 12px;
+            padding-left: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .arch-layer ul li {
+            margin-bottom: 4px;
+        }
+
+        .arch-layer .arrow-down {
+            text-align: center;
+            color: var(--terracotta);
+            font-size: 20px;
+            margin: -8px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== Features - 核心功能 ========== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .feature-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card h4 .icon {
+            width: 24px;
+            height: 24px;
+            background: var(--terracotta-light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+        }
+
+        /* ========== Toolbox - SaaS 工具箱 ========== */
+        .toolbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .tool-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--ring-shadow-sm);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .tool-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .tool-card .price {
+            font-size: 12px;
+            background: var(--terracotta-light);
+            color: var(--terracotta);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-family: -apple-system, sans-serif;
+            font-weight: 500;
+        }
+
+        .tool-card .cmd {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            background: var(--parchment);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            color: var(--terracotta);
+            overflow-x: auto;
+        }
+
+        .tool-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* ========== Chat Scenario - 聊天比喻场景 ========== */
+        .chat-scenario {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .chat-message:last-child {
+            margin-bottom: 0;
+        }
+
+        .chat-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--terracotta-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .chat-bubble {
+            flex: 1;
+            background: var(--parchment);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+        }
+
+        .chat-message.user .chat-avatar {
+            background: var(--terracotta);
+            color: white;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: var(--terracotta-light);
+        }
+
+        /* ========== Plain Explanation - 大白话解释 ========== */
+        .explanation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .explanation-item {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--ring-shadow-sm);
+        }
+
+        .explanation-item h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--terracotta);
+        }
+
+        .explanation-item p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+        }
+
+        .explanation-item .tech-term {
+            background: var(--parchment);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+        }
+
+        /* ========== Footer ========== */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .footer a {
+            color: var(--terracotta);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            .features-grid, .toolbox-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <div class="hero">
+        <h1>DESIGN<span>.md</span></h1>
+        <p class="subtitle">让 AI 理解设计系统的"语言"</p>
+        <p class="hero-desc">Google 出品的 AI 编码代理设计系统格式规范。结合机器可读的设计 Token（YAML）和人类可读的设计理念（Markdown），让 AI 生成代码时遵循统一的设计规范。</p>
+        <div class="install-box">
+            <span class="dollar">$</span>
+            <span class="cmd">npx @google/design.md lint DESIGN.md</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 分层架构图 -->
+        <div class="section">
+            <h2 class="section-title">📐 分层架构</h2>
+
+            <div class="arch-layer" data-layer="第 4 层">
+                <h4>📝 Markdown 正文 - 人类可读的设计理念</h4>
+                <p>设计决策的"为什么"：为什么选择这个颜色？为什么用这种字体？帮助 AI 理解设计意图，在新场景中做出合理推断。</p>
+                <ul>
+                    <li>## Overview - 设计理念概述</li>
+                    <li>## Colors - 颜色含义解释</li>
+                    <li>## Typography - 字体选择理由</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 3 层">
+                <h4>🏷️ Component Tokens - 组件级设计 Token</h4>
+                <p>具体组件的样式定义：按钮、卡片、输入框等组件的属性。</p>
+                <ul>
+                    <li>button-primary: backgroundColor, textColor, rounded</li>
+                    <li>card: padding, shadow, borderRadius</li>
+                    <li>input: height, borderColor, focusRing</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 2 层">
+                <h4>🎨 Foundation Tokens - 基础设计 Token</h4>
+                <p>最底层的原子化设计变量，其他 Token 的引用来源。</p>
+                <ul>
+                    <li>colors: primary, secondary, tertiary, neutral...</li>
+                    <li>typography: h1, body-md, label-caps...</li>
+                    <li>rounded: sm, md, lg</li>
+                    <li>spacing: sm, md, lg</li>
+                </ul>
+            </div>
+            <div class="arrow-down">↓</div>
+
+            <div class="arch-layer" data-layer="第 1 层">
+                <h4>📄 YAML Front Matter - 机器可读的结构化数据</h4>
+                <p>文件的头部区域，包含所有设计 Token 的精确值。AI 可以直接解析使用。</p>
+                <pre style="font-family: 'SF Mono', monospace; font-size: 12px; background: var(--parchment); padding: 12px; border-radius: 6px; margin-top: 8px;">
+name: Heritage
+colors:
+  primary: "#1A1C1E"
+  tertiary: "#B8422E"
+typography:
+  h1:
+    fontFamily: Public Sans
+    fontSize: 3rem</pre>
+            </div>
+        </div>
+
+        <!-- 核心功能 -->
+        <div class="section">
+            <h2 class="section-title">⚡ 核心功能</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4><span class="icon">🔗</span> Token 引用机制</h4>
+                    <p>组件可以使用 <code style="background:var(--parchment);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;">{colors.primary}</code> 引用其他 Token，修改一处即可全局更新，确保设计一致性。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">✅</span> WCAG 对比度检查</h4>
+                    <p>自动检测文本与背景的对比度是否满足 AA 标准（4.5:1），防止无障碍问题。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🔍</span> Token 引用验证</h4>
+                    <p>检测断开的引用，如 <code style="background:var(--parchment);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;">{colors.primary}</code> 不存在时报错。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">📊</span> 设计回归检测</h4>
+                    <p>diff 命令可以比较两个版本的设计系统，检测添加/删除/修改的 Token，防止意外设计回归。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">📤</span> 多格式导出</h4>
+                    <p>支持导出为 Tailwind 主题配置、DTCG tokens.json 等格式，与现有工具链集成。</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🧩</span> 程序化 API</h4>
+                    <p>提供 TypeScript API，可集成到构建流程、CI/CD 管道中自动检查设计规范。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SaaS 工具箱 -->
+        <div class="section">
+            <h2 class="section-title">🛠️ CLI 工具箱</h2>
+            <div class="toolbox-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>lint</h4>
+                        <span class="price">免费</span>
+                    </div>
+                    <div class="cmd">npx @google/design.md lint DESIGN.md</div>
+                    <p>验证设计文件的结构正确性、Token 引用、WCAG 对比度，输出结构化 JSON 报告。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>diff</h4>
+                        <span class="price">免费</span>
+                    </div>
+                    <div class="cmd">npx @google/design.md diff v1.md v2.md</div>
+                    <p>比较两个设计系统的 Token 级变化，检测设计回归。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>export</h4>
+                        <span class="price">免费</span>
+                    </div>
+                    <div class="cmd">npx @google/design.md export --format tailwind</div>
+                    <p>将 DESIGN.md 导出为 Tailwind 主题配置或 DTCG tokens.json。</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>spec</h4>
+                        <span class="price">免费</span>
+                    </div>
+                    <div class="cmd">npx @google/design.md spec --rules</div>
+                    <p>输出 DESIGN.md 格式规范，可选包含 linting 规则表，便于注入到 Agent Prompt。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 聊天比喻场景 -->
+        <div class="section">
+            <h2 class="section-title">💬 聊天比喻场景</h2>
+            <div class="chat-scenario">
+                <div class="chat-message">
+                    <div class="chat-avatar">🤖</div>
+                    <div class="chat-bubble">
+                        用户想要一个蓝色的按钮。请帮我生成代码。
+                    </div>
+                </div>
+                <div class="chat-message user">
+                    <div class="chat-avatar">👤</div>
+                    <div class="chat-bubble">
+                        好的，我需要先查看项目的 DESIGN.md 文件来了解设计规范...
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">📄</div>
+                    <div class="chat-bubble">
+                        找到了！设计系统中定义：<br>
+                        • primary 颜色是 <code>#4285f4</code><br>
+                        • button-primary 组件使用 <code>{colors.primary}</code> 作为背景色<br>
+                        • 圆角使用 <code>{rounded.md}</code> = 8px<br>
+                        • 文字颜色使用 <code>{colors.on-primary}</code> = 白色
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🤖</div>
+                    <div class="chat-bubble">
+                        明白了！我会使用蓝色背景、白色文字、8px 圆角的按钮，并且遵循设计系统中的间距规范。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 大白话解释 -->
+        <div class="section">
+            <h2 class="section-title">📖 大白话解释</h2>
+            <div class="explanation-list">
+                <div class="explanation-item">
+                    <h4>什么是 Design Token？</h4>
+                    <p>想象你有一套乐高玩具，<span class="tech-term">Design Token</span> 就是乐高的基础砖块规格：红色砖块、多大尺寸、什么形状。定义一次，所有地方都能用，修改一个地方，全部跟着变。</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>为什么要分两层？</h4>
+                    <p><span class="tech-term">YAML</span> 部分像"配方"，机器可以直接读取；<span class="tech-term">Markdown</span> 部分像"说明书"，告诉 AI 为什么这么设计。这样 AI 既知道"怎么做"，也理解"为什么"。</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>Token 引用是什么意思？</h4>
+                    <p>就像 Excel 公式 <code>=A1</code> 引用另一个单元格一样，<code style="background:var(--parchment);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;">{colors.primary}</code> 引用的是"主色"这个变量。哪天主色从蓝色改成红色，所有用到这个引用的按钮、卡片都会自动变。</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>WCAG 对比度是什么？</h4>
+                    <p>就是检查文字够不够明显、能不能看得清。WCAG 规定文字和背景的对比度至少要 4.5:1，这样视力不好的人或者在阳光下看手机的人也能看清内容。DESIGN.md 会自动帮你检查。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>📊 DESIGN.md 可视化拆解 | Google Labs</p>
+        <p style="margin-top: 8px;">了解更多：<a href="https://github.com/google-labs/code/design.md" target="_blank">github.com/google-labs/code/design.md</a></p>
+    </div>
+</body>
+</html>
