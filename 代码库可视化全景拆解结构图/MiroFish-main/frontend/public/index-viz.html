@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiroFish 技能拆解全景图 - 像搭积木一样看懂这个系统</title>
+    <style>
+        :root {
+            --parchment: #f5f4ed;
+            --ivory: #faf9f5;
+            --warm-sand: #e8e6dc;
+            --border-cream: #f0eee6;
+            --border-warm: #e8e6dc;
+            --charcoal-warm: #4d4c48;
+            --olive-gray: #5e5d59;
+            --stone-gray: #87867f;
+            --terracotta: #c96442;
+            --coral: #d97757;
+            --deep-dark: #141413;
+            --dark-surface: #30302e;
+            --focus-blue: #3898ec;
+            --ocean-blue: #2563eb;
+            --ocean-light: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--parchment);
+            color: var(--deep-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 24px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--parchment) 0%, var(--ivory) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(201, 100, 66, 0.03) 0%, transparent 50%);
+            animation: heroFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-2%, -2%); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--deep-dark);
+            letter-spacing: -0.02em;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--olive-gray);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: var(--ocean-blue);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav {
+            position: sticky;
+            top: 0;
+            background: var(--parchment);
+            border-bottom: 1px solid var(--border-cream);
+            padding: 16px 24px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(245, 244, 237, 0.95);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--deep-dark);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--olive-gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--ocean-blue);
+        }
+
+        section {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+            color: var(--deep-dark);
+        }
+
+        .section-header p {
+            color: var(--olive-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .architecture-layers {
+            position: relative;
+            padding: 60px 0;
+        }
+
+        .layer-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .layer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .layer-card.level-1 {
+            margin-left: 0;
+            z-index: 5;
+            border-left: 4px solid var(--ocean-blue);
+        }
+
+        .layer-card.level-2 {
+            margin-left: 40px;
+            z-index: 4;
+            border-left: 4px solid var(--ocean-light);
+            background: linear-gradient(135deg, var(--ivory) 0%, #f0f7ff 100%);
+        }
+
+        .layer-card.level-3 {
+            margin-left: 80px;
+            z-index: 3;
+            border-left: 4px solid var(--terracotta);
+            background: linear-gradient(135deg, var(--ivory) 0%, #fdf9f7 100%);
+        }
+
+        .layer-card.level-4 {
+            margin-left: 120px;
+            z-index: 2;
+            border-left: 4px solid var(--olive-gray);
+            background: linear-gradient(135deg, var(--ivory) 0%, #faf9f7 100%);
+        }
+
+        .layer-card.level-5 {
+            margin-left: 160px;
+            z-index: 1;
+            border-left: 4px solid var(--dark-surface);
+            background: linear-gradient(135deg, var(--ivory) 0%, #f8f7f5 100%);
+        }
+
+        .layer-label {
+            display: inline-block;
+            background: var(--warm-sand);
+            color: var(--charcoal-warm);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .layer-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--deep-dark);
+        }
+
+        .layer-card p {
+            color: var(--olive-gray);
+            font-size: 0.95rem;
+        }
+
+        .layer-icon {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: var(--warm-sand);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .chat-section {
+            background: var(--deep-dark);
+            color: var(--ivory);
+            padding: 100px 24px;
+            margin: 0;
+            max-width: 100%;
+        }
+
+        .chat-section .section-header h2 {
+            color: var(--ivory);
+        }
+
+        .chat-section .section-header p {
+            color: var(--stone-gray);
+        }
+
+        .chat-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar.user { background: var(--ocean-blue); }
+        .chat-avatar.graph { background: #8b5cf6; }
+        .chat-avatar.oasis { background: #10b981; }
+        .chat-avatar.llm { background: #f59e0b; }
+        .chat-avatar.zep { background: #ec4899; }
+        .chat-avatar.agent { background: #6366f1; }
+        .chat-avatar.report { background: var(--terracotta); }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 20px;
+            max-width: 600px;
+        }
+
+        .chat-bubble.graph { border-left: 3px solid #8b5cf6; }
+        .chat-bubble.oasis { border-left: 3px solid #10b981; }
+        .chat-bubble.llm { border-left: 3px solid #f59e0b; }
+        .chat-bubble.zep { border-left: 3px solid #ec4899; }
+        .chat-bubble.agent { border-left: 3px solid #6366f1; }
+        .chat-bubble.report { border-left: 3px solid var(--terracotta); }
+
+        .chat-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .chat-text {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+        }
+
+        .chat-timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .chat-timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #8b5cf6, #10b981, #f59e0b, #ec4899, var(--terracotta));
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--ocean-blue);
+        }
+
+        .feature-card.featured {
+            border-color: var(--ocean-blue);
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--ivory) 0%, rgba(37, 99, 235, 0.05) 100%);
+        }
+
+        .feature-number {
+            display: inline-block;
+            background: var(--ocean-blue);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--deep-dark);
+        }
+
+        .feature-card p {
+            color: var(--olive-gray);
+            font-size: 0.95rem;
+        }
+
+        .feature-example {
+            background: var(--warm-sand);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 0.85rem;
+            color: var(--charcoal-warm);
+        }
+
+        .toolbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover {
+            border-color: var(--ocean-blue);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .tool-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .tool-logo.vue { background: #42b883; }
+        .tool-logo.python { background: #3776ab; }
+        .tool-logo.oasis { background: #10b981; }
+        .tool-logo.zep { background: #ec4899; }
+        .tool-logo.qwen { background: #f59e0b; }
+        .tool-logo.openai { background: #10a37f; }
+
+        .tool-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--deep-dark);
+        }
+
+        .tool-role {
+            font-size: 0.85rem;
+            color: var(--stone-gray);
+        }
+
+        .tool-desc {
+            color: var(--olive-gray);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .tool-pricing {
+            background: var(--warm-sand);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .pricing-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--stone-gray);
+            margin-bottom: 4px;
+        }
+
+        .pricing-free {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .pricing-paid {
+            color: var(--charcoal-warm);
+            font-size: 0.9rem;
+        }
+
+        .pricing-upgrade {
+            font-size: 0.8rem;
+            color: var(--olive-gray);
+            margin-top: 8px;
+        }
+
+        .tool-relation {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-cream);
+            font-size: 0.85rem;
+            color: var(--stone-gray);
+        }
+
+        .tool-relation strong {
+            color: var(--ocean-blue);
+        }
+
+        .explain-section {
+            background: var(--ivory);
+            padding: 100px 24px;
+        }
+
+        .explain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .explain-card {
+            background: var(--parchment);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .explain-term {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--ocean-blue);
+            margin-bottom: 16px;
+        }
+
+        .explain-analogy {
+            color: var(--deep-dark);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .explain-analogy::before {
+            content: '💡 ';
+        }
+
+        footer {
+            background: var(--deep-dark);
+            color: var(--stone-gray);
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--ivory);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--ocean-blue);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .layer-card.level-1,
+            .layer-card.level-2,
+            .layer-card.level-3,
+            .layer-card.level-4,
+            .layer-card.level-5 {
+                margin-left: 0;
+            }
+
+            .feature-card.featured {
+                grid-column: span 1;
+            }
+
+            .chat-message {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <span class="badge">🐟 MiroFish 技能拆解全景图</span>
+            <h1>像搭积木一样<br>看懂这个系统</h1>
+            <p class="subtitle">这是一个"群体智能模拟引擎"——把你的想法丢进去，它会模拟出一群人会怎么做预测。不用懂代码，看完这张图你就明白了。</p>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">🏗️ 项目架构</a>
+            <ul class="nav-links">
+                <li><a href="#architecture">分层架构</a></li>
+                <li><a href="#features">核心功能</a></li>
+                <li><a href="#toolbox">工具箱</a></li>
+                <li><a href="#chat">怎么"干活"</a></li>
+                <li><a href="#explain">大白话解释</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="architecture">
+        <div class="section-header">
+            <h2>🏗️ 五层积木塔</h2>
+            <p>这个系统像一栋五层的房子，每层有不同的功能。越往上越接近用户，越往下越底层。</p>
+        </div>
+
+        <div class="architecture-layers">
+            <div class="layer-card level-1">
+                <span class="layer-label">第 5 层 · 门面</span>
+                <div class="layer-icon">🎨</div>
+                <h3>前端展示层 (frontend/src/views/)</h3>
+                <p>你在浏览器里看到的界面。包括首页、图表展示、模拟配置、结果报告。用户所有的操作都在这里。</p>
+            </div>
+
+            <div class="layer-card level-2">
+                <span class="layer-label">第 4 层 · API</span>
+                <div class="layer-icon">🔌</div>
+                <h3>后端接口层 (backend/app/api/)</h3>
+                <p>前端和后端沟通的桥梁。提供 RESTful 接口：建图谱、跑模拟、生成报告、聊天互动。</p>
+            </div>
+
+            <div class="layer-card level-3">
+                <span class="layer-label">第 3 层 · 大脑</span>
+                <div class="layer-icon">🧠</div>
+                <h3>服务逻辑层 (backend/app/services/)</h3>
+                <p>真正的"智能"所在。包括：知识图谱构建、模拟运行器、报告生成器、记忆管理系统。</p>
+            </div>
+
+            <div class="layer-card level-4">
+                <span class="layer-label">第 2 层 · 引擎</span>
+                <div class="layer-icon">⚙️</div>
+                <h3>模拟核心 (OASIS + LLM)</h3>
+                <p>用 OASIS 框架模拟社交场景，用大语言模型（LLM）让每个"人"会思考、会说话、会做决定。</p>
+            </div>
+
+            <div class="layer-card level-5">
+                <span class="layer-label">第 1 层 · 地基</span>
+                <div class="layer-icon">📦</div>
+                <h3>基础设施 (Flask + Python)</h3>
+                <p>用 Flask 框架搭建 web 服务器，处理 HTTP 请求、文件上传、环境变量等底层工作。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="section-header">
+            <h2>⚡ 核心功能场景</h2>
+            <p>这个工具能做什么？按重要程度排序，最常用的排在最前面。</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card featured">
+                <span class="feature-number">1</span>
+                <h3>🔮 预测未来</h3>
+                <p>这是 MiroFish 的核心超能力。你丢给它一个"种子"（新闻稿、小说情节、数据报告），它会模拟一大群"人"在那个世界里会怎么做，帮你预测事情会往哪个方向发展。</p>
+                <div class="feature-example">输入："某公司发布新产品，市场会怎么反应？" → 模拟 1000 个"人"的讨论和行动 → 输出预测报告</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">2</span>
+                <h3>🕸️ 构建知识图谱</h3>
+                <p>把原始材料变成"关系网"。谁是谁的对手、谁喜欢谁、什么事情导致什么结果——像画思维导图一样。</p>
+                <div class="feature-example">上传《红楼梦》前 80 回 → 自动识别 500 个人物的关系 → 生成知识图谱</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">3</span>
+                <h3>👥 生成虚拟人物</h3>
+                <p>根据种子材料，自动生成一群有"个性"的人。每个人有自己的背景、说话风格、行为逻辑。</p>
+                <div class="feature-example">分析 100 条微博用户 → 生成 50 个"人设"，各有各的口头禅和偏好</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">4</span>
+                <h3>🎭 模拟社交互动</h3>
+                <p>让这些虚拟"人"在模拟世界里互相聊天、吵架、合作、背叛。观察他们之间的化学反应。</p>
+                <div class="feature-example">设定场景："公司要裁员" → 模拟员工群聊 → 看谁会抗议、谁会沉默、谁会跳槽</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">5</span>
+                <h3>📝 生成预测报告</h3>
+                <p>模拟结束后，用 AI 自动写一份详细的报告。分析发生了什么、为什么、接下来会怎样。</p>
+                <div class="feature-example">模拟结束 → ReportAgent 分析数据 → 生成 5000 字的趋势预测报告</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">6</span>
+                <h3>💬 深入互动聊天</h3>
+                <p>模拟结束后，你还可以跟任何一个虚拟"人"单独聊天。问问它当时为什么那么做。</p>
+                <div class="feature-example">"贾宝玉后来后悔吗？" → 直接问虚拟的贾宝玉 → 得到他的心理独白</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">7</span>
+                <h3>🧠 长期记忆管理</h3>
+                <p>每个虚拟"人"都有记忆。聊过的事会记住，下次还能接着聊。像真的有记忆一样。</p>
+                <div class="feature-example">第一次模拟："他是个好人" → 第二次模拟 → 他还记得上次的事，行为会更一致</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">8</span>
+                <h3>🌐 支持多种数据源</h3>
+                <p>支持各种格式的输入：PDF、Word、TXT、JSON。也可以直接喂微博、Reddit、Twitter 的数据。</p>
+                <div class="feature-example">上传 PDF 报告、复制微博链接、导入 JSON 数据 → 都能识别</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="toolbox">
+        <div class="section-header">
+            <h2>🧰 SaaS 工具箱</h2>
+            <p>这个项目用了哪些"外包服务"？它们各自干什么活？为什么免费？什么时候需要花钱？</p>
+        </div>
+
+        <div class="toolbox-grid">
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo qwen">通</div>
+                    <div>
+                        <div class="tool-name">通义千问 (Qwen)</div>
+                        <div class="tool-role">大语言模型</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像雇了一个"军师"。每个虚拟"人"的思考、对话、决策都由它来生成。项目默认用阿里云的 Qwen-plus。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 新用户 100 万 tokens</div>
+                    <div class="pricing-paid">付费版：¥30/百万 tokens（Qwen-plus）</div>
+                    <div class="pricing-upgrade">什么时候升级：模拟超过 40 轮或超过 1000 个代理时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> OASIS（调用它来生成内容）、Zep（记录它的思考过程）
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo oasis">O</div>
+                    <div>
+                        <div class="tool-name">OASIS</div>
+                        <div class="tool-role">社交模拟框架</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像租了一个"游乐场"。专门用来模拟一群人社交互动的框架。支持 Twitter、Reddit 等平台的模拟。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 开源免费，完全免费使用</div>
+                    <div class="pricing-paid">开源项目，无付费版</div>
+                    <div class="pricing-upgrade">什么时候升级：不需要，一直免费</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Qwen（提供"智慧"）、Flask（运行它）
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo zep">Z</div>
+                    <div>
+                        <div class="tool-name">Zep Cloud</div>
+                        <div class="tool-role">长期记忆存储</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像给每个虚拟"人"配了一个"记事本"。他们的对话、经历都能记住，下次模拟还能接着用。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 每月 10,000 条记忆存储</div>
+                    <div class="pricing-paid">付费版：$25/月起，无限存储</div>
+                    <div class="pricing-upgrade">什么时候升级：代理数量超过 1000 或需要更长的记忆保留</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> OASIS（每个代理的记忆）、Qwen（读取记忆来思考）
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo python">Py</div>
+                    <div>
+                        <div class="tool-name">Python + Flask</div>
+                        <div class="tool-role">后端运行时</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像厨房里的"灶台"。Python 是编程语言，Flask 是 web 框架，一起搭出后端服务。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 开源免费，完全免费使用</div>
+                    <div class="pricing-paid">托管费用另计（如 Render、Railway）</div>
+                    <div class="pricing-upgrade">什么时候升级：部署到云服务器时（如 Render $5/月起）</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Vue.js（前端）、所有 Python 库
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo vue">V</div>
+                    <div>
+                        <div class="tool-name">Vue.js + Vite</div>
+                        <div class="tool-role">前端框架</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像装修公司的"设计软件"。用来做用户界面。Vue.js 是框架，Vite 是打包工具。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 开源免费，完全免费使用</div>
+                    <div class="pricing-paid">托管费用另计（如 Vercel、Netlify）</div>
+                    <div class="pricing-upgrade">什么时候升级：部署到线上时（如 Vercel 免费版够用）</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Flask（后端 API）
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo openai">O</div>
+                    <div>
+                        <div class="tool-name">OpenAI 兼容接口</div>
+                        <div class="tool-role">模型兼容层</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"万能转换头"。项目用 OpenAI 的格式来调用各种大模型，所以可以换着用 Qwen、GPT、Claude 等。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">收费</div>
+                    <div class="pricing-free">✅ 本身免费，按实际使用的模型收费</div>
+                    <div class="pricing-paid">GPT-4o: $5/百万输入tokens</div>
+                    <div class="pricing-upgrade">什么时候升级：想用更贵的模型（如 GPT-4）时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 各种 LLM（Qwen、GPT、Claude 都行）
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="chat-section" id="chat">
+        <div class="section-header">
+            <h2>💬 这群"人"是怎么配合干活的？</h2>
+            <p>一个用户想预测"某公司新产品发布后市场会怎么反应"。完整展示每个环节谁在干活。</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-timeline">
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"帮我预测一下：某手机厂商发布了新手机，市场会怎么反应？"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar graph">🕸️</div>
+                    <div class="chat-bubble graph">
+                        <div class="chat-name">GraphBuilder（图谱构建器）</div>
+                        <div class="chat-text">"收到！先分析你的材料，构建知识图谱。识别出：厂商、竞品、用户画像、市场因素..."</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar zep">🧠</div>
+                    <div class="chat-bubble zep">
+                        <div class="chat-name">Zep（记忆系统）</div>
+                        <div class="chat-text">"[准备] 为 1000 个虚拟代理创建记忆空间，初始化他们的背景信息。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar llm">🤖</div>
+                    <div class="chat-bubble llm">
+                        <div class="chat-name">Qwen（军师）</div>
+                        <div class="chat-text">"[生成] 为这 1000 个人各生成一个独特的'人设'：花粉、米黑、理性分析派、跟风吃瓜群众..."</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar oasis">🎭</div>
+                    <div class="chat-bubble oasis">
+                        <div class="chat-name">OASIS（游乐场）</div>
+                        <div class="chat-text">"[模拟] 开始第一轮互动！1000 个人在虚拟微博空间里讨论新品..."</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar llm">🤖</div>
+                    <div class="chat-bubble llm">
+                        <div class="chat-name">Qwen（军师）</div>
+                        <div class="chat-text">"[思考] @花粉张三：'这手机拍照太牛了，必须买！' @米黑李四：'又来收割情怀税了...' @理性派王五：'配置不错，但价格偏高'"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar zep">🧠</div>
+                    <div class="chat-bubble zep">
+                        <div class="chat-name">Zep（记忆系统）</div>
+                        <div class="chat-text">"[记录] 每个人的第一轮发言已存进记忆。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar oasis">🎭</div>
+                    <div class="chat-bubble oasis">
+                        <div class="chat-name">OASIS（游乐场）</div>
+                        <div class="chat-text">"[模拟] 第 2 轮...第 10 轮...继续模拟他们的讨论、转发、站队..."</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar llm">🤖</div>
+                    <div class="chat-bubble llm">
+                        <div class="chat-name">Qwen（军师）</div>
+                        <div class="chat-text">"[继续] @花粉张三：'已经下单了！' @米黑李四：'转战性价比品牌了' @理性派王五：'等降价'"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar report">📝</div>
+                    <div class="chat-bubble report">
+                        <div class="chat-name">ReportAgent（报告生成器）</div>
+                        <div class="chat-text">"模拟结束！分析了这 1000 个人的行为模式，生成预测报告：<br>🔥 70% 花粉表示会购买<br>😒 20% 米黑表示转投竞品<br>📊 10% 理性派选择观望<br>预测：新品销量约 800 万台，市场份额提升 5%"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"那个叫张三的花粉后来咋样了？我想问他一些问题。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar zep">🧠</div>
+                    <div class="chat-bubble zep">
+                        <div class="chat-name">Zep（记忆系统）</div>
+                        <div class="chat-text">"[读取] 找到张三的所有记忆：从第 1 轮到第 40 轮的发言、他的购买决定..."</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar agent">💬</div>
+                    <div class="chat-bubble agent">
+                        <div class="chat-name">虚拟张三（代理）</div>
+                        <div class="chat-text">"哎，别提了！当时第一时间下单，结果发现官网抢不到，黄牛加价 500！后来想想要不算了，但还是忍不住想买..."</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="explain-section" id="explain">
+        <div class="section-header">
+            <h2>📚 大白话百科</h2>
+            <p>这些词儿到底什么意思？用日常例子讲给你听。</p>
+        </div>
+
+        <div class="explain-grid">
+            <div class="explain-card">
+                <div class="explain-term">多代理系统 (Multi-Agent)</div>
+                <div class="explain-analogy">
+                    像拍电影用的"群演"。一个主角好雇，一千个群演同时演戏就需要协调。多代理系统就是让一千个 AI 同时"演戏"，互相配合。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">知识图谱 (Knowledge Graph)</div>
+                <div class="explain-analogy">
+                    像一张"人物关系图"。《甄嬛传》里谁是谁的情敌、谁害过谁，画成图就是知识图谱。让 AI 知道"原来这两个人有仇"。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">GraphRAG</div>
+                <div class="explain-analogy">
+                    像给 AI 装了个"导航仪"。普通的 AI 回答问题像闭眼回答，图谱增强后的 AI 能"看图"回答，更准。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">LLM (大语言模型)</div>
+                <div class="explain-analogy">
+                    像雇了一个"看过全世界书的人"。它什么问题都能回答，但有时候会胡说八道（幻觉）。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Token</div>
+                <div class="explain-analogy">
+                    像"字数"或"稿费"。AI 按字数收费，1000 个 token 大约等于 500-750 个汉字。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">OASIS 框架</div>
+                <div class="explain-analogy">
+                    像拍"楚门的世界"用的"片场"。专门搭建一个虚拟世界，让一堆 AI 在里面生活、聊天、演戏。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">RESTful API</div>
+                <div class="explain-analogy">
+                    像餐厅的"服务员"。你点菜（发请求）→ 服务员传给厨房（后端处理）→ 上菜（返回结果）。标准化"点菜"方式。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Flask</div>
+                <div class="explain-analogy">
+                    像餐厅的"前台"。接待客人、记录点单、安排座位——处理所有的"迎来送往"。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>基于 <a href="https://github.com/666ghj/MiroFish">MiroFish</a> 项目 · 模拟引擎基于 <a href="https://github.com/camel-ai/oasis">OASIS</a></p>
+        <p style="margin-top: 16px; font-size: 0.85rem;">本文档用大白话解释这个系统的运作方式，面向非技术读者。</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.layer-card, .feature-card, .tool-card, .explain-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        document.querySelectorAll('.chat-message').forEach((msg, i) => {
+            msg.style.animationDelay = `${i * 0.15}s`;
+        });
+    </script>
+</body>
+</html>
