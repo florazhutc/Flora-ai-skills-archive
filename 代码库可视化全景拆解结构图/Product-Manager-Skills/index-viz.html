@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Manager Skills - AI 产品经理技能包</title>
+    <style>
+        :root {
+            --applebg: #f5f5f7;
+            --applewhite: #ffffff;
+            --applegray: #86868b;
+            --appleblue: #007aff;
+            --applegreen: #34c759;
+            --applered: #ff3b30;
+            --appleorange: #ff9500;
+            --applepurple: #af52de;
+            --applelight: #e8f4fd;
+            --appleshadow: rgba(0, 0, 0, 0.08);
+            --appleredash: rgba(255, 59, 48, 0.1);
+            --applegreendash: rgba(52, 199, 89, 0.1);
+            --appleorangedash: rgba(255, 149, 0, 0.1);
+            --applebluedash: rgba(0, 122, 255, 0.1);
+            --applepurpledash: rgba(175, 82, 222, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            background: var(--applebg);
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(180deg, var(--applewhite) 0%, var(--applebg) 100%);
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero .subtitle {
+            font-size: 24px;
+            color: var(--applegray);
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .hero .tagline {
+            font-size: 18px;
+            color: #1d1d1f;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat .number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--appleblue);
+        }
+
+        .hero-stat .label {
+            font-size: 14px;
+            color: var(--applegray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Section Styles */
+        .section {
+            margin: 50px 0;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1d1d1f;
+        }
+
+        .section-desc {
+            font-size: 18px;
+            color: var(--applegray);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--applewhite);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px var(--appleshadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--appleshadow);
+        }
+
+        /* Philosophy Section */
+        .philosophy-section {
+            background: var(--applewhite);
+            border-radius: 24px;
+            padding: 50px;
+            margin: 40px 0;
+            box-shadow: 0 4px 20px var(--appleshadow);
+        }
+
+        .philosophy-badge {
+            display: inline-block;
+            background: var(--applebluedash);
+            color: var(--appleblue);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .philosophy-item {
+            margin: 30px 0;
+            padding-left: 20px;
+            border-left: 3px solid var(--appleblue);
+        }
+
+        .philosophy-item h3 {
+            font-size: 22px;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+
+        .philosophy-item p {
+            color: var(--applegray);
+            font-size: 16px;
+        }
+
+        /* Skills Type Section */
+        .skills-type {
+            margin: 40px 0;
+        }
+
+        .type-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .type-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .type-icon.component { background: var(--applebluedash); }
+        .type-icon.interactive { background: var(--applegreendash); }
+        .type-icon.workflow { background: var(--appleorangedash); }
+
+        .type-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .type-count {
+            background: var(--applebg);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--applegray);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .skill-card {
+            background: var(--applewhite);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px var(--appleshadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px var(--appleshadow);
+        }
+
+        .skill-card h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-card .skill-tag {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .skill-tag.blue { background: var(--applebluedash); color: var(--appleblue); }
+        .skill-tag.green { background: var(--applegreendash); color: var(--applegreen); }
+        .skill-tag.orange { background: var(--appleorangedash); color: var(--appleorange); }
+
+        .skill-card p {
+            font-size: 14px;
+            color: var(--applegray);
+            line-height: 1.5;
+        }
+
+        .skill-card .plain-explain {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Commands Section */
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .command-card {
+            background: var(--applewhite);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px var(--appleshadow);
+            transition: all 0.3s ease;
+        }
+
+        .command-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px var(--appleshadow);
+        }
+
+        .command-card .command-name {
+            display: inline-block;
+            background: #1d1d1f;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-family: "SF Mono", "Monaco", monospace;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .command-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+
+        .command-card p {
+            font-size: 15px;
+            color: var(--applegray);
+            margin-bottom: 20px;
+        }
+
+        .command-card .uses {
+            font-size: 13px;
+            color: var(--applegray);
+        }
+
+        .command-card .uses strong {
+            color: #1d1d1f;
+        }
+
+        .command-card .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .command-card .skill-tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: var(--applebg);
+            color: var(--applegray);
+        }
+
+        /* Chat Scenario */
+        .chat-scenario {
+            background: var(--applewhite);
+            border-radius: 24px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 4px 20px var(--appleshadow);
+        }
+
+        .chat-title {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1d1d1f;
+        }
+
+        .chat-messages {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            align-items: flex-start;
+        }
+
+        .chat-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar.pm { background: var(--applebluedash); }
+        .chat-avatar.framework { background: var(--applegreendash); }
+        .chat-avatar.output { background: var(--appleorangedash); }
+
+        .chat-bubble {
+            background: var(--applebg);
+            border-radius: 18px;
+            padding: 16px 20px;
+            max-width: 600px;
+        }
+
+        .chat-bubble p {
+            font-size: 15px;
+            color: #1d1d1f;
+            margin: 0;
+        }
+
+        .chat-bubble .context {
+            font-size: 13px;
+            color: var(--applegray);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* Tools Section */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .tool-item {
+            background: var(--applewhite);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 12px var(--appleshadow);
+            transition: all 0.3s ease;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px var(--appleshadow);
+        }
+
+        .tool-item .icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .tool-item h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        /* Framework Explanation */
+        .framework-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .framework-item {
+            background: var(--applewhite);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 16px 0;
+            box-shadow: 0 2px 12px var(--appleshadow);
+        }
+
+        .framework-item h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .framework-item p {
+            font-size: 14px;
+            color: var(--applegray);
+            margin-bottom: 12px;
+        }
+
+        .framework-item .source {
+            font-size: 12px;
+            color: var(--appleblue);
+            font-weight: 500;
+        }
+
+        /* Navigation Pill */
+        .nav-pill {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .nav-pill a {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            background: var(--applewhite);
+            color: var(--applegray);
+            box-shadow: 0 2px 10px var(--appleshadow);
+            transition: all 0.3s ease;
+        }
+
+        .nav-pill a:hover, .nav-pill a.active {
+            background: var(--appleblue);
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--applegray);
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: var(--appleblue);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            .hero-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .commands-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Product Manager Skills</h1>
+        <p class="subtitle">AI 产品经理的 46 种实战技能包</p>
+        <p class="tagline">
+            帮助产品经理提升专业能力，让 AI 代理也能执行专业级产品管理工作。<br>
+            来自 Teresa Torres、Geoffrey Moore、Amazon、MITRE 等顶级框架。
+        </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="number">46</div>
+                <div class="label">种技能</div>
+            </div>
+            <div class="hero-stat">
+                <div class="number">6</div>
+                <div class="label">个工作流</div>
+            </div>
+            <div class="hero-stat">
+                <div class="number">10+</div>
+                <div class="label">种 AI 工具</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Navigation -->
+        <div class="nav-pill">
+            <a href="#philosophy">核心理念</a>
+            <a href="#skills">技能库</a>
+            <a href="#commands">命令</a>
+            <a href="#scenario">使用场景</a>
+            <a href="#tools">支持工具</a>
+            <a href="#frameworks">框架来源</a>
+        </div>
+
+        <!-- Philosophy Section -->
+        <div id="philosophy" class="philosophy-section">
+            <span class="philosophy-badge">🎯 核心理念</span>
+            <h2 style="font-size: 32px; margin-bottom: 20px;">ABC — 永远在教导</h2>
+            <p style="font-size: 17px; color: var(--applegray); max-width: 700px;">
+                这个技能包不仅让 AI 代理更强，也让产品经理自己变得更厉害。每项技能都应该让使用者学到新东西。
+            </p>
+
+            <div class="philosophy-item">
+                <h3>🎓 教学优先 (Pedagogic-First)</h3>
+                <p>删除解释来精简输出是一个缺陷，不是优化。每一项技能都要留下学习阶梯，让 PM 在使用过程中理解"为什么这个框架有效"。</p>
+            </div>
+
+            <div class="philosophy-item">
+                <h3>🤝 双重服务</h3>
+                <p>技能同时服务于两个目标：让 AI 代理能执行专业工作，让人类 PM 学会专业思维。两者都不是副产品。</p>
+            </div>
+
+            <div class="philosophy-item">
+                <h3>📚 脚手架学习</h3>
+                <p>不要假设用户什么都懂。每项技能都要包含足够的上下文，让初学者也能理解并应用。</p>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div id="skills" class="section">
+            <h2 class="section-title">技能库</h2>
+            <p class="section-desc">
+                46 种经过实战检验的 PM 技能，覆盖产品管理全流程
+            </p>
+
+            <div class="skills-type">
+                <div class="type-header">
+                    <div class="type-icon component">📋</div>
+                    <span class="type-title">组件技能</span>
+                    <span class="type-count">20 个</span>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h4>Altitude Horizon Framework <span class="skill-tag blue">领导力</span></h4>
+                        <p>理解 PM 到总监的转变，通过" altitude 视角"和"horizon 视野"两个维度诊断领导力差距。</p>
+                        <div class="plain-explain">📝 大白话：就像从看一张桌子提升到看整个房间 —— 你需要看得更广、更远。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Company Research <span class="skill-tag blue">调研</span></h4>
+                        <p>创建公司研究简报，包含高管引言、产品战略和组织背景，用于竞品分析或面试准备。</p>
+                        <div class="plain-explain">📝 大白话：做"尽职调查"——像侦探一样收集目标公司的公开信息。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Customer Journey Map <span class="skill-tag blue">用户</span></h4>
+                        <p>创建客户旅程地图，涵盖阶段、触点、行动、情感、指标，诊断体验断裂或团队对齐。</p>
+                        <div class="plain-explain">📝 大白话：画出用户从"听说"到"推荐"的全过程，找出哪里让他不爽。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>EOL Message <span class="skill-tag blue">沟通</span></h4>
+                        <p>撰写清晰、有同理心的停运公告，包含理由、用户影响和下一步，避免不必要的困惑。</p>
+                        <div class="plain-explain">📝 大白话：像写"分手信"——诚实但温柔，给对方一个明确的过渡方案。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Jobs To Be Done <span class="skill-tag blue">需求</span></h4>
+                        <p>用 JTBD 格式系统化地揭示客户的工作、痛点和收益，应用于需求澄清或产品定位。</p>
+                        <div class="plain-explain">📝 大白话：搞清楚用户雇你的产品"完成什么任务"，而不是他"想要什么功能"。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Lean UX Canvas <span class="skill-tag blue">设计</span></h4>
+                        <p>创建精益 UX 画布，连接用户问题、假设、解决方案和关键指标，快速验证想法。</p>
+                        <div class="plain-explain">📝 大白话：一页纸的"创业画布"，让你的想法先在纸上跑通。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Opportunity Solution Tree <span class="skill-tag blue">机会</span></h4>
+                        <p>构建机会解决方案树，从结果向下展开到机会点、解决方案和实验，防止目标漂移。</p>
+                        <div class="plain-explain">📝 大白话：从"我们要解决什么问题"倒推"做什么功能"，而不是反过来。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>PESTEL Analysis <span class="skill-tag blue">战略</span></h4>
+                        <p>用政治、经济、社会、技术、环境、法律六个维度分析外部环境，支撑战略决策。</p>
+                        <div class="plain-explain">📝 大白话：给公司照个"全身 X 光"，看看外面有什么因素在影响它。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skills-type">
+                <div class="type-header">
+                    <div class="type-icon interactive">💬</div>
+                    <span class="type-title">交互技能</span>
+                    <span class="type-count">20 个</span>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h4>Acquisition Channel Advisor <span class="skill-tag green">获客</span></h4>
+                        <p>用单位经济学、客户质量和可扩展性评估获客渠道，决定是扩大、测试还是放弃。</p>
+                        <div class="plain-explain">📝 大白话：算账——这个获客渠道是赚钱还是赔钱？要不要继续投钱？</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>AI Shaped Readiness Advisor <span class="skill-tag green">AI</span></h4>
+                        <p>评估你的产品工作是"AI 加持"还是"AI 驱动"，诊断 2026 年 PM 需要的关键 AI 能力。</p>
+                        <div class="plain-explain">📝 大白话：给你的"AI 能力"打分，看看是停留在"用 AI 工具"还是"用 AI 思维"。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Business Health Diagnostic <span class="skill-tag green">诊断</span></h4>
+                        <p>通过增长、留存、单位经济和资本效率诊断 SaaS 业务健康状况，生成健康评分卡。</p>
+                        <div class="plain-explain">📝 大白话：给公司做"体检"——检查增长率、用户留存、赚钱能力是否正常。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Context Engineering Advisor <span class="skill-tag green">提示词</span></h4>
+                        <p>诊断你是"塞太多内容"还是"精心设计上下文"，解决 AI 工作流过于臃肿或不可靠的问题。</p>
+                        <div class="plain-explain">📝 大白话：别给 AI 喂太多垃圾——给它精准的上下文，它才能给你精准的答案。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Customer Journey Mapping Workshop <span class="skill-tag green">工作坊</span></h4>
+                        <p>运行一个客户旅程映射工作坊，用自适应问题引导团队画出用户全流程的痛点和机会。</p>
+                        <div class="plain-explain">📝 大白话：把团队聚在一起，边聊边画，找出用户在哪里受苦。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Director Readiness Advisor <span class="skill-tag green">晋升</span></h4>
+                        <p>指导 PM→总监的转型过程，通过自适应问题诊断你处于哪个阶段并提供实战建议。</p>
+                        <div class="plain-explain">📝 大白话：像请了个"职业教练"，帮你搞定从管功能到管人的转变。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Discovery Interview Prep <span class="skill-tag green">调研</span></h4>
+                        <p>准备客户发现访谈，设计目标、选择客户群、规划方法，避免确认偏差和表面反馈。</p>
+                        <div class="plain-explain">📝 大白话：别盲目去问用户"你想要什么"——先想好问什么、怎么问。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Epic Breakdown Advisor <span class="skill-tag green">拆分</span></h4>
+                        <p>用 Humanizing Work 方法将大型史诗故事拆分成可执行的用户故事，确保垂直切片。</p>
+                        <div class="plain-explain">📝 大白话：把一个"大功能"拆成"小功能"，像把披萨切成可吃的一块块。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Feature Investment Advisor <span class="skill-tag green">投资</span></h4>
+                        <p>用收入影响、成本结构和 ROI 评估功能投资价值，做出 build/don't build 决策。</p>
+                        <div class="plain-explain">📝 大白话：算这个功能值不值得做——投入多少开发资源，能带来多少收入？</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Finance Based Pricing Advisor <span class="skill-tag green">定价</span></h4>
+                        <p>用 ARPU、转化率、流失风险、NRR 和回本周期评估定价变动的财务影响。</p>
+                        <div class="plain-explain">📝 大白话：涨价前先算账——涨多少会流失多少用户？会不会因小失大？</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skills-type">
+                <div class="type-header">
+                    <div class="type-icon workflow">⚡</div>
+                    <span class="type-title">工作流</span>
+                    <span class="type-count">6 个</span>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h4>Discovery Process <span class="skill-tag orange">完整流程</span></h4>
+                        <p>从问题假设到验证解决方案的完整发现周期：问题框架→客户访谈→综合→实验。</p>
+                        <div class="plain-explain">📝 大白话：像做"科学实验"——先猜一个假设，再去验证它是对是错。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Executive Onboarding Playbook <span class="skill-tag orange">高管入职</span></h4>
+                        <p>VP/CPO 的 30-60-90 天诊断入职路径——先理解再行动，避免过早改变。</p>
+                        <div class="plain-explain">📝 大白话：新官上任"先观察再放火"——前三个月只诊断，不急着改。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Product Strategy Session <span class="skill-tag orange">战略</span></h4>
+                        <p>从定位到机会再到路线图决策的完整产品战略构建流程。</p>
+                        <div class="plain-explain">📝 大白话：像给公司写"五年计划"——先想清楚我们在哪里，要去哪里。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>PRD Development <span class="skill-tag orange">需求文档</span></h4>
+                        <p>创建可决策的 PRD，链接问题框架、需求定义和故事脚手架。</p>
+                        <div class="plain-explain">📝 大白话：写一份"需求清单"，让开发知道做什么、为什么做、做到什么程度。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>Roadmap Planning <span class="skill-tag orange">规划</span></h4>
+                        <p>将战略和验证的机会转化为有明确取舍的排序路线图。</p>
+                        <div class="plain-explain">📝 大白话：排出"优先级"——哪些先做、哪些后做、为什么这么排。</div>
+                    </div>
+                    <div class="skill-card">
+                        <h4>User Story Mapping <span class="skill-tag orange">用户故事</span></h4>
+                        <p>创建用户故事地图，可视化用户旅程并将其转化为可规划的发布切片。</p>
+                        <div class="plain-explain">📝 大白话：把用户要用你的产品做的所有事画成一张"地图"，然后切块交付。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Commands Section -->
+        <div id="commands" class="section">
+            <h2 class="section-title">命令工作流</h2>
+            <p class="section-desc">
+                6 个预置的多技能工作流，输入一个问题或场景，AI 自动调用相关技能
+            </p>
+            <div class="commands-grid">
+                <div class="command-card">
+                    <div class="command-name">/discover</div>
+                    <h3>发现问题</h3>
+                    <p>从问题框架到机会映射和验证规划的结构化发现流程</p>
+                    <div class="uses">使用技能：</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">发现流程</span>
+                        <span class="skill-tag">问题画布</span>
+                        <span class="skill-tag">访谈准备</span>
+                        <span class="skill-tag">机会树</span>
+                        <span class="skill-tag">政治探测</span>
+                    </div>
+                </div>
+                <div class="command-card">
+                    <div class="command-name">/leadership-transition</div>
+                    <h3>晋升转型</h3>
+                    <p>PM→总监→VP/CPO 的转型规划，包含角色诊断和入职指导</p>
+                    <div class="uses">使用技能：</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">高度视野框架</span>
+                        <span class="skill-tag">总监 Readiness</span>
+                        <span class="skill-tag">VP Readiness</span>
+                        <span class="skill-tag">高管入职</span>
+                    </div>
+                </div>
+                <div class="command-card">
+                    <div class="command-name">/plan-roadmap</div>
+                    <h3>规划路线图</h3>
+                    <p>将战略和验证的机会转化为有清晰取舍的排序路线图</p>
+                    <div class="uses">使用技能：</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">路线图规划</span>
+                        <span class="skill-tag">史诗假设</span>
+                        <span class="skill-tag">优先级</span>
+                        <span class="skill-tag">故事地图</span>
+                        <span class="skill-tag">史诗拆分</span>
+                    </div>
+                </div>
+                <div class="command-card">
+                    <div class="command-name">/prioritize</div>
+                    <h3>优先级决策</h3>
+                    <p>用正确的优先级方法选择下一步做什么，明确权衡和后续行动</p>
+                    <div class="uses">使用技能：</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">优先级顾问</span>
+                        <span class="skill-tag">功能投资</span>
+                        <span class="skill-tag">获客渠道</span>
+                        <span class="skill-tag">定价顾问</span>
+                        <span class="skill-tag">推荐画布</span>
+                    </div>
+                </div>
+                <div class="command-card">
+                    <div class="command-name">/strategy</div>
+                    <h3>产品战略</h3>
+                    <p>从定位到机会再到路线图决策的完整产品战略构建</p>
+                    <div class="uses">使用技能：</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">战略会议</span>
+                        <span class="skill-tag">定位工作坊</span>
+                        <span class="skill-tag">问题陈述</span>
+                        <span class="skill-tag">机会树</span>
+                        <span class="skill-tag">路线图</span>
+                    </div>
+                </div>
+                <div class="command-card">
+                    <div class="command-name">/write-prd</div>
+                    <h3>撰写 PRD</h3>
+                    <p>创建可决策的产品需求文档，链接问题、需求和故事</p>
+                    <div class="uses">使用技能：</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">PRD 开发</span>
+                        <span class="skill-tag">问题陈述</span>
+                        <span class="skill-tag">原型人物</span>
+                        <span class="skill-tag">用户故事</span>
+                        <span class="skill-tag">故事拆分</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Scenario -->
+        <div id="scenario" class="chat-scenario">
+            <h2 class="chat-title">🗣️ 假如 PM 技能是一个团队</h2>
+            <div class="chat-messages">
+                <div class="chat-message">
+                    <div class="chat-avatar pm">👩‍💼</div>
+                    <div class="chat-bubble">
+                        <p>Hey 团队，我刚接手了一个新的 B2B SaaS 产品，接下来三个月要做用户增长，谁能帮帮我？</p>
+                        <div class="context">来自一个刚上任的产品经理</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar framework">📊</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>Acquisition Channel Advisor</strong>！先别急着投广告，让我帮你评估现有的获客渠道——算算 CAC（获客成本）、LTV（用户终身价值）和回本周期，看看哪些渠道值得加钱、哪些该放弃。</p>
+                        <div class="context">获客渠道评估专家</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar framework">🔍</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>Discovery Process</strong>！在你做任何决定之前，我们需要先验证问题是真的存在。跟我走一遍：从"用户有什么痛点"开始，做访谈，做综合分析，最后设计验证实验。</p>
+                        <div class="context">发现问题专家，讲究先验证再动手</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar pm">👩‍💼</div>
+                    <div class="chat-bubble">
+                        <p>好的，但是我还不确定用户是谁怎么办？</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar framework">👤</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>Jobs To Be Done</strong>！让我帮你搞清楚用户"雇"你的产品完成什么任务，而不是他要什么功能。比如：用户不是想买一个电钻，而是想在墙上打个孔挂照片。</p>
+                        <div class="context">需求洞察专家</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar framework">🗺️</div>
+                    <div class="chat-bubble">
+                        <p>别忘了我是 <strong>Customer Journey Map</strong>！画出用户从"第一次听说"到"推荐给朋友"的完整旅程，找到他们在哪里卡住、哪里开心。</p>
+                        <div class="context">用户体验地图专家</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar pm">👩‍💼</div>
+                    <div class="chat-bubble">
+                        <p>太好了！那确认了机会点之后，我该怎么规划路线图？资源有限，不可能同时做所有事。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar framework">📋</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>Roadmap Planning</strong>！让我帮你排出优先级——不是凭感觉，而是基于战略目标、用户价值和开发成本来做排序。我还能帮你把大功能拆成小版本，逐步发布。</p>
+                        <div class="context">路线图规划专家，擅长取舍</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar framework">💰</div>
+                    <div class="chat-bubble">
+                        <p>对了，我是 <strong>Feature Investment Advisor</strong>！每个功能都要算投入产出比的。开发要多久？运维成本多少？带来多少收入？不符合 ROI 标准的功能别做。</p>
+                        <div class="context">投资回报顾问，帮老板省钱</div>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar pm">👩‍💼</div>
+                    <div class="chat-bubble">
+                        <p>完美！那就先由 <strong>/discover</strong> 开头，跑一遍发现流程，找到真正的机会，然后 <strong>/prioritize</strong> 排序，最后 <strong>/plan-roadmap</strong> 排出路线图！</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar output">🤖</div>
+                    <div class="chat-bubble">
+                        <p>收到！让我调用完整的命令工作流：<br><strong>/discover</strong> → <strong>/prioritize</strong> → <strong>/plan-roadmap</strong><br>现在开始帮你系统化地完成这个任务。</p>
+                        <div class="context">AI 助手执行</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools Section -->
+        <div id="tools" class="section">
+            <h2 class="section-title">支持的 AI 工具</h2>
+            <p class="section-desc">这些技能可以集成到多种 AI 编码和聊天工具中</p>
+            <div class="tools-grid">
+                <div class="tool-item">
+                    <div class="icon">🤖</div>
+                    <h4>Claude Code</h4>
+                </div>
+                <div class="tool-item">
+                    <div class="icon">📝</div>
+                    <h4>Cursor</h4>
+                </div>
+                <div class="tool-item">
+                    <div class="icon">💻</div>
+                    <h4>Codex</h4>
+                </div>
+                <div class="tool-item">
+                    <div class="icon">🔗</div>
+                    <h4>n8n</h4>
+                </div>
+                <div class="tool-item">
+                    <div class="icon">🦾</div>
+                    <h4>OpenClaw</h4>
+                </div>
+                <div class="tool-item">
+                    <div class="icon">💬</div>
+                    <h4>ChatGPT</h4>
+                </div>
+                <div class="tool-item">
+                    <div class="icon">🧠</div>
+                    <h4>Gemini</h4>
+                </div>
+                <div class="tool-item">
+                    <div class="icon">🐍</div>
+                    <h4>Python Agents</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Framework Sources -->
+        <div id="frameworks" class="section">
+            <h2 class="section-title">框架来源</h2>
+            <p class="section-desc">
+                这些技能基于世界顶级的产品管理框架和思想领袖的研究
+            </p>
+            <div class="framework-list">
+                <div class="framework-item">
+                    <h3>🎯 Teresa Torres — 持续发现与迭代</h3>
+                    <p>强调产品经理应该"永远在发现"，通过持续的用户访谈和实验来验证假设，而不是一次性的调研。</p>
+                    <div class="source">来源：Teresa Torres《The Continuous Discovery Habits》</div>
+                </div>
+                <div class="framework-item">
+                    <h3>🎯 Geoffrey Moore — 技术采用生命周期</h3>
+                    <p>解释了为什么新技术产品先要在早期采用者中站稳脚跟，才能跨越"鸿沟"进入主流市场。</p>
+                    <div class="source">来源：Geoffrey Moore《Crossing the Chasm》</div>
+                </div>
+                <div class="framework-item">
+                    <h3>🎯 Amazon — 逆向工作法</h3>
+                    <p>从客户想要的终态倒推回来设计产品和功能，而不是从技术能力出发"堆"功能。</p>
+                    <div class="source">来源：Amazon 内部方法论</div>
+                </div>
+                <div class="framework-item">
+                    <h3>🎯 MITRE — 系统工程思维</h3>
+                    <p>用系统工程的视角来看产品开发，关注整体性能、成本、风险和权衡，而不是单个功能的酷炫程度。</p>
+                    <div class="source">来源：MITRE 系统工程指南</div>
+                </div>
+                <div class="framework-item">
+                    <h3>🎯 Marty Cagan — 价值与风险的平衡</h3>
+                    <p>产品成功的关键是在"解决用户问题"和"技术可行性"之间的平衡，PM 的核心职责是创造价值。</p>
+                    <div class="source">来源：Marty Cagan《Inspired》</div>
+                </div>
+                <div class="framework-item">
+                    <h3>🎯 Lean UX — 快速验证</h3>
+                    <p>用最少的代码验证最大的假设，通过"设计冲刺"快速迭代，避免长时间开发后发现方向错了。</p>
+                    <div class="source">来源：Jeff Gothelf & Josh Seiden</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>📦 由 <a href="https://github.com/deanpeters">Dean Peters</a> 创建</p>
+        <p>基于全球顶级 PM 框架 • CC BY-NC-SA 4.0 许可证</p>
+        <p style="margin-top: 20px;">
+            <a href="https://github.com/deanpeters/Product-Manager-Skills">在 GitHub 查看源码</a> •
+            <a href="/plugin marketplace add deanpeters/Product-Manager-Skills">安装 Claude Code 插件</a>
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX Pro Max 技能拆解全景图 - 像搭积木一样看懂这个系统</title>
+    <style>
+        :root {
+            --parchment: #f5f4ed;
+            --ivory: #faf9f5;
+            --warm-sand: #e8e6dc;
+            --border-cream: #f0eee6;
+            --border-warm: #e8e6dc;
+            --charcoal-warm: #4d4c48;
+            --olive-gray: #5e5d59;
+            --stone-gray: #87867f;
+            --terracotta: #c96442;
+            --coral: #d97757;
+            --deep-dark: #141413;
+            --dark-surface: #30302e;
+            --design-pink: #ec4899;
+            --design-light: #f472b6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+            background: var(--parchment);
+            color: var(--deep-dark);
+            line-height: 1.6;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 24px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--parchment) 0%, var(--ivory) 100%);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(236, 72, 153, 0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(201, 100, 66, 0.03) 0%, transparent 50%);
+            animation: heroFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-2%, -2%); }
+        }
+
+        .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--olive-gray);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: var(--design-pink);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav {
+            position: sticky;
+            top: 0;
+            background: var(--parchment);
+            border-bottom: 1px solid var(--border-cream);
+            padding: 16px 24px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(245, 244, 237, 0.95);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo { font-weight: 700; font-size: 1.1rem; color: var(--deep-dark); text-decoration: none; }
+        .nav-links { display: flex; gap: 24px; list-style: none; }
+        .nav-links a { color: var(--olive-gray); text-decoration: none; font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--design-pink); }
+
+        section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
+
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 16px; }
+        .section-header p { color: var(--olive-gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        .architecture-layers { position: relative; padding: 60px 0; }
+
+        .layer-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .layer-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08); }
+        .layer-card.level-1 { margin-left: 0; z-index: 5; border-left: 4px solid var(--design-pink); }
+        .layer-card.level-2 { margin-left: 40px; z-index: 4; border-left: 4px solid var(--design-light); background: linear-gradient(135deg, var(--ivory) 0%, #fdf2f8 100%); }
+        .layer-card.level-3 { margin-left: 80px; z-index: 3; border-left: 4px solid var(--terracotta); background: linear-gradient(135deg, var(--ivory) 0%, #fdf9f7 100%); }
+        .layer-card.level-4 { margin-left: 120px; z-index: 2; border-left: 4px solid var(--olive-gray); background: linear-gradient(135deg, var(--ivory) 0%, #faf9f7 100%); }
+        .layer-card.level-5 { margin-left: 160px; z-index: 1; border-left: 4px solid var(--dark-surface); background: linear-gradient(135deg, var(--ivory) 0%, #f8f7f5 100%); }
+
+        .layer-label {
+            display: inline-block;
+            background: var(--warm-sand);
+            color: var(--charcoal-warm);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .layer-card h3 { font-size: 1.3rem; margin-bottom: 8px; }
+        .layer-card p { color: var(--olive-gray); font-size: 0.95rem; }
+
+        .layer-icon {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: var(--warm-sand);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .chat-section {
+            background: var(--deep-dark);
+            color: var(--ivory);
+            padding: 100px 24px;
+            margin: 0;
+            max-width: 100%;
+        }
+
+        .chat-section .section-header h2 { color: var(--ivory); }
+        .chat-section .section-header p { color: var(--stone-gray); }
+
+        .chat-container { max-width: 900px; margin: 0 auto; }
+
+        .chat-message { display: flex; gap: 16px; margin-bottom: 24px; animation: slideIn 0.5s ease-out; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar.user { background: var(--design-pink); }
+        .chat-avatar.python { background: #3776ab; }
+        .chat-avatar.data { background: #10b981; }
+        .chat-avatar.design { background: #f59e0b; }
+        .chat-avatar.code { background: #8b5cf6; }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 20px;
+            max-width: 600px;
+        }
+
+        .chat-bubble.python { border-left: 3px solid #3776ab; }
+        .chat-bubble.data { border-left: 3px solid #10b981; }
+        .chat-bubble.design { border-left: 3px solid #f59e0b; }
+        .chat-bubble.code { border-left: 3px solid #8b5cf6; }
+
+        .chat-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+        .chat-text { color: rgba(255, 255, 255, 0.85); font-size: 0.95rem; }
+
+        .chat-timeline { position: relative; padding-left: 32px; }
+
+        .chat-timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #3776ab, #10b981, #f59e0b, #8b5cf6, var(--design-pink));
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--design-pink);
+        }
+
+        .feature-card.featured {
+            border-color: var(--design-pink);
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--ivory) 0%, rgba(236, 72, 153, 0.05) 100%);
+        }
+
+        .feature-number {
+            display: inline-block;
+            background: var(--design-pink);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 { font-size: 1.2rem; margin-bottom: 12px; }
+        .feature-card p { color: var(--olive-gray); font-size: 0.95rem; }
+
+        .feature-example {
+            background: var(--warm-sand);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--charcoal-warm);
+        }
+
+        .toolbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover { border-color: var(--design-pink); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); }
+
+        .tool-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+
+        .tool-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .tool-logo.python { background: #3776ab; }
+        .tool-logo.react { background: #61dafb; }
+        .tool-logo.vue { background: #42b883; }
+        .tool-logo.swiftui { background: #fa7343; }
+        .tool-logo.flutter { background: #02569b; }
+        .tool-logo.tailwind { background: #06b6d4; }
+
+        .tool-name { font-size: 1.1rem; font-weight: 600; }
+        .tool-role { font-size: 0.85rem; color: var(--stone-gray); }
+        .tool-desc { color: var(--olive-gray); font-size: 0.9rem; margin-bottom: 16px; line-height: 1.5; }
+
+        .tool-pricing { background: var(--warm-sand); border-radius: 8px; padding: 12px 16px; }
+
+        .pricing-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--stone-gray); margin-bottom: 4px; }
+        .pricing-free { color: #10b981; font-weight: 600; font-size: 0.95rem; }
+        .pricing-paid { color: var(--charcoal-warm); font-size: 0.9rem; }
+        .pricing-upgrade { font-size: 0.8rem; color: var(--olive-gray); margin-top: 8px; }
+
+        .tool-relation { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-cream); font-size: 0.85rem; color: var(--stone-gray); }
+        .tool-relation strong { color: var(--design-pink); }
+
+        .explain-section { background: var(--ivory); padding: 100px 24px; }
+
+        .explain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .explain-card {
+            background: var(--parchment);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .explain-term { font-size: 1.3rem; font-weight: 700; color: var(--design-pink); margin-bottom: 16px; }
+        .explain-analogy { color: var(--deep-dark); font-size: 1rem; line-height: 1.7; }
+        .explain-analogy::before { content: '💡 '; }
+
+        footer { background: var(--deep-dark); color: var(--stone-gray); padding: 60px 24px; text-align: center; }
+        footer a { color: var(--ivory); text-decoration: none; }
+        footer a:hover { color: var(--design-pink); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .layer-card.level-1, .layer-card.level-2, .layer-card.level-3, .layer-card.level-4, .layer-card.level-5 { margin-left: 0; }
+            .feature-card.featured { grid-column: span 1; }
+            .chat-message { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <span class="badge">🎨 UI/UX Pro Max 技能拆解全景图</span>
+            <h1>像搭积木一样<br>看懂这个系统</h1>
+            <p class="subtitle">这是一个给 AI 用的"设计百科全书"。它包含 50+ 种设计风格、161 种配色、57 种字体搭配、99 条 UX 规则、25 种图表类型。AI 不知道该怎么做设计时，问它就行。不用懂代码，看完这张图你就明白了。</p>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">🏗️ 项目架构</a>
+            <ul class="nav-links">
+                <li><a href="#architecture">分层架构</a></li>
+                <li><a href="#features">核心功能</a></li>
+                <li><a href="#toolbox">工具箱</a></li>
+                <li><a href="#chat">怎么"干活"</a></li>
+                <li><a href="#explain">大白话解释</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="architecture">
+        <div class="section-header">
+            <h2>🏗️ 五层积木塔</h2>
+            <p>这个系统像一栋五层的房子，每层有不同的功能。越往上越接近用户，越往下越底层。</p>
+        </div>
+
+        <div class="architecture-layers">
+            <div class="layer-card level-1">
+                <span class="layer-label">第 5 层 · 入口</span>
+                <div class="layer-icon">📖</div>
+                <h3>技能入口层 (SKILL.md)</h3>
+                <p>这本"说明书"的封面。告诉 AI 什么时候该用这个技能、怎么调用、有什么规则。AI 看到用户要做 UI/UX 相关的事，就会翻开这本书。</p>
+            </div>
+
+            <div class="layer-card level-2">
+                <span class="layer-label">第 4 层 · 规则库</span>
+                <div class="layer-icon">📋</div>
+                <h3>快速参考层 (Rule Categories)</h3>
+                <p>10 大类规则，按优先级排列。从最关键的无障碍（Accessibility）到最后的图表规范。每条规则都标注了"必须做"和"千万别做"。</p>
+            </div>
+
+            <div class="layer-card level-3">
+                <span class="layer-label">第 3 层 · 数据库</span>
+                <div class="layer-icon">🗄️</div>
+                <h3>数据查询层 (data/*.csv)</h3>
+                <p>8 个"藏经阁"。存着风格、配色、字体、图标、产品类型、UX 规范、图表类型、堆栈最佳实践。AI 不知道选什么颜色或字体时，就来这里查。</p>
+            </div>
+
+            <div class="layer-card level-4">
+                <span class="layer-label">第 2 层 · 引擎</span>
+                <div class="layer-icon">⚙️</div>
+                <h3>搜索脚本层 (scripts/)</h3>
+                <p>3 个"小机器人"。core.py 负责搜索，search.py 负责查询，design_system.py 负责生成设计系统。用户提需求，机器人去资料库找答案。</p>
+            </div>
+
+            <div class="layer-card level-5">
+                <span class="layer-label">第 1 层 · 基础</span>
+                <div class="layer-icon">🐍</div>
+                <h3>运行时层 (Python)</h3>
+                <p>这个系统的"引擎"。用 Python 写的，需要用户电脑上有 Python 才能跑。所有的搜索和计算都靠它。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="section-header">
+            <h2>⚡ 核心功能场景</h2>
+            <p>这个工具能做什么？按重要程度排序，最常用的排在最前面。</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card featured">
+                <span class="feature-number">1</span>
+                <h3>🎯 一键生成设计系统</h3>
+                <p>这是 UI/UX Pro Max 的核心超能力。你告诉它产品类型和风格关键词，它会自动生成完整的设计系统：设计模式、风格、颜色、字体、动效、还有要避免的坑。</p>
+                <div class="feature-example">python search.py "beauty spa wellness" --design-system → 输出完整的设计系统建议</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">2</span>
+                <h3>🔍 按领域搜答案</h3>
+                <p>针对某个具体问题单独搜索。比如想知道什么颜色适合 SaaS 产品、或者用什么图表显示趋势。</p>
+                <div class="feature-example">python search.py "minimal dark" --domain style → 返回 50+ 风格选项</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">3</span>
+                <h3>📐 10 大规则类别</h3>
+                <p>10 个"检查清单"，按优先级排序。排第一的是无障碍（Accessibility），然后是触摸交互、性能、风格选择、布局响应式、字体颜色、动画、表单反馈、导航、图表。</p>
+                <div class="feature-example">无障碍 → 颜色对比度 4.5:1、触摸区域 ≥44px、键盘导航...</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">4</span>
+                <h3>📱 支持 10 种技术栈</h3>
+                <p>不仅给设计建议，还给对应的代码实现建议。React、Next.js、Vue、Svelte、SwiftUI、React Native、Flutter、HTML+Tailwind、shadcn/ui、Angular。</p>
+                <div class="feature-example">python search.py "list performance" --stack react-native → 返回 RN 特定的性能优化</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">5</span>
+                <h3>💾 设计系统持久化</h3>
+                <p>生成的设计系统可以保存下来，下次继续用。还能按页面做个性化调整。</p>
+                <div class="feature-example">python search.py "fintech" --design-system --persist -p "MyApp" → 保存到 design-system/</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">6</span>
+                <h3>🔄 输出多种格式</h3>
+                <p>可以输出终端显示的 ASCII 格式，也可以输出 Markdown 格式方便写文档。</p>
+                <div class="feature-example">python search.py "vibrant" --design-system -f markdown</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">7</span>
+                <h3>✅ 交付前检查清单</h3>
+                <p>做完后还有一套"质检"流程。检查无障碍、对比度、动画、暗色模式、响应式等。</p>
+                <div class="feature-example">运行 --domain ux 快速验证一遍</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">8</span>
+                <h3>🧠 智能推理</h3>
+                <p>不仅搜结果，还会根据产品类型自动推理。输入"音乐播放器"，会自动推荐适合的风格和颜色。</p>
+                <div class="feature-example">基于 ui-reasoning.csv 里的规则自动匹配</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="toolbox">
+        <div class="section-header">
+            <h2>🧰 SaaS 工具箱</h2>
+            <p>这个项目用了哪些"外包服务"？它们各自干什么活？为什么免费？什么时候需要花钱？</p>
+        </div>
+
+        <div class="toolbox-grid">
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo python">Py</div>
+                    <div>
+                        <div class="tool-name">Python</div>
+                        <div class="tool-role">运行时环境</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"厨房里的灶台"。整个系统的引擎，所有的搜索脚本、数据库查询都用 Python 写。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 开源免费</div>
+                    <div class="pricing-paid">托管服务另计</div>
+                    <div class="pricing-upgrade">什么时候升级：部署到云服务器时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 所有脚本、CSV 数据文件
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo react">R</div>
+                    <div>
+                        <div class="tool-name">React / Next.js</div>
+                        <div class="tool-role">目标技术栈</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"装修风格"之一。项目支持的 10 种技术栈里最常用的一个。有专门的性能优化指南。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 开源免费</div>
+                    <div class="pricing-paid">Vercel/Netlify 托管可选</div>
+                    <div class="pricing-upgrade">什么时候升级：上线部署时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 提供 --stack react/nextjs 搜索
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo vue">V</div>
+                    <div>
+                        <div class="tool-name">Vue / Nuxt.js</div>
+                        <div class="tool-role">目标技术栈</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"装修风格"之一。另一个流行的前端框架，有对应的最佳实践数据。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 开源免费</div>
+                    <div class="pricing-paid">托管服务可选</div>
+                    <div class="pricing-upgrade">什么时候升级：上线部署时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 提供 --stack vue/nuxtjs 搜索
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo swiftui">S</div>
+                    <div>
+                        <div class="tool-name">SwiftUI</div>
+                        <div class="tool-role">目标技术栈</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"装修风格"之一。苹果的 iOS 开发框架，有对应的移动端设计规范。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ Xcode 免费</div>
+                    <div class="pricing-paid">Apple Developer $99/年</div>
+                    <div class="pricing-upgrade">什么时候升级：需要 App Store 上架时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 遵循 Apple HIG 设计规范
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo flutter">F</div>
+                    <div>
+                        <div class="tool-name">Flutter</div>
+                        <div class="tool-role">目标技术栈</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"装修风格"之一。Google 的跨平台框架，一套代码同时跑 iOS 和 Android。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 开源免费</div>
+                    <div class="pricing-paid">无</div>
+                    <div class="pricing-upgrade">什么时候升级：一直免费</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 遵循 Material Design 规范
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo tailwind">T</div>
+                    <div>
+                        <div class="tool-name">Tailwind CSS</div>
+                        <div class="tool-role">目标技术栈</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"油漆桶"。CSS 框架，用utility classes 快速写样式。有专门的搜索数据。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 开源免费</div>
+                    <div class="pricing-paid">Tailwind UI 付费组件 $99</div>
+                    <div class="pricing-upgrade">什么时候升级：需要高级 UI 组件时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> shadcn/ui 基于它构建
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="chat-section" id="chat">
+        <div class="section-header">
+            <h2>💬 这群"人"是怎么配合干活的？</h2>
+            <p>一个用户想做"一个音乐播放器 app"。完整展示每个环节谁在干活。</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-timeline">
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"帮我设计一个音乐播放器 app，要好看看。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar python">🐍</div>
+                    <div class="chat-bubble python">
+                        <div class="chat-name">Skill Trigger（技能触发器）</div>
+                        <div class="chat-text">"检测到 UI/UX 任务！激活 ui-ux-pro-max 技能。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar python">📋</div>
+                    <div class="chat-bubble python">
+                        <div class="chat-name">Requirements Analyzer（需求分析）</div>
+                        <div class="chat-text">"提取关键词：<br>• 产品类型：Tool / Entertainment（音乐播放）<br>• 风格：现代、沉浸式<br>• 目标：年轻用户"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar python">⚙️</div>
+                    <div class="chat-bubble python">
+                        <div class="chat-name">Design System Generator（设计系统生成器）</div>
+                        <div class="chat-text">"运行 --design-system 命令：<br>1. 搜索 8 个数据库（产品、风格、颜色、字体等）<br>2. 应用推理规则<br>3. 输出完整设计系统"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar data">🗄️</div>
+                    <div class="chat-bubble data">
+                        <div class="chat-name">Data Search（数据查询）</div>
+                        <div class="chat-text">"匹配结果：<br>🎨 风格：glassmorphism + dark mode + immersive<br>🎨 颜色：deep purple + neon accent<br>🔤 字体：Inter + SF Pro<br>📐 布局：bento grid + bottom nav"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar design">✅</div>
+                    <div class="chat-bubble design">
+                        <div class="chat-name">Design System Output（设计系统输出）</div>
+                        <div class="chat-text">"设计系统已生成：<br>✅ 风格：玻璃拟态 + 暗色主题<br>✅ 配色：深紫主色 + 霓虹点缀<br>✅ 字体：Inter（标题） + SF Pro（正文）<br>✅ 动效：smooth transitions (200-300ms)<br>⚠️ 避免：emoji 图标、纯黑背景"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"很好！但我还想知道具体用什么图表来显示播放统计。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar data">📊</div>
+                    <div class="chat-bubble data">
+                        <div class="chat-name">Domain Search（领域搜索）</div>
+                        <div class="chat-text">"运行 --domain chart 'playback statistics':<br>• 趋势 → 用 Area Chart<br>• 对比 → 用 Bar Chart<br>• 占比 → 用 Donut Chart"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"我是用 React Native 写的，有什么移动端-specific 的建议吗？"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar code">📱</div>
+                    <div class="chat-bubble code">
+                        <div class="chat-name">Stack Search（技术栈搜索）</div>
+                        <div class="chat-text">"运行 --stack react-native：<br>• 导航：Bottom Tab Navigator ≤5 项<br>• 触摸：最小 44x44pt<br>• Safe Area：尊重刘海和灵动岛<br>• 性能：虚拟化 50+ 列表项"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar design">🔍</div>
+                    <div class="chat-bubble design">
+                        <div class="chat-name">UX Validation（UX 验证）</div>
+                        <div class="chat-text">"交付前检查：<br>✅ 颜色对比 4.5:1<br>✅ 触摸区域 ≥44pt<br>✅ 支持 reduced-motion<br>✅ 暗色模式已测试<br>✅ 无障碍标签完整"</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="explain-section" id="explain">
+        <div class="section-header">
+            <h2>📚 大白话百科</h2>
+            <p>这些词儿到底什么意思？用日常例子讲给你听。</p>
+        </div>
+
+        <div class="explain-grid">
+            <div class="explain-card">
+                <div class="explain-term">Design System（设计系统）</div>
+                <div class="explain-analogy">
+                    像"装修风格指南"。告诉你墙面用什么颜色、地板用什么材质、门把手用什么样式——一套完整的设计规则。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Glassmorphism（玻璃拟态）</div>
+                <div class="explain-analogy">
+                    像"磨砂玻璃"。界面元素像磨砂玻璃一样半透明模糊，背景模糊可见，常见于苹果和现代设计。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Bento Grid（便当盒布局）</div>
+                <div class="explain-analogy">
+                    像"便当盒"。把界面分成一个个规则的小格子，像日式便当盒一样整整齐齐。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Accessibility（无障碍）</div>
+                <div class="explain-analogy">
+                    像"斜坡和扶手"。让残障人士也能使用产品——屏幕阅读器能读、颜色对比够高、键盘能操作。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">CLS (Cumulative Layout Shift)</div>
+                <div class="explain-analogy">
+                    像"地震"。页面加载时东西突然乱跳——图片没留位置、字体突然加载把内容推开。搜索引擎会扣分。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">4.5:1 对比度</div>
+                <div class="explain-analogy">
+                    像"黑底白字"。文字和背景颜色差别够大，即使视力不好也能看清。这是 WCAG 标准。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Reduced Motion</div>
+                <div class="explain-analogy">
+                    像"减少晃动"。有些用户不喜欢动画（会头晕），系统设置里可以关闭，界面要配合支持。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Safe Area（安全区域）</div>
+                <div class="explain-analogy">
+                    像"不越界"。手机屏幕上有刘海、灵动岛、底部手势条，界面不能被它们挡住。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>基于 UI/UX Pro Max 技能项目</p>
+        <p style="margin-top: 16px; font-size: 0.85rem;">本文档用大白话解释这个系统的运作方式，面向非技术读者。</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.layer-card, .feature-card, .tool-card, .explain-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        document.querySelectorAll('.chat-message').forEach((msg, i) => {
+            msg.style.animationDelay = `${i * 0.1}s`;
+        });
+    </script>
+</body>
+</html>

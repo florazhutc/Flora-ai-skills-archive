@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superpowers 技能拆解全景图 - 像搭积木一样看懂这个系统</title>
+    <style>
+        :root {
+            --parchment: #f5f4ed;
+            --ivory: #faf9f5;
+            --warm-sand: #e8e6dc;
+            --border-cream: #f0eee6;
+            --border-warm: #e8e6dc;
+            --charcoal-warm: #4d4c48;
+            --olive-gray: #5e5d59;
+            --stone-gray: #87867f;
+            --terracotta: #c96442;
+            --coral: #d97757;
+            --deep-dark: #141413;
+            --dark-surface: #30302e;
+            --focus-blue: #3898ec;
+            --power-purple: #7c3aed;
+            --power-light: #a78bfa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+            background: var(--parchment);
+            color: var(--deep-dark);
+            line-height: 1.6;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 24px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--parchment) 0%, var(--ivory) 100%);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(124, 58, 237, 0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(201, 100, 66, 0.03) 0%, transparent 50%);
+            animation: heroFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-2%, -2%); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--olive-gray);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: var(--power-purple);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav {
+            position: sticky;
+            top: 0;
+            background: var(--parchment);
+            border-bottom: 1px solid var(--border-cream);
+            padding: 16px 24px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(245, 244, 237, 0.95);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--deep-dark);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--olive-gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover { color: var(--power-purple); }
+
+        section {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--olive-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .architecture-layers {
+            position: relative;
+            padding: 60px 0;
+        }
+
+        .layer-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .layer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .layer-card.level-1 { margin-left: 0; z-index: 5; border-left: 4px solid var(--power-purple); }
+        .layer-card.level-2 { margin-left: 40px; z-index: 4; border-left: 4px solid var(--power-light); background: linear-gradient(135deg, var(--ivory) 0%, #f5f3ff 100%); }
+        .layer-card.level-3 { margin-left: 80px; z-index: 3; border-left: 4px solid var(--terracotta); background: linear-gradient(135deg, var(--ivory) 0%, #fdf9f7 100%); }
+        .layer-card.level-4 { margin-left: 120px; z-index: 2; border-left: 4px solid var(--olive-gray); background: linear-gradient(135deg, var(--ivory) 0%, #faf9f7 100%); }
+        .layer-card.level-5 { margin-left: 160px; z-index: 1; border-left: 4px solid var(--dark-surface); background: linear-gradient(135deg, var(--ivory) 0%, #f8f7f5 100%); }
+
+        .layer-label {
+            display: inline-block;
+            background: var(--warm-sand);
+            color: var(--charcoal-warm);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .layer-card h3 { font-size: 1.3rem; margin-bottom: 8px; }
+        .layer-card p { color: var(--olive-gray); font-size: 0.95rem; }
+
+        .layer-icon {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: var(--warm-sand);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .chat-section {
+            background: var(--deep-dark);
+            color: var(--ivory);
+            padding: 100px 24px;
+            margin: 0;
+            max-width: 100%;
+        }
+
+        .chat-section .section-header h2 { color: var(--ivory); }
+        .chat-section .section-header p { color: var(--stone-gray); }
+
+        .chat-container { max-width: 900px; margin: 0 auto; }
+
+        .chat-message {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar.user { background: var(--power-purple); }
+        .chat-avatar.brainstorm { background: #f59e0b; }
+        .chat-avatar.spec { background: #10b981; }
+        .chat-avatar.plan { background: #3b82f6; }
+        .chat-avatar.execute { background: #ec4899; }
+        .chat-avatar.test { background: #ef4444; }
+        .chat-avatar.review { background: #8b5cf6; }
+        .chat-avatar.merge { background: var(--terracotta); }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 20px;
+            max-width: 600px;
+        }
+
+        .chat-bubble.brainstorm { border-left: 3px solid #f59e0b; }
+        .chat-bubble.spec { border-left: 3px solid #10b981; }
+        .chat-bubble.plan { border-left: 3px solid #3b82f6; }
+        .chat-bubble.execute { border-left: 3px solid #ec4899; }
+        .chat-bubble.test { border-left: 3px solid #ef4444; }
+        .chat-bubble.review { border-left: 3px solid #8b5cf6; }
+        .chat-bubble.merge { border-left: 3px solid var(--terracotta); }
+
+        .chat-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+        .chat-text { color: rgba(255, 255, 255, 0.85); font-size: 0.95rem; }
+
+        .chat-timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .chat-timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #f59e0b, #10b981, #3b82f6, #ec4899, #ef4444, #8b5cf6, var(--terracotta));
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--power-purple);
+        }
+
+        .feature-card.featured {
+            border-color: var(--power-purple);
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--ivory) 0%, rgba(124, 58, 237, 0.05) 100%);
+        }
+
+        .feature-number {
+            display: inline-block;
+            background: var(--power-purple);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 { font-size: 1.2rem; margin-bottom: 12px; }
+        .feature-card p { color: var(--olive-gray); font-size: 0.95rem; }
+
+        .feature-example {
+            background: var(--warm-sand);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--charcoal-warm);
+        }
+
+        .toolbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover {
+            border-color: var(--power-purple);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .tool-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .tool-logo.claude { background: #d4a574; }
+        .tool-logo.cursor { background: #2a2a2a; }
+        .tool-logo.opencode { background: #6366f1; }
+        .tool-logo.codex { background: #000; }
+        .tool-logo.gemini { background: #4285f4; }
+        .tool-logo.git { background: #f05032; }
+
+        .tool-name { font-size: 1.1rem; font-weight: 600; }
+        .tool-role { font-size: 0.85rem; color: var(--stone-gray); }
+        .tool-desc { color: var(--olive-gray); font-size: 0.9rem; margin-bottom: 16px; line-height: 1.5; }
+
+        .tool-pricing {
+            background: var(--warm-sand);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .pricing-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--stone-gray);
+            margin-bottom: 4px;
+        }
+
+        .pricing-free { color: #10b981; font-weight: 600; font-size: 0.95rem; }
+        .pricing-paid { color: var(--charcoal-warm); font-size: 0.9rem; }
+        .pricing-upgrade { font-size: 0.8rem; color: var(--olive-gray); margin-top: 8px; }
+
+        .tool-relation {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-cream);
+            font-size: 0.85rem;
+            color: var(--stone-gray);
+        }
+
+        .tool-relation strong { color: var(--power-purple); }
+
+        .explain-section {
+            background: var(--ivory);
+            padding: 100px 24px;
+        }
+
+        .explain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .explain-card {
+            background: var(--parchment);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .explain-term {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--power-purple);
+            margin-bottom: 16px;
+        }
+
+        .explain-analogy {
+            color: var(--deep-dark);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .explain-analogy::before { content: '💡 '; }
+
+        footer {
+            background: var(--deep-dark);
+            color: var(--stone-gray);
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        footer a { color: var(--ivory); text-decoration: none; }
+        footer a:hover { color: var(--power-purple); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .layer-card.level-1, .layer-card.level-2, .layer-card.level-3, .layer-card.level-4, .layer-card.level-5 { margin-left: 0; }
+            .feature-card.featured { grid-column: span 1; }
+            .chat-message { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <span class="badge">⚡ Superpowers 技能拆解全景图</span>
+            <h1>像搭积木一样<br>看懂这个系统</h1>
+            <p class="subtitle">这是一个给 AI 编程工具用的"开发流程教练"。它会自动触发一系列技能，让 AI 按正确的流程做事——先计划、再动手、测完再提交。不用懂代码，看完这张图你就明白了。</p>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">🏗️ 项目架构</a>
+            <ul class="nav-links">
+                <li><a href="#architecture">分层架构</a></li>
+                <li><a href="#features">核心功能</a></li>
+                <li><a href="#toolbox">工具箱</a></li>
+                <li><a href="#chat">怎么"干活"</a></li>
+                <li><a href="#explain">大白话解释</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="architecture">
+        <div class="section-header">
+            <h2>🏗️ 五层积木塔</h2>
+            <p>这个系统像一栋五层的房子，每层有不同的功能。越往上越接近用户，越往下越底层。</p>
+        </div>
+
+        <div class="architecture-layers">
+            <div class="layer-card level-1">
+                <span class="layer-label">第 5 层 · 触发器</span>
+                <div class="layer-icon">🎯</div>
+                <h3>自动触发层 (hooks/)</h3>
+                <p>这个系统的"感应器"。它会监听用户和 AI 的对话，当检测到要"写代码"、"修 bug"、"做计划"时，自动激活对应的技能。</p>
+            </div>
+
+            <div class="layer-card level-2">
+                <span class="layer-label">第 4 层 · 技能库</span>
+                <div class="layer-icon">🛠️</div>
+                <h3>技能定义层 (skills/)</h3>
+                <p>14 个"武功秘籍"。每个技能告诉 AI 怎么做一件事：怎么写计划、怎么debug、怎么做code review。</p>
+            </div>
+
+            <div class="layer-card level-3">
+                <span class="layer-label">第 3 层 · 编排</span>
+                <div class="layer-icon">🎭</div>
+                <h3>工作流编排层 (workflow)</h3>
+                <p>把多个技能串起来。设计 → 计划 → 执行 → 测试 → review → 合并，形成完整的开发流程。</p>
+            </div>
+
+            <div class="layer-card level-4">
+                <span class="layer-label">第 2 层 · 适配器</span>
+                <div class="layer-icon">🔌</div>
+                <h3>多平台适配层 (.claude/, .cursor/, etc.)</h3>
+                <p>让技能能在不同 AI 工具里工作。Claude Code、Cursor、OpenCode、Codex、 Gemini CLI 都能用。</p>
+            </div>
+
+            <div class="layer-card level-5">
+                <span class="layer-label">第 1 层 · 配置</span>
+                <div class="layer-icon">⚙️</div>
+                <h3>元配置层 (package.json, plugin.json)</h3>
+                <p>项目的"身份证"。声明名字、版本、入口文件，让各平台能识别和加载这个插件。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="section-header">
+            <h2>⚡ 核心功能场景</h2>
+            <p>这个工具能做什么？按重要程度排序，最常用的排在最前面。</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card featured">
+                <span class="feature-number">1</span>
+                <h3>🧠 先想后做（Brainstorming）</h3>
+                <p>这是 Superpowers 的核心超能力。当你想做点啥，AI 不会直接上手写代码，而是先问你一堆问题，帮你把想法理清楚。它会保存设计文档，等你确认后再往下走。</p>
+                <div class="feature-example">用户："帮我做个用户登录" → AI："先别急，你希望用户怎么登录？邮箱？手机？第三方？"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">2</span>
+                <h3>📝 写详细计划（Writing Plans）</h3>
+                <p>设计确定后，把任务拆成小块。每小块 2-5 分钟能做完，有具体的文件路径和验证步骤。像给一个"热情但没品味"的初级工程师写说明书。</p>
+                <div class="feature-example">"第 1 步：创建 src/auth/login.js，导出 login 函数，接受 email 和 password" → "第 2 步：运行 npm test 验证"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">3</span>
+                <h3>🤖 子代理开发（Subagent Driven Dev）</h3>
+                <p>把计划里的每个任务交给一个"子 AI"去做。做完后有两轮审查：第一轮检查是否符合设计，第二轮检查代码质量。AI 可以自动工作几个小时。</p>
+                <div class="feature-example">主 AI 派任务给子 AI："你去实现登录功能" → 子 AI 做完了 → 主 AI 审查："符合设计吗？代码质量OK吗？"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">4</span>
+                <h3>🧪 测试驱动开发（TDD）</h3>
+                <p>写代码前先写测试。遵循红/绿/重构的循环：先写一个失败的测试（红），写最少的代码让它通过（绿），然后再优化（重构）。</p>
+                <div class="feature-example">先写测试："login('a@b.com', 'wrong') 应该返回错误" → 测试失败 → 写代码让测试通过 → 重构优化</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">5</span>
+                <h 🔧 系统化调试（Systematic Debugging）</h3>
+                <p>遇到 bug 时不靠猜测，而是用 4 步流程：观察现象 → 收集证据 → 追踪根因 → 修复验证。还有防御性编程和条件等待等高级技巧。</p>
+                <div class="feature-example">"页面卡住了" → 先观察：哪个操作后卡住的？ → 收集：浏览器控制台有什么错误？ → 追踪：找到是哪个函数超时 → 修复并验证</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">6</span>
+                <h3>👀 代码审查（Code Review）</h3>
+                <p>任务之间会触发代码审查。对着计划检查代码，按严重程度分类问题。严重的问题会阻止继续开发。</p>
+                <div class="feature-example">"🔴 严重：登录逻辑完全错了" + "🟡 中等：变量名不一致" + "🟢 小事：注释可以更清楚"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">7</span>
+                <h3>🌿 Git 工作树（Git Worktrees）</h3>
+                <p>在独立分支上开发，用 git worktree 创建隔离的工作目录。不影响主分支，可以同时开发多个功能。</p>
+                <div class="feature-example">设计通过 → 创建新分支 feature-login → 用 worktree 开一个独立工作目录 → 开始实现</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">8</span>
+                <h3>🏁 完成任务（Finishing a Branch）</h3>
+                <p>所有任务完成后，验证测试，然后给你几个选择：合并到主分支、创建 PR、保留分支、或者放弃。还会清理 worktree。</p>
+                <div class="feature-example">"任务都做完了！测试通过。要合并吗？还是先创建 PR？或者先留着？"</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="toolbox">
+        <div class="section-header">
+            <h2>🧰 SaaS 工具箱</h2>
+            <p>这个项目用了哪些"外包服务"？它们各自干什么活？为什么免费？什么时候需要花钱？</p>
+        </div>
+
+        <div class="toolbox-grid">
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo claude">C</div>
+                    <div>
+                        <div class="tool-name">Claude Code</div>
+                        <div class="tool-role">主要支持平台</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"主机"。Superpowers 最初为它设计的平台，有完整的官方插件市场支持。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 免费使用</div>
+                    <div class="pricing-paid">Pro: $20/月，有更高使用限制</div>
+                    <div class="pricing-upgrade">什么时候升级：需要更高 API 额度时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 所有技能原生支持
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo cursor">C</div>
+                    <div>
+                        <div class="tool-name">Cursor</div>
+                        <div class="tool-role">支持平台</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"另一个主机"。基于 VS Code 的 AI 编程工具，有自己的插件市场。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 免费版够用</div>
+                    <div class="pricing-paid">Pro: $20/月，Business: $40/月</div>
+                    <div class="pricing-upgrade">什么时候升级：需要更高额度或高级功能时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 有专门的 .cursor-plugin 适配
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo opencode">O</div>
+                    <div>
+                        <div class="tool-name">OpenCode</div>
+                        <div class="tool-role">支持平台</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"另一个主机"。国产 AI 编程工具，需要手动配置安装。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 免费使用</div>
+                    <div class="pricing-paid">待定</div>
+                    <div class="pricing-upgrade">什么时候升级：暂无公开定价</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 有 .opencode 配置文件
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo codex">X</div>
+                    <div>
+                        <div class="tool-name">Codex (OpenAI)</div>
+                        <div class="tool-role">支持平台</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"另一个主机"。OpenAI 的命令行 AI 工具，需要读取远程安装说明。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 免费使用</div>
+                    <div class="pricing-paid">API 调用按量收费</div>
+                    <div class="pricing-upgrade">什么时候升级：需要更高 API 调用量时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 有 .codex/INSTALL.md 说明
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo gemini">G</div>
+                    <div>
+                        <div class="tool-name">Gemini CLI</div>
+                        <div class="tool-role">支持平台</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"另一个主机"。Google 的 AI CLI 工具，用 extensions 安装。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 免费使用</div>
+                    <div class="pricing-paid">API 按量收费</div>
+                    <div class="pricing-upgrade">什么时候升级：需要更高额度时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 通过 gemini extensions install 安装
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo git">G</div>
+                    <div>
+                        <div class="tool-name">Git</div>
+                        <div class="tool-role">版本控制</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像"时光机"。跟踪代码变化，支持分支、工作树（worktree）等功能。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 开源免费</div>
+                    <div class="pricing-paid">托管服务（如 GitHub）有免费额度</div>
+                    <div class="pricing-upgrade">什么时候升级：需要私有仓库或更多团队功能时</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> 用 worktree 实现并行开发
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="chat-section" id="chat">
+        <div class="section-header">
+            <h2>💬 这群"人"是怎么配合干活的？</h2>
+            <p>一个用户想做一个"用户登录功能"。完整展示每个环节谁在干活。</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-timeline">
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"帮我做个用户登录功能。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar brainstorm">🧠</div>
+                    <div class="chat-bubble brainstorm">
+                        <div class="chat-name">Brainstorming（思考引导）</div>
+                        <div class="chat-text">"先别急！帮我理清需求：<br>1. 用户怎么登录？邮箱？手机？<br>2. 要支持第三方登录吗？Google？GitHub？<br>3. 需要记住登录状态吗？<br>4. 密码忘了怎么办？"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"邮箱+密码登录，不需要第三方，记得登录状态。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar spec">📋</div>
+                    <div class="chat-bubble spec">
+                        <div class="chat-name">Spec Document（设计文档）</div>
+                        <div class="chat-text">"设计文档已保存：<br>• 登录页面 /login<br>• POST /api/auth/login<br>• 返回 JWT token<br>• 7天有效期的 cookies<br>• ..."</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"好的，按这个来。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar plan">📝</div>
+                    <div class="chat-bubble plan">
+                        <div class="chat-name">Writing Plans（写计划）</div>
+                        <div class="chat-text">"计划已生成，共 8 个任务：<br>1. 创建 src/auth/login.js，导出 login 函数<br>2. 创建 src/auth/validate.js，验证邮箱格式<br>3. 创建 src/middleware/auth.js，JWT 验证中间件<br>4. ..."</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"开始吧！"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar execute">🤖</div>
+                    <div class="chat-bubble execute">
+                        <div class="chat-name">Subagent Driven Dev（子代理开发）</div>
+                        <div class="chat-text">"[派任务] 子代理 A，去做任务 1-3<br>[结果] 子代理 A 完成了 login.js<br>[审查] 主 AI：'符合设计，继续下一批任务'"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar test">🧪</div>
+                    <div class="chat-bubble test">
+                        <div class="chat-name">TDD（测试驱动开发）</div>
+                        <div class="chat-text">"[红] 测试失败：login() 应该返回错误当密码错误<br>[绿] 写代码通过测试<br>[重构] 优化代码结构"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar execute">🤖</div>
+                    <div class="chat-bubble execute">
+                        <div class="chat-name">Subagent Driven Dev（继续执行）</div>
+                        <div class="chat-text">"[派任务] 子代理 B，去做任务 4-6<br>[派任务] 子代理 C，做任务 7-8<br>[完成] 8 个任务全部做完"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar review">👀</div>
+                    <div class="chat-bubble review">
+                        <div class="chat-name">Code Review（代码审查）</div>
+                        <div class="chat-text">"审查结果：<br>🔴 严重：无 - 登录逻辑正确<br>🟡 中等：2 个（变量名不一致、缺少错误处理）<br>🟢 小事：3 个（注释可更清楚）"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"修复中等的问题，然后完成。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar merge">🏁</div>
+                    <div class="chat-bubble merge">
+                        <div class="chat-name">Finishing Branch（完成任务）</div>
+                        <div class="chat-text">"测试全部通过！<br>请选择：<br>1. 合并到 main 分支<br>2. 创建 PR<br>3. 保留分支继续开发<br>4. 放弃"</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="explain-section" id="explain">
+        <div class="section-header">
+            <h2>📚 大白话百科</h2>
+            <p>这些词儿到底什么意思？用日常例子讲给你听。</p>
+        </div>
+
+        <div class="explain-grid">
+            <div class="explain-card">
+                <div class="explain-term">Skill（技能）</div>
+                <div class="explain-analogy">
+                    像"工作手册"。告诉 AI 在某种情况下该怎么做一件事。 Superpowers 有 14 本手册。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Hook（触发器）</div>
+                <div class="explain-analogy">
+                    像"感应开关"。当你说特定的话（如"帮我做个功能"），它会自动打开对应的技能。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Subagent（子代理）</div>
+                <div class="explain-analogy">
+                    像"包工头"。主 AI 把任务交给子 AI 去做，自己做审查和协调。可以同时派多个"人"干活。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">TDD (测试驱动开发)</div>
+                <div class="explain-analogy">
+                    像"先出考题再上课"。老师先出题，学生答不出来 → 老师上课教 → 学生答对了 → 再出下一题。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Red/Green/Refactor</div>
+                <div class="explain-analogy">
+                    像"三步走"：红灯（测试挂）→ 绿灯（代码写完测试过）→ 黄灯（优化代码）。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">YAGNI</div>
+                <div class="explain-analogy">
+                    像"别买用不上的东西"。你现在不需要的功能，别提前写。避免过度设计。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">DRY (Don't Repeat Yourself)</div>
+                <div class="explain-analogy">
+                    像"别重复抄作业"。同样的代码不要复制粘贴，写一次然后复用。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Git Worktree</div>
+                <div class="explain-analogy">
+                    像"同时开多个文件夹"。在一个仓库里开多个独立目录，同时做不同的事情，互不干扰。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>基于 <a href="https://github.com/obra/superpowers">Superpowers</a> 项目 · 作者 Jesse Vincent</p>
+        <p style="margin-top: 16px; font-size: 0.85rem;">本文档用大白话解释这个系统的运作方式，面向非技术读者。</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.layer-card, .feature-card, .tool-card, .explain-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        document.querySelectorAll('.chat-message').forEach((msg, i) => {
+            msg.style.animationDelay = `${i * 0.12}s`;
+        });
+    </script>
+</body>
+</html>
