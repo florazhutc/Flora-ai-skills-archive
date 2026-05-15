@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taste Skill - AI 前端设计技能包</title>
+    <style>
+        /* Claude Design System */
+        :root {
+            --parchment: #f5f4ed;
+            --ivory: #faf9f5;
+            --white: #ffffff;
+            --warm-sand: #e8e6dc;
+            --border-cream: #f0eee6;
+            --border-warm: #e8e6dc;
+            --near-black: #141413;
+            --dark-surface: #30302e;
+            --charcoal-warm: #4d4c48;
+            --olive-gray: #5e5d59;
+            --stone-gray: #87867f;
+            --warm-silver: #b0aea5;
+            --terracotta: #c96442;
+            --coral: #d97757;
+            --error: #b53333;
+            --focus-blue: #3898ec;
+            --shadow-ring: rgba(0,0,0,0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Georgia, "SF Pro Text", "Segoe UI", sans-serif;
+            background: var(--parchment);
+            color: var(--near-black);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--parchment);
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 500;
+            line-height: 1.10;
+            color: var(--near-black);
+            margin-bottom: 20px;
+            font-family: Georgia, serif;
+        }
+
+        .hero .subtitle {
+            font-size: 24px;
+            color: var(--olive-gray);
+            font-weight: 400;
+            margin-bottom: 24px;
+        }
+
+        .hero .desc {
+            font-size: 18px;
+            color: var(--olive-gray);
+            max-width: 640px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero .install-cmd {
+            display: inline-block;
+            background: var(--near-black);
+            color: var(--ivory);
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-family: "SF Mono", Monaco, monospace;
+            font-size: 15px;
+            margin-top: 20px;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 50px;
+        }
+
+        .stat-item { text-align: center; }
+        .stat-item .num { font-size: 48px; font-weight: 500; color: var(--terracotta); font-family: Georgia, serif; }
+        .stat-item .label { font-size: 14px; color: var(--stone-gray); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Section */
+        .section { margin: 80px 0; }
+        .section-title {
+            font-size: 52px;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 16px;
+            font-family: Georgia, serif;
+            color: var(--near-black);
+        }
+
+        .section-desc {
+            font-size: 18px;
+            color: var(--olive-gray);
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-cream);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 24px var(--shadow-ring);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px var(--shadow-ring);
+        }
+
+        .skill-card h4 {
+            font-size: 22px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: var(--near-black);
+            font-family: Georgia, serif;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skill-card .tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-family: -apple-system, sans-serif;
+        }
+
+        .tag.terracotta { background: rgba(201, 100, 66, 0.12); color: var(--terracotta); }
+        .tag.coral { background: rgba(217, 119, 87, 0.12); color: var(--coral); }
+        .tag.green { background: rgba(52, 199, 89, 0.12); color: #34c759; }
+        .tag.blue { background: rgba(0, 122, 255, 0.12); color: var(--focus-blue); }
+        .tag.beta { background: rgba(255, 149, 0, 0.12); color: #ff9500; }
+
+        .skill-card p {
+            font-size: 15px;
+            color: var(--olive-gray);
+            line-height: 1.6;
+            margin-bottom: 14px;
+            font-family: -apple-system, sans-serif;
+        }
+
+        .skill-card .plain {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-warm);
+            font-size: 14px;
+            color: var(--charcoal-warm);
+            font-family: -apple-system, sans-serif;
+        }
+
+        /* Architecture Layers */
+        .arch-layers {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .arch-layer {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .arch-layer::before {
+            content: attr(data-layer);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--terracotta);
+            color: white;
+            font-size: 11px;
+            font-family: -apple-system, sans-serif;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .arch-layer h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--near-black);
+            font-family: Georgia, serif;
+        }
+
+        .arch-layer p {
+            font-size: 14px;
+            color: var(--olive-gray);
+            font-family: -apple-system, sans-serif;
+        }
+
+        .arch-layer ul {
+            margin-top: 12px;
+            padding-left: 20px;
+            font-size: 13px;
+            color: var(--olive-gray);
+            font-family: -apple-system, sans-serif;
+        }
+
+        .arch-layer ul li { margin-bottom: 4px; }
+
+        .arch-layer .arrow-down {
+            text-align: center;
+            color: var(--terracotta);
+            font-size: 20px;
+            margin: -8px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Toolbox */
+        .toolbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .tool-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .tool-card .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .tool-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--near-black);
+        }
+
+        .tool-card .cmd {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            background: var(--warm-sand);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            color: var(--terracotta);
+        }
+
+        .tool-card p {
+            font-size: 13px;
+            color: var(--olive-gray);
+            font-family: -apple-system, sans-serif;
+        }
+
+        /* Settings */
+        .settings-section {
+            background: var(--near-black);
+            border-radius: 24px;
+            padding: 48px;
+            margin: 60px 0;
+        }
+
+        .settings-section h3 {
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--ivory);
+            margin-bottom: 8px;
+            font-family: Georgia, serif;
+        }
+
+        .settings-section p {
+            font-size: 15px;
+            color: var(--warm-silver);
+            margin-bottom: 30px;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .setting-item {
+            background: var(--dark-surface);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .setting-item h4 {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--ivory);
+            margin-bottom: 8px;
+            font-family: -apple-system, sans-serif;
+        }
+
+        .setting-item p {
+            font-size: 13px;
+            color: var(--warm-silver);
+            margin-bottom: 16px;
+        }
+
+        .setting-item .range {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--stone-gray);
+            font-family: -apple-system, sans-serif;
+        }
+
+        /* Chat Scenario */
+        .chat-scenario {
+            background: var(--ivory);
+            border: 1px solid var(--border-cream);
+            border-radius: 24px;
+            padding: 48px;
+            margin: 60px 0;
+            box-shadow: 0 4px 24px var(--shadow-ring);
+        }
+
+        .chat-title {
+            font-size: 36px;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 36px;
+            font-family: Georgia, serif;
+            color: var(--near-black);
+        }
+
+        .chat-messages { max-width: 720px; margin: 0 auto; }
+
+        .chat-message {
+            display: flex;
+            gap: 16px;
+            margin: 20px 0;
+            align-items: flex-start;
+        }
+
+        .chat-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            background: var(--warm-sand);
+        }
+
+        .chat-bubble {
+            background: var(--warm-sand);
+            border-radius: 18px;
+            padding: 16px 20px;
+            max-width: 520px;
+        }
+
+        .chat-bubble p {
+            font-size: 15px;
+            color: var(--near-black);
+            font-family: -apple-system, sans-serif;
+        }
+
+        /* How to Use */
+        .howto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .howto-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-cream);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+        }
+
+        .howto-card .step {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .howto-card h4 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--near-black);
+            font-family: Georgia, serif;
+        }
+
+        .howto-card p {
+            font-size: 14px;
+            color: var(--olive-gray);
+            font-family: -apple-system, sans-serif;
+        }
+
+        /* Comparison */
+        .comparison {
+            background: var(--near-black);
+            border-radius: 24px;
+            padding: 48px;
+            margin: 60px 0;
+        }
+
+        .comparison h3 {
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--ivory);
+            text-align: center;
+            margin-bottom: 32px;
+            font-family: Georgia, serif;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .comparison-card {
+            background: var(--dark-surface);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .comparison-card h4 {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--ivory);
+            margin-bottom: 16px;
+            font-family: Georgia, serif;
+        }
+
+        .comparison-card .bad, .comparison-card .good {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 14px;
+            font-family: -apple-system, sans-serif;
+        }
+
+        .comparison-card .bad { color: var(--error); }
+        .comparison-card .good { color: #34c759; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--stone-gray);
+            font-size: 14px;
+            font-family: -apple-system, sans-serif;
+        }
+
+        .footer a { color: var(--terracotta); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 42px; }
+            .stats-row { flex-direction: column; gap: 24px; }
+            .settings-grid { grid-template-columns: 1fr; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Taste Skill</h1>
+        <p class="subtitle">让 AI 写出「高级感」前端代码的技能包</p>
+        <p class="desc">
+            告别平庸的 AI 生成的界面。Taste Skill 让 AI 生成的代码拥有：<br>
+            现代高端的设计、流畅的动画、恰当的间距、专业的视觉品质。
+        </p>
+        <div class="install-cmd">npx skills add https://github.com/Leonxlnx/taste-skill</div>
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="num">9</div>
+                <div class="label">种专业技能</div>
+            </div>
+            <div class="stat-item">
+                <div class="num">3</div>
+                <div class="label">档位调节</div>
+            </div>
+            <div class="stat-item">
+                <div class="num">∞</div>
+                <div class="label">设计风格</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 核心技能 -->
+        <div class="section">
+            <h2 class="section-title">九大技能</h2>
+            <p class="section-desc">每种技能针对不同的设计场景，选择最适合你的</p>
+
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h4>taste-skill <span class="tag terracotta">推荐</span></h4>
+                    <p>默认全能型技能。想输出高端前端代码又不想限定具体风格时使用。最安全的选择。</p>
+                    <div class="plain">📝 大白话：不知道选哪个时就选它，不会出错</div>
+                </div>
+
+                <div class="skill-card">
+                    <h4>gpt-taste <span class="tag coral">强力版</span></h4>
+                    <p>更严格、更有主见的版本。适合 GPT/Codex 模型，更强的 GSAP 动画方向，更激进的反 AI slop 规则。</p>
+                    <div class="plain">📝 大白话：给 AI 戴上"设计总监"的帽子，听话</div>
+                </div>
+
+                <div class="skill-card">
+                    <h4>images-taste-skill <span class="tag blue">看图</span></h4>
+                    <p>图片优先工作流：生成设计图 → 深入分析 → 精准实现。当视觉质量是主要挑战时使用。</p>
+                    <div class="plain">📝 大白话：先画图，再照着图写代码</div>
+                </div>
+
+                <div class="skill-card">
+                    <h4>redesign-skill <span class="tag green">重构</span></h4>
+                    <p>用于已有项目的改进。先审计当前 UI，然后修复薄弱的布局、间距、层级和样式决策。</p>
+                    <div class="plain">📝 大白话：像请了个设计顾问来优化现有界面</div>
+                </div>
+
+                <div class="skill-card">
+                    <h4>soft-skill <span class="tag terracotta">柔和</span></h4>
+                    <p>制作精致、安静、看起来很贵的高端界面。更柔和的对比度、更多留声、高级字体、弹簧动画。</p>
+                    <div class="plain">📝 大白话：苹果式简约高端风格</div>
+                </div>
+
+                <div class="skill-card">
+                    <h4>minimalist-skill <span class="tag green">极简</span></h4>
+                    <p>更干净的编辑类产品 UI，灵感来自 Notion 或 Linear。保持克制的配色和清晰的结构。</p>
+                    <div class="plain">📝 大白话：像 Notion、Linear 那样的性冷淡风</div>
+                </div>
+
+                <div class="skill-card">
+                    <h4>brutalist-skill <span class="tag beta">BETA</span></h4>
+                    <p>更硬朗的机械视觉语言：瑞士字体、锐利对比、原始结构、实验性构图。</p>
+                    <div class="plain">📝 大白话：粗犷、工业、原始美感</div>
+                </div>
+
+                <div class="skill-card">
+                    <h4>stitch-skill <span class="tag blue">Google</span></h4>
+                    <p>使用 Google Stitch 兼容的语义设计规则，包括额外的 DESIGN.md 导出格式。</p>
+                    <div class="plain">📝 大白话：如果你用 Google Stitch，选这个</div>
+                </div>
+
+                <div class="skill-card">
+                    <h4>output-skill <span class="tag terracotta">防懒</span></h4>
+                    <p>当 AI 太懒时使用。推动完整输出、无占位注释、不跳过实现步骤。</p>
+                    <div class="plain">📝 大白话：防止 AI 偷懒，留一堆 TODO</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 参数调节 -->
+        <div class="settings-section">
+            <h3>🎛️ 三档参数调节</h3>
+            <p>taste-skill 有三个可调节的参数，根据你要做的项目调整（1-10）</p>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <h4>DESIGN_VARIANCE</h4>
+                    <p>布局实验程度</p>
+                    <div class="range">
+                        <span>1-3: 简洁居中</span>
+                        <span>8-10: 先锋不对称</span>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <h4>MOTION_INTENSITY</h4>
+                    <p>动画强度</p>
+                    <div class="range">
+                        <span>1-3: 简单悬停</span>
+                        <span>8-10: 磁性/滚动触发</span>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <h4>VISUAL_DENSITY</h4>
+                    <p>视觉密度</p>
+                    <div class="range">
+                        <span>1-3: 宽松奢华</span>
+                        <span>8-10: 密集仪表盘</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分层架构图 -->
+        <div class="section" id="architecture">
+            <h2 class="section-title">🏗️ 技能层级架构</h2>
+            <p class="section-desc">从基础到高级，9 种技能的分层关系</p>
+
+            <div class="arch-layers">
+                <div class="arch-layer" data-layer="Lv.1 基座">
+                    <h4>🎯 taste-skill / gpt-taste</h4>
+                    <p>默认全能型技能。所有其他技能的基础包，提供核心设计规则和反 AI slop 原则。</p>
+                    <ul>
+                        <li>高端设计原则</li>
+                        <li>字体搭配规则</li>
+                        <li>动画过渡系统</li>
+                    </ul>
+                </div>
+                <div class="arrow-down">↓</div>
+
+                <div class="arch-layer" data-layer="Lv.2 风格变体">
+                    <h4>🎨 soft-skill / minimalist-skill / brutalist-skill</h4>
+                    <p>基于 taste-skill 的风格变体，专门针对不同设计方向。</p>
+                    <ul>
+                        <li>soft: 苹果式高端简约</li>
+                        <li>minimalist: Notion/Linear 性冷淡</li>
+                        <li>brutalist: 粗犷工业风</li>
+                    </ul>
+                </div>
+                <div class="arrow-down">↓</div>
+
+                <div class="arch-layer" data-layer="Lv.3 专用技能">
+                    <h4>🔧 redesign-skill / images-taste-skill / output-skill</h4>
+                    <p>特定场景专用技能，处理具体问题。</p>
+                    <ul>
+                        <li>redesign: 现有项目优化</li>
+                        <li>images: 看图生成代码</li>
+                        <li>output: 防止 AI 偷懒</li>
+                    </ul>
+                </div>
+                <div class="arrow-down">↓</div>
+
+                <div class="arch-layer" data-layer="Lv.4 平台适配">
+                    <h4>🔗 stitch-skill</h4>
+                    <p>Google Stitch 平台专用适配层，包含 DESIGN.md 导出规则。</p>
+                    <ul>
+                        <li>Stitch 语义设计规则</li>
+                        <li>设计系统导出</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 工具箱 -->
+        <div class="section" id="toolbox">
+            <h2 class="section-title">🧰 技能工具箱</h2>
+            <p class="section-desc">每个技能提供的命令和参数</p>
+
+            <div class="toolbox-grid">
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>🎯 taste-skill</h4>
+                        <span class="tag terracotta">默认</span>
+                    </div>
+                    <div class="cmd">npx skills add taste-skill</div>
+                    <p>默认技能包，适用于大多数场景。</p>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>💪 gpt-taste</h4>
+                        <span class="tag coral">强力</span>
+                    </div>
+                    <div class="cmd">npx skills add gpt-taste</div>
+                    <p>更严格的版本，适合 GPT/Codex。</p>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>🖼️ images-taste</h4>
+                        <span class="tag blue">看图</span>
+                    </div>
+                    <div class="cmd">/images-taste-skill</div>
+                    <p>先分析设计图，再生成代码。</p>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>🔄 redesign</h4>
+                        <span class="tag green">重构</span>
+                    </div>
+                    <div class="cmd">/redesign-skill</div>
+                    <p>审计并优化现有 UI 项目。</p>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>✨ soft-skill</h4>
+                        <span class="tag terracotta">柔和</span>
+                    </div>
+                    <div class="cmd">npx skills add soft-skill</div>
+                    <p>制作精致高端的柔和界面。</p>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>📱 minimalist</h4>
+                        <span class="tag green">极简</span>
+                    </div>
+                    <div class="cmd">npx skills add minimalist-skill</div>
+                    <p>Notion/Linear 风格的简洁 UI。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 场景演示 -->
+        <div class="chat-scenario">
+            <h2 class="chat-title">💬 假如 Taste Skill 是一个设计团队</h2>
+            <div class="chat-messages">
+                <div class="chat-message">
+                    <div class="chat-avatar">👨‍💻</div>
+                    <div class="chat-bubble">
+                        <p>Hey，我想做一个很酷的 Landing Page，能帮我生成前端代码吗？</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🎨</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>taste-skill</strong>！没问题，你想要什么风格？</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">👨‍💻</div>
+                    <div class="chat-bubble">
+                        <p>想要那种看起来很高级、很有质感的设计，不要那种 AI 生成的低质量界面。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">✨</div>
+                    <div class="chat-bubble">
+                        <p>收到！让我开启「高端模式」—— 适当的留白、精心设计的排版、细腻的动画过渡。不是那种模板化的"AI slop"。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">👨‍💻</div>
+                    <div class="chat-bubble">
+                        <p>太好了！再帮我加点动画，让页面动起来。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🎬</div>
+                    <div class="chat-bubble">
+                        <p>没问题！我会加上：按钮悬停的微妙缩放、滚动时的淡入效果、卡片hover的提升感。不会太过，恰到好处的高级感。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">👨‍💻</div>
+                    <div class="chat-bubble">
+                        <p>对了，我还有个现有项目 UI 很差，能帮我优化吗？</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar">🔧</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>redesign-skill</strong>！先审计现有 UI 的问题：布局是否合理？间距是否统一？视觉层级是否清晰？然后对症下药优化。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 对比 -->
+        <div class="comparison">
+            <h3>Taste Skill 改变了什么？</h3>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h4>❌ 没有 Taste Skill</h4>
+                    <div class="bad">✗ 通用的蓝色按钮</div>
+                    <div class="bad">✗ 平平无奇的卡片布局</div>
+                    <div class="bad">✗ 毫无生气的静态界面</div>
+                    <div class="bad">✗ 随机选择的系统字体</div>
+                    <div class="bad">✗ 没有视觉层次</div>
+                </div>
+                <div class="comparison-card">
+                    <h4>✅ 有 Taste Skill</h4>
+                    <div class="good">✓ 精心设计的主色调按钮</div>
+                    <div class="good">✓ 有层次感的卡片组合</div>
+                    <div class="good">✓ 流畅的交互动画</div>
+                    <div class="good">✓ 搭配合理的高端字体</div>
+                    <div class="good">✓ 清晰的视觉引导</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用方式 -->
+        <div class="section">
+            <h2 class="section-title">如何使用？</h2>
+            <p class="section-desc">一行命令安装，支持所有主流 AI 编码工具</p>
+            <div class="howto-grid">
+                <div class="howto-card">
+                    <div class="step">1️⃣</div>
+                    <h4>安装</h4>
+                    <p>在终端运行安装命令，AI 会自动读取技能文件</p>
+                </div>
+                <div class="howto-card">
+                    <div class="step">2️⃣</div>
+                    <h4>选择技能</h4>
+                    <p>根据需求选择：taste-skill、soft-skill、brutalist-skill 等</p>
+                </div>
+                <div class="howto-card">
+                    <div class="step">3️⃣</div>
+                    <h4>生成代码</h4>
+                    <p>像平常一样让 AI 写代码，它会自动应用高端设计规则</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <div class="install-cmd">npx skills add https://github.com/Leonxlnx/taste-skill</div>
+            </div>
+        </div>
+
+        <!-- 支持的工具 -->
+        <div class="section">
+            <h2 class="section-title">支持的 AI 工具</h2>
+            <p class="section-desc">Works with all major AI coding agents</p>
+            <div class="skills-grid" style="max-width: 700px; margin: 0 auto;">
+                <div class="skill-card" style="text-align: center;">
+                    <h4>Cursor</h4>
+                </div>
+                <div class="skill-card" style="text-align: center;">
+                    <h4>Claude Code</h4>
+                </div>
+                <div class="skill-card" style="text-align: center;">
+                    <h4>Windsurf</h4>
+                </div>
+                <div class="skill-card" style="text-align: center;">
+                    <h4>Codex</h4>
+                </div>
+                <div class="skill-card" style="text-align: center;">
+                    <h4>Antigravity</h4>
+                </div>
+                <div class="skill-card" style="text-align: center;">
+                    <h4>Copilot</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>📦 由 <a href="https://github.com/Leonxlnx/taste-skill">Leonxlnx</a> 创建</p>
+        <p>让 AI 写出「看起来很贵」的代码</p>
+    </div>
+</body>
+</html>
