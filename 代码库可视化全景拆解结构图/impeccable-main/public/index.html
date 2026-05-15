@@ -1,557 +1,1222 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TEXGHC7V34"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TEXGHC7V34');
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impeccable 技能拆解全景图 - 像搭积木一样看懂这个系统</title>
+    <style>
+        :root {
+            /* Impeccable Design System - Light Mode */
+            --parchment: #f5f4ed;
+            --ivory: #faf9f5;
+            --warm-sand: #e8e6dc;
+            --border-cream: #f0eee6;
+            --border-warm: #e8e6dc;
+            --charcoal-warm: #4d4c48;
+            --olive-gray: #5e5d59;
+            --stone-gray: #87867f;
+            --terracotta: #c96442;
+            --coral: #d97757;
+            --deep-dark: #141413;
+            --dark-surface: #30302e;
+            --focus-blue: #3898ec;
+            --error-crimson: #b53333;
+        }
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Impeccable: The missing upgrade to Anthropic's frontend-design skill</title>
-  <meta name="description" content="1 skill, 20 commands, and curated anti-patterns for impeccable frontend design. Works with Cursor, Claude Code, Gemini CLI, and Codex CLI.">
-  <meta name="theme-color" content="#fafafa">
-  <link rel="canonical" href="https://impeccable.style">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <!-- OpenGraph -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://impeccable.style">
-  <meta property="og:title" content="Impeccable: Design skills for AI harnesses">
-  <meta property="og:description" content="1 skill, 20 commands, and curated anti-patterns for impeccable frontend design. Works with Cursor, Claude Code, Gemini CLI, and Codex CLI.">
-  <meta property="og:image" content="https://impeccable.style/og-image.jpg">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--parchment);
+            color: var(--deep-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@pbakaus">
-  <meta name="twitter:creator" content="@pbakaus">
-  <meta name="twitter:title" content="Impeccable: Design skills for AI harnesses">
-  <meta name="twitter:description" content="1 skill, 20 commands, and curated anti-patterns for impeccable frontend design.">
-  <meta name="twitter:image" content="https://impeccable.style/og-image.jpg">
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 24px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--parchment) 0%, var(--ivory) 100%);
+            position: relative;
+            overflow: hidden;
+        }
 
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Instrument+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/main.css">
-  
-  </head>
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(201, 100, 66, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(93, 93, 89, 0.05) 0%, transparent 50%);
+            animation: heroFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-2%, -2%); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--deep-dark);
+            letter-spacing: -0.02em;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--olive-gray);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: var(--terracotta);
+            color: var(--ivory);
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Navigation */
+        .nav {
+            position: sticky;
+            top: 0;
+            background: var(--parchment);
+            border-bottom: 1px solid var(--border-cream);
+            padding: 16px 24px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(245, 244, 237, 0.95);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--deep-dark);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--olive-gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--terracotta);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+            color: var(--deep-dark);
+        }
+
+        .section-header p {
+            color: var(--olive-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Architecture Layers - Stacked Cards */
+        .architecture-layers {
+            position: relative;
+            padding: 60px 0;
+        }
+
+        .layer-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .layer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .layer-card.level-1 {
+            margin-left: 0;
+            z-index: 5;
+            border-left: 4px solid var(--terracotta);
+        }
+
+        .layer-card.level-2 {
+            margin-left: 40px;
+            z-index: 4;
+            border-left: 4px solid var(--coral);
+            background: linear-gradient(135deg, var(--ivory) 0%, #fdfcfa 100%);
+        }
+
+        .layer-card.level-3 {
+            margin-left: 80px;
+            z-index: 3;
+            border-left: 4px solid var(--olive-gray);
+            background: linear-gradient(135deg, var(--ivory) 0%, #fcfbf9 100%);
+        }
+
+        .layer-card.level-4 {
+            margin-left: 120px;
+            z-index: 2;
+            border-left: 4px solid var(--stone-gray);
+            background: linear-gradient(135deg, var(--ivory) 0%, #fbfafa 100%);
+        }
+
+        .layer-card.level-5 {
+            margin-left: 160px;
+            z-index: 1;
+            border-left: 4px solid var(--dark-surface);
+            background: linear-gradient(135deg, var(--ivory) 0%, #faf9f8 100%);
+        }
+
+        .layer-label {
+            display: inline-block;
+            background: var(--warm-sand);
+            color: var(--charcoal-warm);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .layer-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--deep-dark);
+        }
+
+        .layer-card p {
+            color: var(--olive-gray);
+            font-size: 0.95rem;
+        }
+
+        .layer-icon {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: var(--warm-sand);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Chat Communication Flow */
+        .chat-section {
+            background: var(--deep-dark);
+            color: var(--ivory);
+            padding: 100px 24px;
+            margin: 0;
+            max-width: 100%;
+        }
+
+        .chat-section .section-header h2 {
+            color: var(--ivory);
+        }
+
+        .chat-section .section-header p {
+            color: var(--stone-gray);
+        }
+
+        .chat-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar.stripe { background: #635bff; }
+        .chat-avatar.supabase { background: #3ecf8e; }
+        .chat-avatar.cloudflare { background: #f38020; }
+        .chat-avatar.bun { background: #f8af00; }
+        .chat-avatar.user { background: var(--terracotta); }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 20px;
+            max-width: 600px;
+        }
+
+        .chat-bubble.paid {
+            border-left: 3px solid #635bff;
+        }
+
+        .chat-bubble.license {
+            border-left: 3px solid #3ecf8e;
+        }
+
+        .chat-bubble.deploy {
+            border-left: 3px solid #f38020;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .chat-text {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+        }
+
+        .chat-timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .chat-timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #635bff, #3ecf8e, #f38020);
+        }
+
+        /* Core Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--terracotta);
+        }
+
+        .feature-card.featured {
+            border-color: var(--terracotta);
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--ivory) 0%, rgba(201, 100, 66, 0.05) 100%);
+        }
+
+        .feature-number {
+            display: inline-block;
+            background: var(--terracotta);
+            color: var(--ivory);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--deep-dark);
+        }
+
+        .feature-card p {
+            color: var(--olive-gray);
+            font-size: 0.95rem;
+        }
+
+        .feature-example {
+            background: var(--warm-sand);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 16px;
+            font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 0.85rem;
+            color: var(--charcoal-warm);
+        }
+
+        /* SaaS Toolbox */
+        .toolbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: var(--ivory);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover {
+            border-color: var(--terracotta);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .tool-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .tool-logo.bun { background: #f8af00; }
+        .tool-logo.cloudflare { background: #f38020; }
+        .tool-logo.supabase { background: #3ecf8e; }
+        .tool-logo.stripe { background: #635bff; }
+
+        .tool-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--deep-dark);
+        }
+
+        .tool-role {
+            font-size: 0.85rem;
+            color: var(--stone-gray);
+        }
+
+        .tool-desc {
+            color: var(--olive-gray);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .tool-pricing {
+            background: var(--warm-sand);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .pricing-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--stone-gray);
+            margin-bottom: 4px;
+        }
+
+        .pricing-free {
+            color: #3ecf8e;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .pricing-paid {
+            color: var(--charcoal-warm);
+            font-size: 0.9rem;
+        }
+
+        .pricing-upgrade {
+            font-size: 0.8rem;
+            color: var(--olive-gray);
+            margin-top: 8px;
+        }
+
+        .tool-relation {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-cream);
+            font-size: 0.85rem;
+            color: var(--stone-gray);
+        }
+
+        .tool-relation strong {
+            color: var(--terracotta);
+        }
+
+        /* Plain Explanations */
+        .explain-section {
+            background: var(--ivory);
+            padding: 100px 24px;
+        }
+
+        .explain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .explain-card {
+            background: var(--parchment);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .explain-term {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--terracotta);
+            margin-bottom: 16px;
+        }
+
+        .explain-analogy {
+            color: var(--deep-dark);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .explain-analogy::before {
+            content: '💡 ';
+        }
+
+        /* Footer */
+        footer {
+            background: var(--deep-dark);
+            color: var(--stone-gray);
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--ivory);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--terracotta);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .layer-card.level-1,
+            .layer-card.level-2,
+            .layer-card.level-3,
+            .layer-card.level-4,
+            .layer-card.level-5 {
+                margin-left: 0;
+            }
+
+            .layer-card.level-2 {
+                margin-left: 20px;
+            }
+
+            .layer-card.level-3 {
+                margin-left: 40px;
+            }
+
+            .layer-card.level-4 {
+                margin-left: 60px;
+            }
+
+            .layer-card.level-5 {
+                margin-left: 80px;
+            }
+
+            .feature-card.featured {
+                grid-column: span 1;
+            }
+
+            .chat-message {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
 <body>
-  <!-- Skip to main content link for keyboard users -->
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Grain Overlay -->
-  <div class="grain-overlay" aria-hidden="true"></div>
-
-  <!-- Sticky Section Nav -->
-  <nav class="section-nav" id="section-nav" aria-label="Page sections">
-    <a href="#antidote" class="section-nav-item" data-section="antidote"><span class="section-nav-num">01</span><span class="section-nav-label">Anti-Patterns</span></a>
-    <a href="#solution" class="section-nav-item" data-section="solution"><span class="section-nav-num">02</span><span class="section-nav-label">Framework</span></a>
-    <a href="#commands-section" class="section-nav-item" data-section="commands-section"><span class="section-nav-num">03</span><span class="section-nav-label">Commands</span></a>
-    <a href="#downloads" class="section-nav-item" data-section="downloads"><span class="section-nav-num">04</span><span class="section-nav-label">Install</span></a>
-    <a href="#changelog" class="section-nav-item" data-section="changelog"><span class="section-nav-num">05</span><span class="section-nav-label">Changelog</span></a>
-    <a href="#faq" class="section-nav-item" data-section="faq"><span class="section-nav-num">06</span><span class="section-nav-label">FAQ</span></a>
-  </nav>
-
-  <!-- 1. HERO - Combined with Problem Section -->
-  <section id="hero" class="hero-combined">
-    <a href="https://github.com/pbakaus/impeccable" class="github-link" aria-label="View on GitHub">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-      <span class="github-stars">13.3k</span>
-    </a>
-    <div class="hero-combined-container">
-      <!-- Left: Title & Info -->
-      <div class="hero-combined-left">
-        <h1 class="hero-title-combined">Impeccable</h1>
-        <p class="hero-tagline-combined">Design fluency for AI harnesses</p>
-
-        <p class="hero-hook-text">Great design prompts require design vocabulary. Most people don't have it. You can't ask for "more vertical rhythm" if you've never used those words. Impeccable gives you commands that put designer language in your hands.</p>
-
-        <div class="hero-included-box">
-          <span class="hero-included-title">What's included</span>
-          <div class="hero-included-items">
-            <span>Enhanced <em>frontend-design</em> skill + anti-patterns</span>
-            <span class="hero-included-sep">·</span>
-            <span>20 design skills: /polish, /audit, /typeset, /overdrive...</span>
-          </div>
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-content">
+            <span class="badge">🎨 Impeccable 技能拆解全景图</span>
+            <h1>像搭积木一样<br>看懂这个系统</h1>
+            <p class="subtitle">这个项目是给 AI 编程工具用的"设计教练"，帮它做出漂亮的网页。不用懂代码，看完这张图你就明白了。</p>
         </div>
-
-        <div class="hero-cta-group">
-          <a href="#downloads" class="hero-cta-combined">Get Started</a>
-          <div class="hero-logos-inline">
-            <span class="hero-logos-label">Works with</span>
-            <div class="hero-logos-row">
-              <span class="hero-logo-icon has-tooltip" data-tooltip="Cursor"><img src="assets/cursor-logo.png" alt="Cursor" width="24" height="24" loading="lazy"></span>
-              <span class="hero-logo-icon has-tooltip" data-tooltip="Claude Code"><img src="assets/claude-logo.png" alt="Claude Code" width="24" height="24" loading="lazy"></span>
-              <span class="hero-logo-icon has-tooltip" data-tooltip="Gemini CLI"><img src="assets/gemini-logo.png" alt="Gemini CLI" width="20" height="20" loading="lazy"></span>
-              <span class="hero-logo-icon has-tooltip" data-tooltip="Codex CLI"><img src="assets/openai-logo.png" alt="Codex CLI" width="20" height="20" loading="lazy"></span>
-              <span class="hero-logo-icon has-tooltip" data-tooltip="VS Code Copilot"><img src="assets/github-logo.png" alt="VS Code Copilot" width="20" height="20" loading="lazy"></span>
-              <span class="hero-logo-icon has-tooltip" data-tooltip="Antigravity"><img src="assets/antigravity-logo.png" alt="Antigravity" width="20" height="20" loading="lazy"></span>
-              <span class="hero-logo-icon has-tooltip" data-tooltip="Kiro"><img src="assets/kiro-logo.png" alt="Kiro" width="20" height="20" loading="lazy"></span>
-              <span class="hero-logo-icon has-tooltip" data-tooltip="OpenCode"><img src="assets/opencode-logo.png" alt="OpenCode" width="20" height="20" loading="lazy"></span>
-              <span class="hero-logo-icon has-tooltip" data-tooltip="Pi"><img src="assets/pi-logo.svg" alt="Pi" width="20" height="20" loading="lazy" style="background:#1a1a1a;border-radius:50%;padding:3px"></span>
-            </div>
-          </div>
-        </div>
-        <p class="hero-version-link"><a href="#changelog">v1.6.0 — Trae support, scoring for /critique and /audit, build overhaul</a></p>
-      </div>
-
-      <!-- Right: Before/After Demo -->
-      <div class="hero-combined-right">
-        <div class="split-comparison" id="lens-comparison">
-          <div class="split-container">
-            <!-- Before: AI Slop -->
-            <div class="split-before">
-              <span class="split-badge split-badge--before">Before</span>
-              <div class="slop-card">
-                <div class="slop-header">
-                  <div class="slop-avatar"></div>
-                  <div class="slop-text">
-                    <div class="slop-title">Welcome to Our Platform</div>
-                    <div class="slop-subtitle">The best solution for your needs</div>
-                  </div>
-                </div>
-                <p class="slop-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. This is generic placeholder text.</p>
-                <button class="slop-button">Get Started</button>
-              </div>
-              <!-- Callout labels pointing to issues -->
-              <div class="slop-callouts">
-                <span class="slop-callout" data-point="font">Inter font (again)</span>
-                <span class="slop-callout" data-point="gradient">Purple gradient</span>
-                <span class="slop-callout" data-point="copy">Generic copy</span>
-                <span class="slop-callout" data-point="rounded">Cards on cards</span>
-              </div>
-            </div>
-            <!-- After: Impeccable (shown through split) -->
-            <div class="split-after">
-              <span class="split-badge split-badge--after">After</span>
-              <div class="impeccable-card">
-                <p class="impeccable-eyebrow">Introducing</p>
-                <h3 class="impeccable-title">Thoughtful Design</h3>
-                <p class="impeccable-body">Every element serves a purpose. Hierarchy guides the eye. Whitespace breathes.</p>
-                <button class="impeccable-button">Explore</button>
-              </div>
-            </div>
-            <!-- The Divider -->
-            <div class="split-divider"></div>
-          </div>
-          <div class="split-labels">
-            <div class="split-label-item" data-point="before">
-              <span class="split-label-dot"></span>
-              <span>Generic AI Output</span>
-            </div>
-            <div class="split-label-item" data-point="after">
-              <span class="split-label-dot split-label-dot--accent"></span>
-              <span>With Design Skills</span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </section>
 
-  <main class="site-content" id="main-content">
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">🏗️ 项目架构</a>
+            <ul class="nav-links">
+                <li><a href="#architecture">分层架构</a></li>
+                <li><a href="#features">核心功能</a></li>
+                <li><a href="#toolbox">工具箱</a></li>
+                <li><a href="#chat">怎么"聊天"</a></li>
+                <li><a href="#explain">大白话解释</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <!-- 2. THE ANTIDOTE - Patterns & Anti-Patterns -->
-    <section class="antidote-section" id="antidote">
-      <div class="section-header" data-reveal>
-        <span class="section-number">01</span>
-        <h2 class="section-title">The Antidote</h2>
-      </div>
-      <div class="antidote-content">
-        <p class="section-lead" data-reveal>Anthropic's original frontend-design skill laid the foundation. Impeccable builds on it with curated patterns and anti-patterns across typography, color, layout, motion, and more.</p>
-
-        <!-- Patterns by category with tabs -->
-        <div class="patterns-categories" id="patterns-categories">
-          <!-- Rendered by JS -->
+    <!-- Architecture Layers -->
+    <section id="architecture">
+        <div class="section-header">
+            <h2>🏗️ 五层积木塔</h2>
+            <p>这个系统像一栋五层的房子，每层有不同的功能。越往上越接近用户，越往下越底层。</p>
         </div>
 
-        <p class="contribute-inline">Missing something? <a href="https://github.com/pbakaus/impeccable/issues/new?labels=pattern&title=Pattern%20suggestion%3A%20">Suggest a pattern &rarr;</a></p>
-      </div>
+        <div class="architecture-layers">
+            <!-- 第5层：用户界面 -->
+            <div class="layer-card level-1">
+                <span class="layer-label">第 5 层 · 门面</span>
+                <div class="layer-icon">🎨</div>
+                <h3>网站展示层 (public/)</h3>
+                <p>你在浏览器里看到的网页。包括首页、案例展示、反面教材页面。你能访问的一切都在这里。</p>
+            </div>
+
+            <!-- 第4层：技能和命令 -->
+            <div class="layer-card level-2">
+                <span class="layer-label">第 4 层 · 工具箱</span>
+                <div class="layer-icon">🛠️</div>
+                <h3>编译输出层 (dist/)</h3>
+                <p>把源文件变成不同 AI 工具能用的格式。比如给 Cursor 用的、给 Claude Code 用的、给 Gemini 用的 —— 同一个人化不同的妆。</p>
+            </div>
+
+            <!-- 第3层：技能定义 -->
+            <div class="layer-card level-3">
+                <span class="layer-label">第 3 层 · 菜谱</span>
+                <div class="layer-icon">📖</div>
+                <h3>源技能层 (source/skills/)</h3>
+                <p>20 个设计"口诀"。比如 /audit 是"挑毛病"、/polish 是"打磨细节"、/delight 是"加点惊喜"。每个技能都有详细的指导手册。</p>
+            </div>
+
+            <!-- 第2层：构建系统 -->
+            <div class="layer-card level-4">
+                <span class="layer-label">第 2 层 · 工厂</span>
+                <div class="layer-icon">🏭</div>
+                <h3>构建系统 (scripts/, lib/)</h3>
+                <p>自动化流水线。把技能从"一份原版"复制编译成"多份定制版"，适配不同 AI 工具的格式要求。</p>
+            </div>
+
+            <!-- 第1层：基础设施 -->
+            <div class="layer-card level-5">
+                <span class="layer-label">第 1 层 · 地基</span>
+                <div class="layer-icon">🧱</div>
+                <h3>基础设施 (server/, functions/)</h3>
+                <p>运行在云端的服务器。处理网站访问、文件下载、用户反馈等请求。</p>
+            </div>
+        </div>
     </section>
 
-    <!-- 3. THE SOLUTION - Two-part system -->
-    <section class="solution-section" id="solution">
-      <div class="section-header" data-reveal>
-        <span class="section-number">02</span>
-        <h2 class="section-title">The Framework</h2>
-      </div>
-      <div class="solution-content">
-        <p class="section-lead" data-reveal>One comprehensive skill with deep expertise, plus 20 commands that form the language of design.</p>
-
-        <div class="solution-visual-interactive" id="framework-viz-container" data-reveal>
-          <!-- Subway map generated by JS -->
+    <!-- Core Features -->
+    <section id="features">
+        <div class="section-header">
+            <h2>⚡ 核心功能场景</h2>
+            <p>这个工具能做什么？按重要程度排序，最常用的排在最前面。</p>
         </div>
 
-      </div>
+        <div class="features-grid">
+            <!-- #1 最重要的功能 -->
+            <div class="feature-card featured">
+                <span class="feature-number">1</span>
+                <h3>🎨 指导 AI 做出漂亮网页</h3>
+                <p>这是 Impeccable 的核心超能力。它教会 AI 什么该做、什么不该做。比如"别用 Inter 字体"、"别在彩色背景上用灰色字"、"别把所有东西都塞进卡片里"。</p>
+                <div class="feature-example">/frontend-design → 生成一个"看起来像人做的"网页</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">2</span>
+                <h3>🔍 审计体检</h3>
+                <p>像体检一样全面检查网页。看看颜色对比够不够、响应式有没有问题、加载快不快。</p>
+                <div class="feature-example">/audit → "报告：发现 5 个问题"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">3</span>
+                <h3>✨ 打磨抛光</h3>
+                <p>出货前的最后一道工序。对齐像素、调整间距、统一字体。让细节经得起放大镜看。</p>
+                <div class="feature-example">/polish → "好了，可以发货了"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">4</span>
+                <h3>🎭 风格改造</h3>
+                <p>把平淡的设计变得有趣。或者把太花哨的弄得更低调。完全看你需要。</p>
+                <div class="feature-example">/bolder → "再大胆一点！"<br>/quieter → "低调一点"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">5</span>
+                <h3>🎬 加点"魔法"</h3>
+                <p>加上恰到好处的动画。让页面动起来，但不要太过分。</p>
+                <div class="feature-example">/animate → "给按钮加个hover效果"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">6</span>
+                <h3>📝 文字润色</h3>
+                <p>把"技术黑话"变成人话。让按钮文字、提示信息更容易懂。</p>
+                <div class="feature-example">/clarify → "别叫 Error 404 了，说'页面消失了'"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">7</span>
+                <h3>🧩 组件提取</h3>
+                <p>把重复的代码变成可复用的零件。一次编写，到处使用。</p>
+                <div class="feature-example">/extract → "这个按钮我以后还要用"</div>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-number">8</span>
+                <h3>📱 响应式适配</h3>
+                <p>让同一个页面在手机、平板、电脑上都好看。不是简单缩小，而是因地制宜。</p>
+                <div class="feature-example">/adapt → "手机上这样排"</div>
+            </div>
+        </div>
     </section>
 
-    <!-- 4. COMMANDS - Glass Terminal -->
-    <section class="commands-section" id="commands-section">
-      <div class="section-header" data-reveal>
-        <span class="section-number">03</span>
-        <h2 class="section-title">Commands in Action</h2>
-        <p class="section-subtitle">Interactive demos for every command <a href="/cheatsheet" class="cheatsheet-link">View cheatsheet &rarr;</a></p>
-      </div>
+    <!-- SaaS Toolbox -->
+    <section id="toolbox">
+        <div class="section-header">
+            <h2>🧰 SaaS 工具箱</h2>
+            <p>这个项目用了哪些"外包服务"？它们各自干什么活？为什么免费？什么时候需要花钱？</p>
+        </div>
 
-      <div class="commands-gallery">
-          <!-- Rendered by JS -->
-      </div>
-    </section>
-
-
-    <!-- 5. INSTALL -->
-    <section class="platforms-section" id="downloads">
-      <div class="section-header" data-reveal>
-        <span class="section-number">04</span>
-        <h2 class="section-title">Get Started</h2>
-        <p class="section-subtitle">Two steps to impeccable design.</p>
-      </div>
-
-      <div class="install-steps">
-        <!-- Step 1: Install -->
-        <div class="install-step" data-reveal>
-          <div class="install-step-header">
-            <span class="install-step-number">1</span>
-            <div class="install-step-meta">
-              <h3 class="install-step-title">Install the skills</h3>
-              <p class="install-step-desc">One command. Every provider.</p>
-            </div>
-          </div>
-
-          <!-- Primary: npx command -->
-          <div class="install-terminal">
-            <div class="glass-terminal">
-              <div class="terminal-header">
-                <span class="terminal-dot red"></span>
-                <span class="terminal-dot yellow"></span>
-                <span class="terminal-dot green"></span>
-                <span class="terminal-title">install</span>
-              </div>
-              <div class="terminal-body">
-                <div class="install-terminal-row">
-                  <div class="install-terminal-cmd">
-                    <span class="terminal-prompt">$</span>
-                    <code>npx skills add pbakaus/impeccable</code>
-                    <button class="copy-btn" aria-label="Copy command" data-copy="npx skills add pbakaus/impeccable">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
-                      </svg>
-                    </button>
-                  </div>
-                  <span class="install-terminal-note">Works with Cursor, Claude Code, Gemini CLI, Codex CLI, and more. Auto-detects your AI harness.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Alternatives (collapsible) -->
-          <details class="install-alternatives">
-            <summary class="install-alternatives-toggle">Other install methods</summary>
-            <div class="install-alternatives-content">
-              <div class="install-alt-method">
-                <span class="install-alt-label">Claude Code plugin</span>
-                <div class="install-terminal-cmd">
-                  <span class="terminal-prompt">$</span>
-                  <code>/plugin marketplace add pbakaus/impeccable</code>
-                  <button class="copy-btn" aria-label="Copy command" data-copy="/plugin marketplace add pbakaus/impeccable">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
-                    </svg>
-                  </button>
-                </div>
-                <span class="install-alt-note">Then open <code>/plugin</code> to install from Discover tab</span>
-              </div>
-              <div class="install-alt-divider"></div>
-              <div class="install-alt-method">
-                <span class="install-alt-label">Manual download</span>
-                <span class="install-alt-note">Contains all provider directories. Extract to your project root.</span>
-                <div class="install-prefix-options">
-                  <label class="install-prefix-option" data-prefix="default">
-                    <input type="radio" name="prefix-choice" value="default" checked />
-                    <div class="install-prefix-option-content">
-                      <span class="install-prefix-option-label">Default names</span>
-                      <span class="install-prefix-option-examples"><code>/polish</code> <code>/audit</code> <code>/typeset</code></span>
+        <div class="toolbox-grid">
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo bun">B</div>
+                    <div>
+                        <div class="tool-name">Bun</div>
+                        <div class="tool-role">运行环境和打包工具</div>
                     </div>
-                  </label>
-                  <div class="install-prefix-option-wrap">
-                    <label class="install-prefix-option" data-prefix="prefixed">
-                      <input type="radio" name="prefix-choice" value="prefixed" />
-                      <div class="install-prefix-option-content">
-                        <span class="install-prefix-option-label">Prefixed with <code>/i-</code></span>
-                        <span class="install-prefix-option-examples"><code>/i-polish</code> <code>/i-audit</code> <code>/i-typeset</code></span>
-                      </div>
-                    </label>
-                    <span class="install-prefix-reason">Avoids conflicts with built-in commands or other skill packs</span>
-                  </div>
                 </div>
-                <div class="install-alt-download">
-                  <button class="btn btn-primary" data-bundle="universal" aria-label="Download universal zip" id="download-zip-btn">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                    </svg>
-                    <span>Download universal zip</span>
-                  </button>
+                <div class="tool-desc">
+                    像厨房里的料理机。帮你快速运行代码、装依赖包、打包文件。项目里的 npm/yarn 命令它都能干，而且 快得多。
                 </div>
-                <input type="checkbox" id="prefix-toggle" class="sr-only" />
-              </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 完全免费</div>
+                    <div class="pricing-paid">目前个人使用完全免费</div>
+                    <div class="pricing-upgrade">什么时候升级：暂无付费计划，一直免费用</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Cloudflare Pages（部署）
+                </div>
             </div>
-          </details>
-        </div>
 
-        <!-- Step 2: Subscribe -->
-        <div class="install-step" data-reveal>
-          <div class="install-step-header">
-            <span class="install-step-number">2</span>
-            <div class="install-step-meta">
-              <h3 class="install-step-title">Stay up to date</h3>
-              <p class="install-step-desc">New skills, pattern updates, and design tips.</p>
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo cloudflare">CF</div>
+                    <div>
+                        <div class="tool-name">Cloudflare Pages</div>
+                        <div class="tool-role">网站托管和 CDN</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像租了一个铺面。它把你的网页放在全球各地的服务器上，有人访问就就近分发，速度快，还抗打（防DDoS）。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 500分钟/月</div>
+                    <div class="pricing-paid">付费版：$5/月起，无限分钟</div>
+                    <div class="pricing-upgrade">什么时候升级：流量大时（每月超过 500 分钟）</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Bon（触发构建）、用户（访问）
+                </div>
             </div>
-          </div>
-          <div class="install-subscribe">
-            <iframe src="https://impeccablestyle.substack.com/embed" width="100%" height="150" style="border: 1px solid #e8e4df; border-radius: 8px; background: white;" frameborder="0" scrolling="no"></iframe>
-          </div>
-        </div>
-      </div>
 
-      <p class="download-tip" data-reveal>Keep the <a href="/cheatsheet">command cheatsheet</a> handy for quick reference. To update skills, run <code>npx skills update</code>.</p>
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo supabase">S</div>
+                    <div>
+                        <div class="tool-name">Supabase</div>
+                        <div class="tool-role">数据库和认证</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像租了一个仓库存东西。用户数据、许可证状态、付费记录都存在这里。免费版足够个人项目用。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">免费额度</div>
+                    <div class="pricing-free">✅ 500MB 存储 + 无限 API 请求</div>
+                    <div class="pricing-paid">付费版：$25/月起，8GB 存储</div>
+                    <div class="pricing-upgrade">什么时候升级：数据超过 500MB 或需要更多项目</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Stripe（付款）、用户（登录）
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-logo stripe">S</div>
+                    <div>
+                        <div class="tool-name">Stripe</div>
+                        <div class="tool-role">支付网关</div>
+                    </div>
+                </div>
+                <div class="tool-desc">
+                    像雇了个收银员。用户刷卡付钱，它负责安全处理付款信息，然后通知"钱到了，可以发货"。
+                </div>
+                <div class="tool-pricing">
+                    <div class="pricing-label">收费</div>
+                    <div class="pricing-free">✅ 首年免收年费</div>
+                    <div class="pricing-paid">手续费：每笔交易 2.9% + $0.3</div>
+                    <div class="pricing-upgrade">什么时候升级：交易量大可谈更低费率</div>
+                </div>
+                <div class="tool-relation">
+                    <strong>配合：</strong> Supabase（记录）、Cloudflare（展示）
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- 5. CHANGELOG -->
-    <section class="changelog-section" id="changelog">
-      <div class="section-header" data-reveal>
-        <span class="section-number">05</span>
-        <h2 class="section-title">What's New</h2>
-      </div>
-
-      <div class="changelog-list" data-reveal>
-        <div class="changelog-entry">
-          <div class="changelog-version-header">
-            <span class="changelog-version">v1.6.0</span>
-            <span class="changelog-date">March 24, 2026</span>
-          </div>
-          <ul class="changelog-items">
-            <li>New provider: <strong>Trae</strong> (China + International)</li>
-            <li><code>/critique</code> now scores against Nielsen's 10 heuristics, tests with persona archetypes, and assesses cognitive load</li>
-            <li><code>/audit</code> now scores 5 dimensions with P0-P3 severity ratings and structured action plans</li>
-            <li>Improved skill descriptions for better agent auto-discovery</li>
-            <li>Fixed invalid YAML frontmatter that broke GitHub preview and Codex loading (<a href="https://github.com/pbakaus/impeccable/issues/67">#67</a>)</li>
-            <li>Codex CLI now uses correct <code>$</code> prefix for command references</li>
-          </ul>
+    <!-- Chat Communication - Complete Workflow -->
+    <div class="chat-section" id="chat">
+        <div class="section-header">
+            <h2>💬 这群"人"是怎么配合干活的？</h2>
+            <p>一个开发者用 Impeccable 做一个漂亮的官网。完整展示每个环节谁在干活。</p>
         </div>
 
-        <details class="changelog-older">
-          <summary class="changelog-older-toggle">View older releases</summary>
-          <div class="changelog-older-entries">
-            <div class="changelog-entry">
-              <div class="changelog-version-header">
-                <span class="changelog-version">v1.5.1</span>
-                <span class="changelog-date">March 17, 2026</span>
-              </div>
-              <ul class="changelog-items">
-                <li><code>/typeset</code> now recommends fixed type scales for app UIs, reserving fluid typography for marketing/content pages</li>
-              </ul>
+        <div class="chat-container">
+            <div class="chat-timeline">
+                <!-- 第1步：开始 -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"帮我做个官网，要那种看起来不像 AI 做的。"</div>
+                    </div>
+                </div>
+
+                <!-- 第2步：Frontend Design 技能 -->
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🎨</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/frontend-design（设计教练）</div>
+                        <div class="chat-text">"收到！先用这个技能。需要知道：谁来用这个产品？想表达什么感觉？"<br><br>开发者："给设计师用的工具，要专业、简洁、有品味。"</div>
+                    </div>
+                </div>
+
+                <!-- 第3步：Bun 打包 -->
+                <div class="chat-message">
+                    <div class="chat-avatar bun">🍡</div>
+                    <div class="chat-bubble deploy">
+                        <div class="chat-name">Bun（料理机）</div>
+                        <div class="chat-text">"[执行] 好嘞！把源技能编译成 Cursor 能读懂的格式，放到 dist/ 目录。"</div>
+                    </div>
+                </div>
+
+                <!-- 第4步：生成初版 -->
+                <div class="chat-message">
+                    <div class="chat-avatar cloudflare">🏠</div>
+                    <div class="chat-bubble deploy">
+                        <div class="chat-name">AI 生成网页</div>
+                        <div class="chat-text">"初版好了！先给你看效果。"</div>
+                    </div>
+                </div>
+
+                <!-- 第5步：Audit 审计 -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/audit"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🔍</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/audit（体检医生）</div>
+                        <div class="chat-text">"报告：发现 3 个问题<br>1. 按钮颜色对比度不够<br>2. 手机端导航有点挤<br>3. 加载慢了一点点"</div>
+                    </div>
+                </div>
+
+                <!-- 第6步：Polish 打磨 -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/polish"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">✨</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/polish（打磨匠）</div>
+                        <div class="chat-text">"好了！像素对齐、间距统一、字体大小调匀，细节都修好了。"</div>
+                    </div>
+                </div>
+
+                <!-- 第7步：Bolder 风格改造 -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/bolder"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🎭</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/bolder（风格大师）</div>
+                        <div class="chat-text">"收到！加大标题、加粗重点、颜色再鲜明一点。"</div>
+                    </div>
+                </div>
+
+                <!-- 第8步：Animate 加动画 -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/animate"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🎬</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/animate（动画师）</div>
+                        <div class="chat-text">"来了！页面进入加交错效果，按钮 hover 加微动效。"</div>
+                    </div>
+                </div>
+
+                <!-- 第9步：Cloudflare 部署 -->
+                <div class="chat-message">
+                    <div class="chat-avatar bun">🚀</div>
+                    <div class="chat-bubble deploy">
+                        <div class="chat-name">Bun（打包）</div>
+                        <div class="chat-text">"bun run build && wrangler pages deploy"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar cloudflare">☁️</div>
+                    <div class="chat-bubble deploy">
+                        <div class="chat-name">Cloudflare Pages（铺面）</div>
+                        <div class="chat-text">"网站上线了！全球 CDN 分发，访问速度有保障。"</div>
+                    </div>
+                </div>
+
+                <!-- 第10步：Supabase 记录 -->
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🗄️</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">Supabase（数据库）</div>
+                        <div class="chat-text">"[记录] 构建历史已存：谁改的、什么时候、改了啥，方便回溯。"</div>
+                    </div>
+                </div>
+
+                <!-- 第11步：可选技能 Clarify -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/clarify 按钮文字"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">📝</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/clarify（文字润色师）</div>
+                        <div class="chat-text">"别写'Submit'了，改成'发送消息'更易懂。"</div>
+                    </div>
+                </div>
+
+                <!-- 第12步：可选技能 Extract -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/extract 按钮组件"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🧩</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/extract（组件提取师）</div>
+                        <div class="chat-text">"提取成功！这个按钮以后可以复用。"</div>
+                    </div>
+                </div>
+
+                <!-- 第13步：可选技能 Adapt -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/adapt 手机端"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">📱</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/adapt（响应式大师）</div>
+                        <div class="chat-text">"手机端重新排版：导航收进汉堡菜单，卡片改成纵向。"</div>
+                    </div>
+                </div>
+
+                <!-- 第14步：Quieter 降噪（可选） -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">开发者</div>
+                        <div class="chat-text">"/quieter"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🤫</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">/quieter（降噪师）</div>
+                        <div class="chat-text">"收到！去掉一些装饰，把空间让给内容。"</div>
+                    </div>
+                </div>
+
+                <!-- 第15步：Stripe 付费（最后） -->
+                <div class="chat-message">
+                    <div class="chat-avatar user">👤</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">用户</div>
+                        <div class="chat-text">"这个工具真好用，我想付费支持！"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar stripe">💳</div>
+                    <div class="chat-bubble paid">
+                        <div class="chat-name">Stripe（收银员）</div>
+                        <div class="chat-text">"钱收到了！@Supabase，给这个用户开通 Pro 版。"</div>
+                    </div>
+                </div>
+
+                <div class="chat-message">
+                    <div class="chat-avatar supabase">🎉</div>
+                    <div class="chat-bubble license">
+                        <div class="chat-name">Supabase</div>
+                        <div class="chat-text">"[记录] Pro license 已开通！"</div>
+                    </div>
+                </div>
             </div>
-
-            <div class="changelog-entry">
-              <div class="changelog-version-header">
-                <span class="changelog-version">v1.5.0</span>
-                <span class="changelog-date">March 16, 2026</span>
-              </div>
-              <ul class="changelog-items">
-                <li>3 new skills: <code>/typeset</code> (fix typography), <code>/arrange</code> (fix layout & spacing), <code>/overdrive</code> (technically extraordinary effects, beta)</li>
-                <li>Skills now auto-gather design context via <code>.impeccable.md</code> — run <code>/teach-impeccable</code> once, all skills benefit</li>
-                <li>Deep linking to commands (<code>#cmd-overdrive</code>, etc.)</li>
-              </ul>
-            </div>
-
-            <div class="changelog-entry">
-              <div class="changelog-version-header">
-                <span class="changelog-version">v1.3.0</span>
-                <span class="changelog-date">March 12, 2026</span>
-              </div>
-              <ul class="changelog-items">
-                <li>Added OpenCode provider support</li>
-                <li>Added Pi provider support</li>
-                <li>Recategorized <code>/onboard</code> as an enhancement command</li>
-              </ul>
-            </div>
-
-            <div class="changelog-entry">
-              <div class="changelog-version-header">
-                <span class="changelog-version">v1.2.0</span>
-                <span class="changelog-date">March 5, 2026</span>
-              </div>
-              <ul class="changelog-items">
-                <li>Added Kiro support (<code>.kiro/skills/</code>)</li>
-                <li>Restored prefix toggle — download <code>i-</code> prefixed bundles to avoid naming conflicts</li>
-                <li>Audit and critique skills only suggest real, installed commands</li>
-              </ul>
-            </div>
-
-            <div class="changelog-entry">
-              <div class="changelog-version-header">
-                <span class="changelog-version">v1.1.0</span>
-                <span class="changelog-date">March 4, 2026</span>
-              </div>
-              <ul class="changelog-items">
-                <li>Unified skills architecture — commands are now skills with <code>user-invocable: true</code></li>
-                <li>Added VS Code Copilot and Google Antigravity support (<code>.agents/skills/</code>)</li>
-                <li>New install flow: <code>npx skills add</code> as primary, universal ZIP as fallback</li>
-                <li>Added universal ZIP containing all 5 provider directories</li>
-                <li>Renamed <code>/simplify</code> to <code>/distill</code> to avoid Claude Code conflict</li>
-              </ul>
-            </div>
-
-            <div class="changelog-entry">
-              <div class="changelog-version-header">
-                <span class="changelog-version">v1.0.0</span>
-                <span class="changelog-date">February 28, 2026</span>
-              </div>
-              <ul class="changelog-items">
-                <li>Initial release with enhanced frontend-design skill</li>
-                <li>17 design commands: /polish, /audit, /distill, /bolder, and more</li>
-                <li>Support for Cursor, Claude Code, Gemini CLI, and Codex CLI</li>
-                <li>Interactive command cheatsheet</li>
-              </ul>
-            </div>
-          </div>
-        </details>
-      </div>
-
-    </section>
-
-    <!-- 6. FAQ -->
-    <section class="faq-section" id="faq">
-      <div class="section-header" data-reveal>
-        <span class="section-number">06</span>
-        <h2 class="section-title">Frequently Asked Questions</h2>
-      </div>
-
-      <div class="faq-list" data-reveal>
-        <details class="faq-item">
-          <summary class="faq-question">Where do I put the downloaded files?</summary>
-          <div class="faq-answer">
-            <p>The easiest way is <code>npx skills add pbakaus/impeccable</code> — it auto-detects your AI harness and places files correctly.</p>
-            <p>If you downloaded the <strong>universal ZIP</strong>, extract it to your <strong>project root</strong> (same level as your <code>package.json</code> or <code>src/</code> folder). It creates hidden folders for each supported tool: <code>.cursor/</code>, <code>.claude/</code>, <code>.gemini/</code>, <code>.codex/</code>, and <code>.agents/</code>.</p>
-            <p>Project-level installation takes precedence and lets you version control your skills.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary class="faq-question">How do I update to the latest version?</summary>
-          <div class="faq-answer">
-            <ul>
-              <li><strong>All tools:</strong> <code>npx skills update</code> (or <code>npx skills check</code> to see what's new first)</li>
-              <li><strong>Claude Code plugin:</strong> Open <code>/plugin</code>, go to the Discover tab, and update from there</li>
-              <li><strong>Manual ZIP:</strong> Download the latest ZIP from above and extract to your project root, overwriting existing files</li>
-            </ul>
-            <p>Your <code>.impeccable.md</code> design context file (created by <code>/teach-impeccable</code>) is never overwritten — your project context is preserved across updates.</p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary class="faq-question">Commands or skills aren't appearing. What do I do?</summary>
-          <div class="faq-answer">
-            <p><strong>For commands:</strong> Type <code>/</code> in your AI harness and look for commands like <code>/audit</code>, <code>/polish</code>, etc. If they don't appear, double-check the files are in the correct location.</p>
-            <p><strong>For skills:</strong> Skills are applied automatically when relevant. To verify, explicitly mention "use the frontend-design skill" in your prompt—this forces the AI to acknowledge and apply it.</p>
-            <p><strong>Tool-specific setup:</strong></p>
-            <ul>
-              <li><strong>Cursor:</strong> Requires Nightly channel + Agent Skills enabled in Settings → Rules</li>
-              <li><strong>Gemini CLI:</strong> Requires <code>@google/gemini-cli@preview</code> + Skills enabled via <code>/settings</code></li>
-            </ul>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary class="faq-question">I'm new to AI harnesses. Where do I start?</summary>
-          <div class="faq-answer">
-            <p>Skills and commands are intermediate features. If you're just getting started, learn the basics first:</p>
-            <ul>
-              <li><strong>Claude Code:</strong> <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank" rel="noopener">Official Documentation</a></li>
-              <li><strong>Cursor:</strong> <a href="https://docs.cursor.com" target="_blank" rel="noopener">Cursor Docs</a></li>
-              <li><strong>Gemini CLI:</strong> <a href="https://geminicli.com/docs/" target="_blank" rel="noopener">Gemini CLI Docs</a></li>
-              <li><strong>Codex CLI:</strong> <a href="https://github.com/openai/codex" target="_blank" rel="noopener">Codex GitHub</a></li>
-            </ul>
-            <p>Once you're comfortable with basic prompting and code generation, come back and give Impeccable a try.</p>
-          </div>
-        </details>
-      </div>
-    </section>
-
-    <!-- SUPPORT & CONSULTING -->
-    <section class="consulting-section" id="consulting">
-      <div class="consulting-content" data-reveal>
-        <div class="consulting-text">
-          <h2 class="consulting-title">Work with me</h2>
-          <p class="consulting-desc">I help teams navigate AI transformation: upleveling developers, building AI-native workflows, and shipping products. Deep expertise in developer experience, design systems, and full-stack architecture.</p>
         </div>
-        <div class="consulting-actions">
-          <a href="mailto:paul@paulbakaus.com" class="btn btn-primary">
-            <span>Get in touch</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-          <a href="https://buy.stripe.com/aFa3cwfsEe3G25R6i48Ra03" class="btn btn-secondary" target="_blank" rel="noopener">
-            <span>Leave a tip</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <span class="footer-logo">Impeccable</span>
-      </div>
-      <div class="footer-links">
-        <a href="/cheatsheet">Cheatsheet</a>
-        <a href="/privacy">Privacy</a>
-        <a href="https://github.com/pbakaus/impeccable">GitHub</a>
-      </div>
     </div>
-    <div class="footer-author">
-      <span class="footer-author-label">Created by <a href="https://x.com/pbakaus" target="_blank" rel="noopener">Paul Bakaus</a></span>
-      <div class="footer-author-links">
-        <a href="https://x.com/pbakaus" class="footer-social-link" aria-label="Follow on X" target="_blank" rel="noopener">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-          </svg>
-        </a>
-        <a href="https://linkedin.com/in/paulbakaus" class="footer-social-link" aria-label="Connect on LinkedIn" target="_blank" rel="noopener">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-          </svg>
-        </a>
-        <span class="footer-author-divider"></span>
-        <a href="https://www.paulbakaus.com" class="footer-newsletter" target="_blank" rel="noopener">
-          Blog
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
-        <span class="footer-author-divider"></span>
-        <a href="https://impeccablestyle.substack.com" class="footer-newsletter" target="_blank" rel="noopener">
-          Newsletter
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </a>
-      </div>
-    </div>
-  </footer>
 
-  <script type="module" src="./app.js"></script>
+    <!-- Plain Explanations -->
+        </div>
+    </div>
+
+    <!-- Plain Explanations -->
+    <section class="explain-section" id="explain">
+        <div class="section-header">
+            <h2>📚 大白话百科</h2>
+            <p>这些词儿到底什么意思？用日常例子讲给你听。</p>
+        </div>
+
+        <div class="explain-grid">
+            <div class="explain-card">
+                <div class="explain-term">WebCodecs</div>
+                <div class="explain-analogy">
+                    像视频网站的"播放器内核"。网页要播视频，得有个东西来解压缩视频文件、把一帧帧画面显示出来。WebCodecs 就是浏览器内置的这个播放器底层。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">FFmpeg</div>
+                <div class="explain-analogy">
+                    像视频届的"瑞士军刀"。能转换格式、剪辑、加字幕、做特效。命令行工具，很强大但需要学习。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">H.264</div>
+                <div class="explain-analogy">
+                    像视频的"压缩算法"。一段 1GB 的视频，用 H.264 压完可能就 100MB 了，但看起来差不多。几乎是所有视频网站通用的格式。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">30fps</div>
+                <div class="explain-analogy">
+                    像翻书的速度。每秒翻 30 页，书里的内容就像动起来一样。电影一般是 24fps，网页动画 30fps 就挺流畅了。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Mux</div>
+                <div class="explain-analogy">
+                    像视频托管商。帮你存视频、CDN 分发、还提供播放统计数据。收费但省心。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">MP4 容器</div>
+                <div class="explain-analogy">
+                    像快递盒。把视频文件、音频文件、字幕"打包"成一个文件。MP4 就是最常见的那个"盒子"。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Motion</div>
+                <div class="explain-analogy">
+                    动效库，像做动画的"画具"。帮你做交错入场、滚动视差、页面转场等效果。
+                </div>
+            </div>
+
+            <div class="explain-card">
+                <div class="explain-term">Playwright</div>
+                <div class="explain-analogy">
+                    像自动化测试员。帮你模拟点击、填表、截图，检测网页是否正常工作。
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>基于 <a href="https://impeccable.style">Impeccable</a> 项目 · 设计系统参考 <a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design">Anthropic</a></p>
+        <p style="margin-top: 16px; font-size: 0.85rem;">本文档用大白话解释这个系统的运作方式，面向非技术读者。设计风格参考 Claude AI 官网。</p>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Reveal animations on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.layer-card, .feature-card, .tool-card, .explain-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // Chat message stagger animation
+        document.querySelectorAll('.chat-message').forEach((msg, i) => {
+            msg.style.animationDelay = `${i * 0.3}s`;
+        });
+    </script>
 </body>
 </html>
