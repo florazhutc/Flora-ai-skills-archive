@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code 技能包 - 全景拆解</title>
+    <style>
+        :root {
+            --applebg: #f5f5f7;
+            --applewhite: #ffffff;
+            --applegray: #86868b;
+            --appleblue: #007aff;
+            --applegreen: #34c759;
+            --appleorange: #ff9500;
+            --applepurple: #af52de;
+            --applered: #ff3b30;
+            --applelight: #e8f4fd;
+            --appleshadow: rgba(0, 0, 0, 0.08);
+            --applebluedash: rgba(0, 122, 255, 0.1);
+            --applegreendash: rgba(52, 199, 89, 0.1);
+            --appleorangedash: rgba(255, 149, 0, 0.1);
+            --applepurpledash: rgba(175, 82, 222, 0.1);
+            --appleredash: rgba(255, 59, 48, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            background: var(--applebg);
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(180deg, var(--applewhite) 0%, var(--applebg) 100%);
+            border-radius: 0 0 40px 40px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 16px;
+        }
+
+        .hero .subtitle {
+            font-size: 22px;
+            color: var(--applegray);
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .hero .desc {
+            font-size: 16px;
+            color: var(--applegray);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        .hero-stats .stat {
+            text-align: center;
+        }
+
+        .hero-stats .stat .num {
+            font-size: 44px;
+            font-weight: 700;
+            color: var(--appleblue);
+        }
+
+        .hero-stats .stat .label {
+            font-size: 13px;
+            color: var(--applegray);
+            text-transform: uppercase;
+        }
+
+        /* Nav Pills */
+        .nav-pill {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .nav-pill a {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            background: var(--applewhite);
+            color: var(--applegray);
+            box-shadow: 0 2px 10px var(--appleshadow);
+            transition: all 0.3s ease;
+        }
+
+        .nav-pill a:hover, .nav-pill a.active {
+            background: var(--appleblue);
+            color: white;
+        }
+
+        /* Section */
+        .section {
+            margin: 50px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .section-desc {
+            font-size: 16px;
+            color: var(--applegray);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .skill-card {
+            background: var(--applewhite);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 2px 14px var(--appleshadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px var(--appleshadow);
+        }
+
+        .skill-card h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skill-card .tag {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .tag.blue { background: var(--applebluedash); color: var(--appleblue); }
+        .tag.green { background: var(--applegreendash); color: var(--applegreen); }
+        .tag.orange { background: var(--appleorangedash); color: var(--appleorange); }
+        .tag.purple { background: var(--applepurpledash); color: var(--applepurple); }
+        .tag.red { background: var(--appleredash); color: var(--applered); }
+
+        .skill-card p {
+            font-size: 14px;
+            color: var(--applegray);
+            line-height: 1.5;
+        }
+
+        .skill-card .plain {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Category */
+        .category {
+            margin: 40px 0;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .category-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .category-icon.design { background: var(--applebluedash); }
+        .category-icon.dev { background: var(--applegreendash); }
+        .category-icon.review { background: var(--appleorangedash); }
+        .category-icon.qa { background: var(--applepurpledash); }
+        .category-icon.content { background: var(--appleredash); }
+
+        .category-title {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .category-count {
+            font-size: 13px;
+            color: var(--applegray);
+        }
+
+        /* Chat Scenario */
+        .chat-scenario {
+            background: var(--applewhite);
+            border-radius: 24px;
+            padding: 40px;
+            margin: 50px 0;
+            box-shadow: 0 4px 20px var(--appleshadow);
+        }
+
+        .chat-title {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .chat-messages {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 14px;
+            margin: 16px 0;
+            align-items: flex-start;
+        }
+
+        .chat-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar.user { background: var(--applebluedash); }
+        .chat-avatar.ai { background: var(--applegreendash); }
+        .chat-avatar.tool { background: var(--appleorangedash); }
+
+        .chat-bubble {
+            background: var(--applebg);
+            border-radius: 16px;
+            padding: 14px 18px;
+            max-width: 560px;
+        }
+
+        .chat-bubble p {
+            font-size: 14px;
+            color: #1d1d1f;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--applegray);
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            .hero-stats { flex-direction: column; gap: 20px; }
+            .skills-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Claude Code 技能包</h1>
+        <p class="subtitle">33 个内置 AI 技能，覆盖设计、开发、审查、QA</p>
+        <p class="desc">这些技能随 Claude Code 一起安装，涵盖 UI/UX 设计、代码审查、性能优化、内容创作等场景。直接在对话中调用它们。</p>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="num">33</div>
+                <div class="label">种技能</div>
+            </div>
+            <div class="stat">
+                <div class="num">5</div>
+                <div class="label">个分类</div>
+            </div>
+            <div class="stat">
+                <div class="num">∞</div>
+                <div class="label">使用场景</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 导航 -->
+        <div class="nav-pill">
+            <a href="#design">🎨 设计</a>
+            <a href="#dev">💻 开发</a>
+            <a href="#review">🔍 审查</a>
+            <a href="#qa">🧪 QA</a>
+            <a href="#content">📝 内容</a>
+            <a href="#scenario">💬 场景</a>
+        </div>
+
+        <!-- 设计技能 -->
+        <div id="design" class="category">
+            <div class="category-header">
+                <div class="category-icon design">🎨</div>
+                <span class="category-title">UI/UX 设计</span>
+                <span class="category-count">12 个技能</span>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h4>ui-ux-pro-max <span class="tag blue">设计</span></h4>
+                    <p>UI/UX 设计终极指南：50+ 样式、161 配色方案、57 字体搭配、99 条 UX 指南，覆盖 React/Next.js/Vue/SwiftUI 等 10 种技术栈。</p>
+                    <div class="plain">📝 大白话：做界面设计时问它——怎么配色、怎么排版、什么风格最好看</div>
+                </div>
+                <div class="skill-card">
+                    <h4>web-design-guidelines <span class="tag blue">网页</span></h4>
+                    <p>网页界面设计指南，检查网页 UI 是否符合 Web 界面设计标准，包括无障碍、性能、响应式等。</p>
+                    <div class="plain">📝 大白话：帮我检查网页 UI 有没有问题，合不合规</div>
+                </div>
+                <div class="skill-card">
+                    <h4>web-design-reviewer <span class="tag blue">审核</span></h4>
+                    <p>网页视觉设计审核，像设计师一样检查网站的视觉一致性、间距、层级、AI 痕迹等。</p>
+                    <div class="plain">📝 大白话：像请了个设计总监来审核你的网页好不好看</div>
+                </div>
+                <div class="skill-card">
+                    <h4>sleek-design-mobile-apps <span class="tag blue">移动端</span></h4>
+                    <p>移动应用设计技能，专门为 iOS/Android 设计漂亮的移动应用界面。</p>
+                    <div class="plain">📝 大白话：帮我设计一个好看的手机 App 界面</div>
+                </div>
+                <div class="skill-card">
+                    <h4>frontend-design <span class="tag blue">前端</span></h4>
+                    <p>前端设计技能，用 mager 签名风格生成和指导 UI 开发，产出生产级前端界面。</p>
+                    <div class="plain">📝 大白话：帮我写前端代码，要求设计师级别的质量</div>
+                </div>
+                <div class="skill-card">
+                    <h4>design-md <span class="tag blue">设计系统</span></h4>
+                    <p>分析 Stitch 项目并合成语义化设计系统，生成 DESIGN.md 文件。</p>
+                    <div class="plain">📝 大白话：帮我从设计稿生成设计系统文档</div>
+                </div>
+                <div class="skill-card">
+                    <h4>canvas-design <span class="tag blue">画布</span></h4>
+                    <p>在 PNG 和 PDF 文档中创建美丽的视觉艺术，适合做演示文稿和设计稿。</p>
+                    <div class="plain">📝 大白话：帮我画一张好看的设计图或演示页</div>
+                </div>
+                <div class="skill-card">
+                    <h4>product-photography <span class="tag blue">摄影</span></h4>
+                    <p>AI 产品摄影，包含工作室灯光、场景图和包装图，适用于电商产品展示。</p>
+                    <div class="plain">📝 大白话：帮我生成一张好看的产品展示图</div>
+                </div>
+                <div class="skill-card">
+                    <h4>arrange <span class="tag blue">布局</span></h4>
+                    <p>改进布局、间距和视觉节奏，修复单调的网格、不一致的间距和节奏问题。</p>
+                    <div class="plain">📝 大白话：帮我调整一下页面的间距和布局，让它更整齐</div>
+                </div>
+                <div class="skill-card">
+                    <h4>typeset <span class="tag blue">排版</span></h4>
+                    <p>改进排版：修复字体选择、层级、大小、粗细和可读性，让文字更舒服。</p>
+                    <div class="plain">📝 大白话：帮我优化页面的字体和排版</div>
+                </div>
+                <div class="skill-card">
+                    <h4>colorize <span class="tag blue">配色</span></h4>
+                    <p>为单调的设计添加战略性颜色，让界面更有视觉层次和吸引力。</p>
+                    <div class="plain">📝 大白话：帮我给这个页面加点好看的颜色</div>
+                </div>
+                <div class="skill-card">
+                    <h4>bolder <span class="tag blue">增强</span></h4>
+                    <p>放大安全或平淡的设计，增加视觉趣味和刺激程度，让设计更有存在感。</p>
+                    <div class="plain">📝 大白话：让这个设计看起来更大气、更有冲击力</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 开发技能 -->
+        <div id="dev" class="category">
+            <div class="category-header">
+                <div class="category-icon dev">💻</div>
+                <span class="category-title">开发 & 工程</span>
+                <span class="category-count">8 个技能</span>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h4>simplify <span class="tag green">重构</span></h4>
+                    <p>审查变更代码，查找可复用、质量和效率问题，然后修复。保持代码简洁可读。</p>
+                    <div class="plain">📝 大白话：帮我看看代码有没有可以简化的地方</div>
+                </div>
+                <div class="skill-card">
+                    <h4>investigate <span class="tag green">调试</span></h4>
+                    <p>系统性调试，包含四个阶段：调查、分析、假设、修复。追查根本原因。</p>
+                    <div class="plain">📝 大白话：帮我找出这个 bug 的根本原因</div>
+                </div>
+                <div class="skill-card">
+                    <h4>optimize <span class="tag green">性能</span></h4>
+                    <p>诊断并修复 UI 性能问题：加载速度、渲染、动画、图片和打包优化。</p>
+                    <div class="plain">📝 大白话：帮我优化这个页面的加载速度</div>
+                </div>
+                <div class="skill-card">
+                    <h4>extract <span class="tag green">提取</span></h4>
+                    <p>提取并合并可复用组件、设计令牌和模式到设计系统中。</p>
+                    <div class="plain">📝 大白话：帮我把重复的代码提取成通用组件</div>
+                </div>
+                <div class="skill-card">
+                    <h4>normalize <span class="tag green">规范</span></h4>
+                    <p>审计并重新对齐 UI 以匹配设计系统标准、间距、令牌和模式。</p>
+                    <div class="plain">📝 大白话：帮我把代码整理成符合设计系统的规范</div>
+                </div>
+                <div class="skill-card">
+                    <h4>harden <span class="tag green">加固</span></h4>
+                    <p>通过更好的错误处理、i18n 支持、文本溢出处理提高界面健壮性。</p>
+                    <div class="plain">📝 大白话：帮我让这个界面更健壮，减少崩溃</div>
+                </div>
+                <div class="skill-card">
+                    <h4>animate <span class="tag green">动画</span></h4>
+                    <p>审查功能并添加有目的的动画、微交互和动效，提升用户体验。</p>
+                    <div class="plain">📝 大白话：帮我给这个按钮加一些好看的动画效果</div>
+                </div>
+                <div class="skill-card">
+                    <h4>delight <span class="tag green">惊喜</span></h4>
+                    <p>添加让人愉悦的时刻、个性和意想不到的 touches，让界面令人难忘。</p>
+                    <div class="plain">📝 大白话：帮我加点有意思的小细节，让用户惊喜</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 审查技能 -->
+        <div id="review" class="category">
+            <div class="category-header">
+                <div class="category-icon review">🔍</div>
+                <span class="category-title">代码审查</span>
+                <span class="category-count">6 个技能</span>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h4>critique <span class="tag orange">批评</span></h4>
+                    <p>从 UX 角度评估设计，检查视觉层级、信息架构、可访问性、一致性等。</p>
+                    <div class="plain">📝 大白话：请个 UX 专家来评价一下这个设计</div>
+                </div>
+                <div class="skill-card">
+                    <h4>plan-design-review <span class="tag orange">设计评审</span></h4>
+                    <p>交互式 CEO 和工程审查，评估每个设计维度，像 CEO 一样思考。</p>
+                    <div class="plain">📝 大白话：像 CEO 一样评审这个设计方案可行不可行</div>
+                </div>
+                <div class="skill-card">
+                    <h4>plan-ceo-review <span class="tag orange">战略评审</span></h4>
+                    <p>CEO/创始人模式的计划审查：重新思考问题，找到 10 星产品，挑战前提。</p>
+                    <div class="plain">📝 大白话：帮我看看这个产品想法有没有商业潜力</div>
+                </div>
+                <div class="skill-card">
+                    <h4>plan-eng-review <span class="tag orange">工程评审</span></h4>
+                    <p>工程经理模式的计划审查，锁定执行计划——架构、数据流、图表等。</p>
+                    <div class="plain">📝 大白话：帮我评审一下技术实现方案靠不靠谱</div>
+                </div>
+                <div class="skill-card">
+                    <h4>codex <span class="tag orange">代码审查</span></h4>
+                    <p>OpenAI Codex CLI 包装器：代码审查、独立 diff 审查、代码质量评估。</p>
+                    <div class="plain">📝 大白话：用 Codex 帮我审查代码质量</div>
+                </div>
+                <div class="skill-card">
+                    <h4>distill <span class="tag orange">精简</span></h4>
+                    <p>剥离不必要的复杂性，还原设计本质。伟大的设计是简单而强大。</p>
+                    <div class="plain">📝 大白话：帮我简化这个复杂的设计，让它更简洁</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QA 技能 -->
+        <div id="qa" class="category">
+            <div class="category-header">
+                <div class="category-icon qa">🧪</div>
+                <span class="category-title">测试 & QA</span>
+                <span class="category-count">4 个技能</span>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h4>qa <span class="tag purple">测试</span></h4>
+                    <p>系统化 QA 测试 Web 应用并修复发现的 bug，迭代式测试和修复。</p>
+                    <div class="plain">📝 大白话：帮我测试这个网站有没有 bug</div>
+                </div>
+                <div class="skill-card">
+                    <h4>qa-only <span class="tag purple">报告</span></h4>
+                    <p>只报告的 QA 测试，系统化测试 Web 应用并生成结构化报告。</p>
+                    <div class="plain">📝 大白话：帮我生成一份测试报告，不用修 bug</div>
+                </div>
+                <div class="skill-card">
+                    <h4>audit <span class="tag purple">审计</span></h4>
+                    <p>运行技术质量检查：可访问性、性能、主题、响应式设计、动画等。</p>
+                    <div class="plain">📝 大白话：帮我全面审计一下这个网站的技术质量</div>
+                </div>
+                <div class="skill-card">
+                    <h4>polish <span class="tag purple">抛光</span></h4>
+                    <p>最终质量检查：修复对齐、间距、一致性和微细节问题。</p>
+                    <div class="plain">📝 大白话：帮我做最后的打磨，让细节更完美</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 内容技能 -->
+        <div id="content" class="category">
+            <div class="category-header">
+                <div class="category-icon content">📝</div>
+                <span class="category-title">内容 & 创作</span>
+                <span class="category-count">3 个技能</span>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h4>content-research-writer <span class="tag red">写作</span></h4>
+                    <p>研究主题并撰写内容：博客文章、论文、推广文案等。</p>
+                    <div class="plain">📝 大白话：帮我写一篇关于某个话题的文章</div>
+                </div>
+                <div class="skill-card">
+                    <h4>personalized-podcast <span class="tag red">播客</span></h4>
+                    <p>根据提供的内容生成播客 episode，粘贴文本、指向本地文件或描述主题。</p>
+                    <div class="plain">📝 大白话：帮我把这段内容变成一期播客</div>
+                </div>
+                <div class="skill-card">
+                    <h4>follow-builders <span class="tag red">资讯</span></h4>
+                    <p>AI 构建者资讯——监控 X 和 YouTube 上顶尖 AI 构建者，整理内容。</p>
+                    <div class="plain">📝 大白话：帮我追踪 AI 领域的最新动态和趋势</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用场景 -->
+        <div id="scenario" class="chat-scenario">
+            <h2 class="chat-title">💬 假如技能包是一个团队</h2>
+            <div class="chat-messages">
+                <div class="chat-message">
+                    <div class="chat-avatar user">👩‍💻</div>
+                    <div class="chat-bubble">
+                        <p>Hey，我刚写完一个落地页，谁能帮我看看设计怎么样？</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar ai">🎨</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>web-design-reviewer</strong>！让我从设计师的角度帮你检查视觉一致性、间距、层级问题。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar ai">🔍</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>audit</strong>！帮你做全面技术审计：可访问性、性能、响应式有没有问题。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar user">👩‍💻</div>
+                    <div class="chat-bubble">
+                        <p>页面加载有点慢，谁能帮我优化一下？</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar ai">⚡</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>optimize</strong>！诊断加载速度、渲染、动画、图片问题，让页面飞起来。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar user">👩‍💻</div>
+                    <div class="chat-bubble">
+                        <p>很好！优化完后，再帮我加点有意思的微交互，让用户觉得惊喜。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar ai">✨</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>delight</strong>！专门加让人愉悦的小细节，动画、hover 效果、loading 状态等。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar user">👩‍💻</div>
+                    <div class="chat-bubble">
+                        <p>最后帮我做一次整体抛光，确保细节完美，就可以发布了。</p>
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-avatar ai">💎</div>
+                    <div class="chat-bubble">
+                        <p>我是 <strong>polish</strong>！做最终的微调：对齐、间距、颜色、圆角，帮你打磨到完美。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 如何使用 -->
+        <div class="section">
+            <h2 class="section-title">如何使用这些技能？</h2>
+            <p class="section-desc">直接在 Claude Code 对话框中调用</p>
+            <div class="skills-grid" style="margin-top: 30px;">
+                <div class="skill-card">
+                    <h4>直接说出需求</h4>
+                    <p>"帮我审查这个页面的设计"</p>
+                    <p>"优化一下这个组件的性能"</p>
+                </div>
+                <div class="skill-card">
+                    <h4>使用 / 命令</h4>
+                    <p>/qa 测试这个页面</p>
+                    <p>/optimize 优化加载速度</p>
+                </div>
+                <div class="skill-card">
+                    <h4>指定技能名称</h4>
+                    <p>"用 ui-ux-pro-max 帮我选个配色"</p>
+                    <p>"用 audit 检查这个网站"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>🤖 Claude Code 内置技能包 | 共 33 个技能</p>
+    </div>
+</body>
+</html>
