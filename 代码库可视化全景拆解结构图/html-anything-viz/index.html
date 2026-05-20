@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Anything - Agent 时代 HTML 编辑器</title>
+    <style>
+        :root {
+            --parchment: #f5f4ed;
+            --ivory: #faf9f5;
+            --white: #ffffff;
+            --warm-sand: #e8e6dc;
+            --border-cream: #f0eee6;
+            --border-warm: #e8e6dc;
+            --near-black: #141413;
+            --charcoal: #4d4c48;
+            --olive-gray: #5e5d59;
+            --stone-gray: #87867f;
+            --warm-silver: #b0aea5;
+            --terracotta: #c96442;
+            --coral: #d97757;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Georgia, "SF Pro Text", sans-serif;
+            background: var(--parchment);
+            color: var(--near-black);
+            line-height: 1.6;
+            padding: 40px 24px 80px;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--border-warm);
+        }
+        h1 {
+            font-family: Georgia, serif;
+            font-size: 42px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        .subtitle {
+            font-size: 16px;
+            color: var(--olive-gray);
+            max-width: 620px;
+            margin: 0 auto;
+        }
+        .badge {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 8px 16px;
+            background: var(--near-black);
+            color: var(--white);
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .section {
+            background: var(--white);
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+        .section h2 {
+            font-family: Georgia, serif;
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-cream);
+        }
+        .section p { color: var(--charcoal); margin-bottom: 20px; }
+
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .arch-box {
+            padding: 16px;
+            background: var(--warm-sand);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .delivery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .delivery-item {
+            padding: 20px;
+            background: var(--warm-sand);
+            border-radius: 12px;
+            text-align: center;
+        }
+        .delivery-item strong { display: block; color: var(--terracotta); margin-bottom: 8px; }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+        .skill-item {
+            padding: 16px;
+            background: var(--warm-sand);
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        .skill-item strong { color: var(--terracotta); display: block; margin-bottom: 4px; }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .tool-item {
+            padding: 20px;
+            background: var(--warm-sand);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 13px;
+        }
+        .tool-item code { display: block; font-size: 14px; color: var(--terracotta); margin-bottom: 8px; }
+
+        .chat-example {
+            background: var(--warm-sand);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 16px;
+        }
+        .chat-line {
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 85%;
+        }
+        .chat-line.user { background: var(--near-black); color: var(--white); margin-left: auto; }
+        .chat-line.ai { background: var(--white); border: 1px solid var(--border-warm); }
+
+        .explain-box {
+            background: var(--warm-sand);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 16px;
+            font-size: 15px;
+            color: var(--charcoal);
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-bottom: 40px;
+            padding: 24px 0;
+        }
+        .stat { text-align: center; }
+        .stat-num { font-size: 36px; font-weight: 500; color: var(--terracotta); font-family: Georgia, serif; }
+        .stat-label { font-size: 12px; color: var(--stone-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+        footer { text-align: center; margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--border-warm); font-size: 13px; color: var(--stone-gray); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HTML Anything</h1>
+            <p class="subtitle">Agent 时代的 HTML 编辑器 - 本地优先、零 API Key、75 套 Skill 模板</p>
+            <span class="badge">by nexu-io · Open Design</span>
+        </header>
+
+        <div class="stats-row">
+            <div class="stat"><div class="stat-num">75</div><div class="stat-label">套 Skill</div></div>
+            <div class="stat"><div class="stat-num">9</div><div class="stat-label">种场景</div></div>
+            <div class="stat"><div class="stat-num">8</div><div class="stat-label">个 CLI</div></div>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ 分层架构图</h2>
+            <p>Agent 优先的 HTML 编辑器：本地优先运行 → 自动识别 coding-agent → 零 API Key 设计 → 生成可交付成果</p>
+            <div class="arch-grid">
+                <div class="arch-box"><strong>🏠 本地优先</strong>离线可用，无需服务器</div>
+                <div class="arch-box"><strong>🤖 Agent 识别</strong>自动识别 8 种 CLI</div>
+                <div class="arch-box"><strong>🔑 零 API Key</strong>无需配置，直接用</div>
+                <div class="arch-box"><strong>📦 可交付</strong>9 类真实产物</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📦 9 大交付场景</h2>
+            <div class="delivery-grid">
+                <div class="delivery-item"><strong>📄 杂志文章</strong>富文本排版</div>
+                <div class="delivery-item"><strong>🎤 Keynote</strong>演示文稿</div>
+                <div class="delivery-item"><strong>📝 简历</strong>个人履历</div>
+                <div class="delivery-item"><strong>🎨 海报</strong>宣传物料</div>
+                <div class="delivery-item"><strong>📕 小红书</strong>社交内容</div>
+                <div class="delivery-item"><strong>🐦 推特卡</strong>社交图片</div>
+                <div class="delivery-item"><strong>🌐 Web原型</strong>交互原型</div>
+                <div class="delivery-item"><strong>📊 数据报告</strong>可视化</div>
+                <div class="delivery-item"><strong>🎬 Hyperframes</strong>视频动画</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚡ 核心技能 (75 套)</h2>
+            <div class="skills-grid">
+                <div class="skill-item"><strong>🎨 样式技能</strong>CSS 布局、响应式、动画、主题</div>
+                <div class="skill-item"><strong>📐 布局技能</strong>Grid、Flex、容器、栅格</div>
+                <div class="skill-item"><strong>🧩 组件技能</strong>按钮、卡片、表单、导航</div>
+                <div class="skill-item"><strong>📊 图表技能</strong>折线图、柱状图、饼图</div>
+                <div class="skill-item"><strong>🖼️ 媒体技能</strong>图片、视频、轮播</div>
+                <div class="skill-item"><strong>🎭 动画技能</strong>过渡、关键帧、滚动</div>
+                <div class="skill-item"><strong>📱 响应式技能</strong>移动端、平板、桌面</div>
+                <div class="skill-item"><strong>♿ 无障碍技能</strong>ARIA、键盘、屏幕阅读</div>
+                <div class="skill-item"><strong>⚡ 性能技能</strong>懒加载、优化、缓存</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔧 工具箱 (8 个 CLI)</h2>
+            <div class="tool-grid">
+                <div class="tool-item"><code>Claude Code</code>官方 CLI</div>
+                <div class="tool-item"><code>Cursor</code>AI 编辑器</div>
+                <div class="tool-item"><code>Codex</code>OpenAI</div>
+                <div class="tool-item"><code>Gemini CLI</code>Google</div>
+                <div class="tool-item"><code>Copilot</code>GitHub</div>
+                <div class="tool-item"><code>OpenCode</code>网页 IDE</div>
+                <div class="tool-item"><code>Qwen Coder</code>阿里</div>
+                <div class="tool-item"><code>Aider</code>结对编程</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💬 聊天比喻场景</h2>
+            <div class="chat-example">
+                <div class="chat-line user">帮我做一个产品发布海报</div>
+                <div class="chat-line ai">确认：产品发布海报，包含产品图、发布时间、核心卖点。开始生成 HTML...</div>
+                <div class="chat-line user">再加一个订阅表单</div>
+                <div class="chat-line ai">添加邮件订阅表单，包含输入框和提交按钮...</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📚 大白话解释</h2>
+            <div class="explain-box">
+                <p><strong>HTML Anything 是什么？</strong> 一个给 AI 程序员用的 HTML 编辑器。它的特点是"本地优先"——不需要服务器，不联网也能用，也不需要你配置任何 API Key。</p>
+                <p style="margin-top: 12px;"><strong>怎么个工作？</strong> 集成了 75 套现成的 HTML 技能模板，你告诉它要做什么（做个海报、简历、图表），它自动生成对应的 HTML 代码。</p>
+                <p style="margin-top: 12px;"><strong>支持哪些 AI 工具？</strong> 8 种主流 coding-agent CLI 都能自动识别，包括 Claude Code、Cursor、Copilot、Qwen Coder 等。</p>
+                <p style="margin-top: 12px;"><strong>为什么叫"可交付"？</strong> 它生成的不仅是代码，而是一个可以直接用的成品：可以导出 PDF、发小红书、做成演示文稿。</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>基于 6 模块全景拆解框架：Hero · Architecture · Features · Toolbox · Chat · Explain</p>
+            <p style="margin-top:8px;">github.com/nexu-io/html-anything</p>
+        </footer>
+    </div>
+</body>
+</html>
