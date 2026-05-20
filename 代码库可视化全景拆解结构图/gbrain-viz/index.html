@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GBrain - AI Agent Brain System</title>
+    <title>GBrain - AI 智能记忆系统</title>
     <style>
         :root {
             --parchment: #f5f4ed;
@@ -30,7 +30,6 @@
         }
         .container { max-width: 1100px; margin: 0 auto; }
 
-        /* Header */
         header {
             text-align: center;
             margin-bottom: 48px;
@@ -41,7 +40,6 @@
             font-family: Georgia, serif;
             font-size: 42px;
             font-weight: 500;
-            color: var(--near-black);
             margin-bottom: 12px;
             letter-spacing: -0.02em;
         }
@@ -61,7 +59,6 @@
             font-size: 13px;
         }
 
-        /* Section */
         .section {
             background: var(--white);
             border: 1px solid var(--border-warm);
@@ -77,12 +74,8 @@
             padding-bottom: 12px;
             border-bottom: 1px solid var(--border-cream);
         }
-        .section p {
-            color: var(--charcoal);
-            margin-bottom: 20px;
-        }
+        .section p { color: var(--charcoal); margin-bottom: 20px; }
 
-        /* Architecture Diagram */
         .arch-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -94,11 +87,11 @@
             background: var(--warm-sand);
             border-radius: 12px;
             text-align: center;
+            font-size: 14px;
         }
         .arch-box.main {
             background: var(--near-black);
             color: var(--white);
-            grid-column: span 1;
         }
         .arch-box.arrow {
             background: transparent;
@@ -109,10 +102,9 @@
             color: var(--stone-gray);
         }
 
-        /* Features Grid */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 12px;
         }
         .feature-item {
@@ -121,13 +113,8 @@
             border-radius: 10px;
             font-size: 14px;
         }
-        .feature-item strong {
-            color: var(--terracotta);
-            display: block;
-            margin-bottom: 4px;
-        }
+        .feature-item strong { color: var(--terracotta); display: block; margin-bottom: 4px; }
 
-        /* Toolbox */
         .tool-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -139,14 +126,8 @@
             border-radius: 12px;
             text-align: center;
         }
-        .tool-item code {
-            display: block;
-            font-size: 16px;
-            color: var(--terracotta);
-            margin-bottom: 8px;
-        }
+        .tool-item code { display: block; font-size: 14px; color: var(--terracotta); margin-bottom: 8px; }
 
-        /* Chat Scenario */
         .chat-example {
             background: var(--warm-sand);
             border-radius: 12px;
@@ -159,17 +140,9 @@
             border-radius: 12px;
             max-width: 85%;
         }
-        .chat-line.user {
-            background: var(--near-black);
-            color: var(--white);
-            margin-left: auto;
-        }
-        .chat-line.ai {
-            background: var(--white);
-            border: 1px solid var(--border-warm);
-        }
+        .chat-line.user { background: var(--near-black); color: var(--white); margin-left: auto; }
+        .chat-line.ai { background: var(--white); border: 1px solid var(--border-warm); }
 
-        /* Explain */
         .explain-box {
             background: var(--warm-sand);
             border-radius: 12px;
@@ -179,7 +152,6 @@
             color: var(--charcoal);
         }
 
-        /* Stats */
         .stats-row {
             display: flex;
             justify-content: center;
@@ -188,222 +160,102 @@
             padding: 24px 0;
         }
         .stat { text-align: center; }
-        .stat-num {
-            font-size: 36px;
-            font-weight: 500;
-            color: var(--terracotta);
-            font-family: Georgia, serif;
-        }
-        .stat-label {
-            font-size: 12px;
-            color: var(--stone-gray);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 4px;
-        }
+        .stat-num { font-size: 36px; font-weight: 500; color: var(--terracotta); font-family: Georgia, serif; }
+        .stat-label { font-size: 12px; color: var(--stone-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            padding-top: 32px;
-            border-top: 1px solid var(--border-warm);
-            font-size: 13px;
-            color: var(--stone-gray);
-        }
+        footer { text-align: center; margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--border-warm); font-size: 13px; color: var(--stone-gray); }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>GBrain</h1>
-            <p class="subtitle">Your AI agent's memory system. Self-wiring knowledge graph with hybrid search, cron-driven enrichment, and 48 curated skills.</p>
+            <p class="subtitle">你的 AI 智能记忆系统。自连线知识图谱 + 混合搜索 + 48 个专业技能 + Cron 自动维护</p>
             <span class="badge">by Garry Tan · Y Combinator</span>
         </header>
 
         <div class="stats-row">
-            <div class="stat">
-                <div class="stat-num">48</div>
-                <div class="stat-label">Skills</div>
-            </div>
-            <div class="stat">
-                <div class="stat-num">17,888</div>
-                <div class="stat-label">Pages</div>
-            </div>
-            <div class="stat">
-                <div class="stat-num">4,383</div>
-                <div class="stat-label">People</div>
-            </div>
-            <div class="stat">
-                <div class="stat-num">21</div>
-                <div class="stat-label">Cron Jobs</div>
-            </div>
+            <div class="stat"><div class="stat-num">48</div><div class="stat-label">个技能</div></div>
+            <div class="stat"><div class="stat-num">17,888</div><div class="stat-label">页面</div></div>
+            <div class="stat"><div class="stat-num">4,383</div><div class="stat-label">联系人</div></div>
+            <div class="stat"><div class="stat-num">21</div><div class="stat-label">定时任务</div></div>
         </div>
 
-        <!-- Architecture -->
         <div class="section">
-            <h2>🛠️ Architecture</h2>
-            <p>Hybrid search engine combining vector (HNSW), BM25 keyword, and reciprocal-rank fusion with source-tier boost and intent-aware query rewriting.</p>
-
+            <h2>🛠️ 分层架构图</h2>
+            <p>5 步自动循环：每条消息进来都会经过信号检测→搜索→响应→写入→自连线→同步，保持记忆永远最新。</p>
             <div class="arch-grid">
-                <div class="arch-box main">
-                    <strong>Signal</strong>
-                    <small>Every message</small>
-                </div>
+                <div class="arch-box main"><strong>1️⃣ Signal</strong><small>信号检测</small></div>
                 <div class="arch-box arrow">→</div>
-                <div class="arch-box main">
-                    <strong>Search</strong>
-                    <small>Brain-first</small>
-                </div>
+                <div class="arch-box main"><strong>2️⃣ Search</strong><small>知识优先</small></div>
                 <div class="arch-box arrow">→</div>
-                <div class="arch-box main">
-                    <strong>Respond</strong>
-                    <small>Context-aware</small>
-                </div>
+                <div class="arch-box main"><strong>3️⃣ Respond</strong><small>上下文感知</small></div>
                 <div class="arch-box arrow">→</div>
-                <div class="arch-box main">
-                    <strong>Write</strong>
-                    <small>Page + Timeline</small>
-                </div>
+                <div class="arch-box main"><strong>4️⃣ Write</strong><small>页面+时间线</small></div>
                 <div class="arch-box arrow">→</div>
-                <div class="arch-box main">
-                    <strong>Auto-Link</strong>
-                    <small>Typed edges</small>
-                </div>
-                <div class="arch-box arrow">→</div>
-                <div class="arch-box main">
-                    <strong>Sync</strong>
-                    <small>Cron fresh</small>
-                </div>
+                <div class="arch-box main"><strong>5️⃣ Auto-Link</strong><small>自动建立关联</small></div>
             </div>
-
             <div style="margin-top: 24px; padding: 16px; background: var(--warm-sand); border-radius: 12px;">
-                <strong style="color: var(--terracotta);">Two Engines:</strong>
-                <span style="margin-left: 16px;">PGLite (Postgres 17 via WASM, default) / Postgres + pgvector</span>
+                <strong style="color: var(--terracotta);">双引擎支持：</strong>
+                <span style="margin-left: 16px;">PGLite (WASM ��� Postgres) / Postgres + pgvector</span>
             </div>
         </div>
 
-        <!-- Features -->
         <div class="section">
-            <h2>⚡ Features (48 Skills)</h2>
+            <h2>⚡ 核心功能 (48 技能)</h2>
             <div class="features-grid">
-                <div class="feature-item">
-                    <strong>Brain Operations</strong>
-                    signal-detector, brain-ops, query, enrich, repo-architecture
-                </div>
-                <div class="feature-item">
-                    <strong>Ingestion</strong>
-                    idea-ingest, media-ingest, meeting-ingestion, ingest, voice-note-ingest
-                </div>
-                <div class="feature-item">
-                    <strong>Maintenance</strong>
-                    maintain, citation-fixer, frontmatter-guard, smoke-test
-                </div>
-                <div class="feature-item">
-                    <strong>Operational</strong>
-                    daily-task-manager, daily-task-prep, cron-scheduler, reports, briefing
-                </div>
-                <div class="feature-item">
-                    <strong>Skills</strong>
-                    skill-creator, skillify, skillpack-check, skillpack-harvest, testing
-                </div>
-                <div class="feature-item">
-                    <strong>Background Jobs</strong>
-                    minion-orchestrator (shell jobs, subagents)
-                </div>
-                <div class="feature-item">
-                    <strong>Research</strong>
-                    data-research, perplexity-research, article-enrichment
-                </div>
-                <div class="feature-item">
-                    <strong>Review</strong>
-                    cross-modal-review, soul-audit, strategic-reading
-                </div>
-                <div class="feature-item">
-                    <strong>Setup</strong>
-                    setup, cold-start, migrate, migrations, install
-                </div>
-                <div class="feature-item">
-                    <strong>Storage</strong>
-                    brain-pdf, book-mirror, media-ingest, publish
-                </div>
+                <div class="feature-item"><strong>🧠 记忆操作</strong>信号检测、脑优先搜索、查询、知识图谱</div>
+                <div class="feature-item"><strong>📥 内容摄取</strong>想法摄入、媒体摄入、会议记录、语音笔记</div>
+                <div class="feature-item"><strong>🔧 维护运营</strong>日常任务管理、定时调度、报告生成、健康检查</div>
+                <div class="feature-item"><strong>🧪 质量保障</strong>引用修复、前提守卫、冒烟测试、跨模态审查</div>
+                <div class="feature-item"><strong>🎯 技能开发</strong>技能创建、技能化、技能包检查</div>
+                <div class="feature-item"><strong>⚙️ 后台任务</strong>Minion 任务队列、shell 任务、子代理</div>
+                <div class="feature-item"><strong>🔍 研究调研</strong>数据研究、文章 enrich、Perplexity 研究</div>
+                <div class="feature-item"><strong>📚 学习阅读</strong>战略阅读、书籍镜像、概念综合</div>
+                <div class="feature-item"><strong>🚀 初始化</strong>安装、冷启动、迁移、数据导入</div>
+                <div class="feature-item"><strong>🌙 梦境循环</strong>夜间自动整理、模式发现、事实提取</div>
             </div>
         </div>
 
-        <!-- Toolbox -->
         <div class="section">
-            <h2>🔧 Toolbox</h2>
+            <h2>🔧 工具箱</h2>
             <div class="tool-grid">
-                <div class="tool-item">
-                    <code>gbrain init --pglite</code>
-                    Initialize brain (2s)
-                </div>
-                <div class="tool-item">
-                    <code>gbrain search "query"</code>
-                    Hybrid search
-                </div>
-                <div class="tool-item">
-                    <code>gbrain query "what..."</code>
-                    Natural language
-                </div>
-                <div class="tool-item">
-                    <code>gbrain graph-query</code>
-                    Knowledge graph
-                </div>
-                <div class="tool-item">
-                    <code>gbrain serve</code>
-                    MCP stdio server
-                </div>
-                <div class="tool-item">
-                    <code>gbrain autopilot</code>
-                    Self-maintaining
-                </div>
-                <div class="tool-item">
-                    <code>gbrain doctor</code>
-                    Health check
-                </div>
-                <div class="tool-item">
-                    <code>gbrain jobs submit</code>
-                    Background tasks
-                </div>
-                <div class="tool-item">
-                    <code>gbrain eval</code>
-                    Retrieval benchmarks
-                </div>
+                <div class="tool-item"><code>gbrain init --pglite</code>初始化 (2秒)</div>
+                <div class="tool-item"><code>gbrain search "?"</code>混合搜索</div>
+                <div class="tool-item"><code>gbrain query "?"</code>自然语言查询</div>
+                <div class="tool-item"><code>gbrain graph-query</code>知识图谱查询</div>
+                <div class="tool-item"><code>gbrain serve</code>MCP 服务</div>
+                <div class="tool-item"><code>gbrain autopilot</code>自动维护</div>
+                <div class="tool-item"><code>gbrain doctor</code>健康检查</div>
+                <div class="tool-item"><code>gbrain jobs submit</code>后台任务</div>
+                <div class="tool-item"><code>gbrain eval</code>检索评估</div>
             </div>
         </div>
 
-        <!-- Chat Scenario -->
         <div class="section">
-            <h2>💬 Chat Scenario</h2>
+            <h2>💬 聊天比喻场景</h2>
             <div class="chat-example">
-                <div class="chat-line user">Who works at Acme AI?</div>
-                <div class="chat-line ai">Let me search the brain first...</div>
-                <div class="chat-line user">What did Bob invest in this quarter?</div>
-                <div class="chat-line ai">Querying knowledge graph...</div>
-                <p style="margin-top: 16px; color: var(--stone-gray); font-size: 13px;">
-                    Traditional RAG can't reach factual connections. Graph returns chunks that are factually connected, not just semantically close.
-                </p>
+                <div class="chat-line user">谁在 Acme AI 工作？</div>
+                <div class="chat-line ai">先搜一下我的记忆库...</div>
+                <div class="chat-line user">Bob 这季度投了什么？</div>
+                <div class="chat-line ai">查询知识图谱中...</div>
+                <p style="margin-top: 16px; color: var(--stone-gray); font-size: 13px;">传统 RAG 只能找到语义相似的碎片，但知识图谱能找到事实关联的信息。</p>
             </div>
         </div>
 
-        <!-- Explain -->
         <div class="section">
-            <h2>📚 Explain (ELI10)</h2>
+            <h2>📚 大白话解释</h2>
             <div class="explain-box">
-                <p><strong>What is GBrain?</strong> It gives your AI agent a personal memory. The agent ingests meetings, emails, tweets, and ideas while you sleep. It enriches every person and company it encounters.</p>
-
-                <p style="margin-top: 12px;"><strong>How does it work?</strong> Every time you interact with the agent, it captures entities and creates typed links (<code>attended</code>, <code>works_at</code>, <code>invested_in</code>, <code>founded</code>) automatically. No LLM calls needed.</p>
-
-                <p style="margin-top: 12px;"><strong>Why graph matters?</strong> Vector search returns semantically similar chunks. Graph returns factually connected chunks. Hybrid search pulls from both, giving +31.4 P@5 lift over vector-only RAG.</p>
-
-                <p style="margin-top: 12px;"><strong>What runs overnight?</strong> The dream cycle: dedup pages, fix citations, score salience, find contradictions, prep tomorrow's tasks. You wake up smarter than when you went to bed.</p>
+                <p><strong>GBrain 是什么？</strong> 给你 AI 助手的一个私人记忆系统。你和 AI 聊的任何内容、会议、邮件、想法，它都会自动记下来，并建立人和人、人和公司之间的关系。</p>
+                <p style="margin-top: 12px;"><strong>怎么个工作？</strong> 每当你和 AI 对话一次，它自动提取涉及的人和公司，建立关联（参加过、任职于、投资过、创立过、建议过），不需要额外调用 LLM。</p>
+                <p style="margin-top: 12px;"><strong>为什么图谱比向量搜索强？</strong> 向量搜索找到的是"语义相似"的碎片，图谱找到的是"实际有关联"的事实。混合搜索结合两者，比纯向量搜索 P@5 提升 31.4 分！</p>
+                <p style="margin-top: 12px;"><strong>夜间会发生什么？</strong> 梦境循环会自动：去重页面、修复引用、评估相关性、发现矛盾、准备明天的任务。你睡觉醒来，AI 已经变得更聪明了。</p>
             </div>
         </div>
 
         <footer>
-            <p>Based on 6-module framework: Hero · Architecture · Features · Toolbox · Chat · Explain</p>
-            <p style="margin-top:8px;">github.com/garrytan/gbrain · Built by Y Combinator</p>
+            <p>基于 6 模块全景拆解框架：Hero · Architecture · Features · Toolbox · Chat · Explain</p>
+            <p style="margin-top:8px;">github.com/garrytan/gbrain · Y Combinator</p>
         </footer>
     </div>
 </body>

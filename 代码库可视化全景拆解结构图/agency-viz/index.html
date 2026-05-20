@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agency Agents - AI Specialists</title>
+    <title>The Agency - AI 专家团队</title>
     <style>
         :root {
             --parchment: #f5f4ed;
@@ -30,7 +30,6 @@
         }
         .container { max-width: 1100px; margin: 0 auto; }
 
-        /* Header */
         header {
             text-align: center;
             margin-bottom: 48px;
@@ -41,7 +40,6 @@
             font-family: Georgia, serif;
             font-size: 42px;
             font-weight: 500;
-            color: var(--near-black);
             margin-bottom: 12px;
             letter-spacing: -0.02em;
         }
@@ -61,7 +59,6 @@
             font-size: 13px;
         }
 
-        /* Section */
         .section {
             background: var(--white);
             border: 1px solid var(--border-warm);
@@ -77,12 +74,8 @@
             padding-bottom: 12px;
             border-bottom: 1px solid var(--border-cream);
         }
-        .section p {
-            color: var(--charcoal);
-            margin-bottom: 20px;
-        }
+        .section p { color: var(--charcoal); margin-bottom: 20px; }
 
-        /* Architecture */
         .arch-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -97,10 +90,9 @@
             font-size: 13px;
         }
 
-        /* Features Grid */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 12px;
         }
         .feature-item {
@@ -109,13 +101,8 @@
             border-radius: 10px;
             font-size: 14px;
         }
-        .feature-item strong {
-            color: var(--terracotta);
-            display: block;
-            margin-bottom: 4px;
-        }
+        .feature-item strong { color: var(--terracotta); display: block; margin-bottom: 4px; }
 
-        /* Toolbox */
         .tool-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -128,14 +115,8 @@
             text-align: center;
             font-size: 13px;
         }
-        .tool-item code {
-            display: block;
-            font-size: 14px;
-            color: var(--terracotta);
-            margin-bottom: 8px;
-        }
+        .tool-item code { display: block; font-size: 14px; color: var(--terracotta); margin-bottom: 8px; }
 
-        /* Chat Scenario */
         .chat-example {
             background: var(--warm-sand);
             border-radius: 12px;
@@ -148,17 +129,9 @@
             border-radius: 12px;
             max-width: 85%;
         }
-        .chat-line.user {
-            background: var(--near-black);
-            color: var(--white);
-            margin-left: auto;
-        }
-        .chat-line.ai {
-            background: var(--white);
-            border: 1px solid var(--border-warm);
-        }
+        .chat-line.user { background: var(--near-black); color: var(--white); margin-left: auto; }
+        .chat-line.ai { background: var(--white); border: 1px solid var(--border-warm); }
 
-        /* Explain */
         .explain-box {
             background: var(--warm-sand);
             border-radius: 12px;
@@ -168,7 +141,6 @@
             color: var(--charcoal);
         }
 
-        /* Stats */
         .stats-row {
             display: flex;
             justify-content: center;
@@ -177,203 +149,92 @@
             padding: 24px 0;
         }
         .stat { text-align: center; }
-        .stat-num {
-            font-size: 36px;
-            font-weight: 500;
-            color: var(--terracotta);
-            font-family: Georgia, serif;
-        }
-        .stat-label {
-            font-size: 12px;
-            color: var(--stone-gray);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 4px;
-        }
+        .stat-num { font-size: 36px; font-weight: 500; color: var(--terracotta); font-family: Georgia, serif; }
+        .stat-label { font-size: 12px; color: var(--stone-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            padding-top: 32px;
-            border-top: 1px solid var(--border-warm);
-            font-size: 13px;
-            color: var(--stone-gray);
-        }
+        footer { text-align: center; margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--border-warm); font-size: 13px; color: var(--stone-gray); }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>The Agency</h1>
-            <p class="subtitle">AI Specialists Ready to Transform Your Workflow - From frontend wizards to Reddit community ninjas, each agent is a specialized expert with personality, processes, and proven deliverables.</p>
-            <span class="badge">by msitarzewski · 226 AI Agents</span>
+            <p class="subtitle">AI 专家团队 - 每个 AI 都是领域专家，有独特人格、成熟流程和验证过的交付成果。</p>
+            <span class="badge">by msitarzewski · 226 个 AI 专家</span>
         </header>
 
         <div class="stats-row">
-            <div class="stat">
-                <div class="stat-num">226</div>
-                <div class="stat-label">AI Agents</div>
-            </div>
-            <div class="stat">
-                <div class="stat-num">18</div>
-                <div class="stat-label">Divisions</div>
-            </div>
-            <div class="stat">
-                <div class="stat-num">9</div>
-                <div class="stat-label">Tools</div>
-            </div>
+            <div class="stat"><div class="stat-num">226</div><div class="stat-label">个 AI 专家</div></div>
+            <div class="stat"><div class="stat-num">18</div><div class="stat-label">个部门</div></div>
+            <div class="stat"><div class="stat-num">9</div><div class="stat-label">种工具</div></div>
         </div>
 
-        <!-- Architecture -->
         <div class="section">
-            <h2>🛠️ Architecture</h2>
-            <p>Modular agent system organized by domain expertise, each agent is a specialized expert with unique personality and deliverables.</p>
-
+            <h2>🛠️ 分层架构图</h2>
+            <p>模块化 Agent 系统，每个 AI 都是特定领域的专家，有人格、有流程、能交付。</p>
             <div class="arch-grid">
-                <div class="arch-box">
-                    <strong>🎯 Specialized</strong>
-                    Deep expertise in their domain
-                </div>
-                <div class="arch-box">
-                    <strong>🧠 Personality</strong>
-                    Unique voice & style
-                </div>
-                <div class="arch-box">
-                    <strong>📋 Deliverables</strong>
-                    Real code & processes
-                </div>
-                <div class="arch-box">
-                    <strong>✅ Production</strong>
-                    Battle-tested workflows
-                </div>
+                <div class="arch-box"><strong>🎯 专业化</strong>深度领域 expertise</div>
+                <div class="arch-box"><strong>🧠 人格化</strong>独特声音和风格</div>
+                <div class="arch-box"><strong>📋 交付导向</strong>真实代码和流程</div>
+                <div class="arch-box"><strong>✅ 生产就绪</strong>经过验证的工作流</div>
             </div>
         </div>
 
-        <!-- Features -->
         <div class="section">
-            <h2>⚡ Features (18 Divisions)</h2>
+            <h2>⚡ 核心功能 (18 个部门)</h2>
             <div class="features-grid">
-                <div class="feature-item">
-                    <strong>💻 Engineering (29)</strong>
-                    Frontend, Backend, DevOps, Security, Mobile
-                </div>
-                <div class="feature-item">
-                    <strong>🎨 Design (8)</strong>
-                    UI/UX, Brand, Product, Content
-                </div>
-                <div class="feature-item">
-                    <strong>📣 Marketing (30)</strong>
-                    Social, SEO, Email, Content
-                </div>
-                <div class="feature-item">
-                    <strong>🔬 Specialized (41)</strong>
-                    Research, Writing, Analysis
-                </div>
-                <div class="feature-item">
-                    <strong>💰 Finance (5)</strong>
-                    Analysis, Planning, Operations
-                </div>
-                <div class="feature-item">
-                    <strong>🎮 Game Dev (5)</strong>
-                    Design, Narrative, Technical
-                </div>
-                <div class="feature-item">
-                    <strong>📚 Academic (5)</strong>
-                    Research, Writing, Tutoring
-                </div>
-                <div class="feature-item">
-                    <strong>🛒 Sales (8)</strong>
-                    Outreach, Discovery, Closing
-                </div>
-                <div class="feature-item">
-                    <strong>📊 Product (5)</strong>
-                    Strategy, Research, Roadmap
-                </div>
-                <div class="feature-item">
-                    <strong>🎯 Strategy (3)</strong>
-                    Planning, Operations
-                </div>
-                <div class="feature-item">
-                    <strong>🧪 Testing (8)</strong>
-                    QA, Automation, Performance
-                </div>
-                <div class="feature-item">
-                    <strong>💳 Paid Media (7)</strong>
-                    PPC, Social Ads, Analytics
-                </div>
+                <div class="feature-item"><strong>💻 工程部 (29)</strong>前端、 后端、DevOps、安全、移动端</div>
+                <div class="feature-item"><strong>🎨 设计部 (8)</strong>UI/UX、品牌、产品、内容</div>
+                <div class="feature-item"><strong>📣 市场部 (30)</strong>社交、SEO、邮件、内容营销</div>
+                <div class="feature-item"><strong>🔬 专业部 (41)</strong>研究、写作、分析</div>
+                <div class="feature-item"><strong>💰 财务部 (5)</strong>分析、计划、运营</div>
+                <div class="feature-item"><strong>🎮 游戏部 (5)</strong>设计、叙事、技术</div>
+                <div class="feature-item"><strong>📚 学术部 (5)</strong>研究、写作、辅导</div>
+                <div class="feature-item"><strong>🛒 销售部 (8)</strong>外联、发现、成交</div>
+                <div class="feature-item"><strong>📊 产品部 (5)</strong>战略、研究、路线图</div>
+                <div class="feature-item"><strong>🎯 战略部 (3)</strong>规划、运营</div>
+                <div class="feature-item"><strong>🧪 测试部 (8)</strong>QA、自动化、性能</div>
+                <div class="feature-item"><strong>💳 付费媒体 (7)</strong>PPC、社交广告、分析</div>
             </div>
         </div>
 
-        <!-- Toolbox -->
         <div class="section">
-            <h2>🔧 Toolbox</h2>
-            <p>Multi-tool integration system supporting 9 AI platforms:</p>
+            <h2>🔧 工具箱</h2>
+            <p>支持 9 种 AI 工具的集成系统：</p>
             <div class="tool-grid">
-                <div class="tool-item">
-                    <code>Claude Code</code>
-                    Install agents to Claude Code
-                </div>
-                <div class="tool-item">
-                    <code>Cursor</code>
-                    AI-first code editor
-                </div>
-                <div class="tool-item">
-                    <code>Windsurf</code>
-                    AI-powered IDE
-                </div>
-                <div class="tool-item">
-                    <code>Aider</code>
-                    AI pair programming
-                </div>
-                <div class="tool-item">
-                    <code>OpenClaw</code>
-                    Autonomous agent
-                </div>
-                <div class="tool-item">
-                    <code>Copilot</code>
-                    GitHub Copilot
-                </div>
-                <div class="tool-item">
-                    <code>Gemini CLI</code>
-                    Google CLI
-                </div>
-                <div class="tool-item">
-                    <code>OpenCode</code>
-                    Web-based IDE
-                </div>
-                <div class="tool-item">
-                    <code>Kimi</code>
-                    Chinese AI assistant
-                </div>
+                <div class="tool-item"><code>Claude Code</code>官方 CLI</div>
+                <div class="tool-item"><code>Cursor</code>AI 优先编辑器</div>
+                <div class="tool-item"><code>Windsurf</code>AI 驱动 IDE</div>
+                <div class="tool-item"><code>Aider</code>AI结对编程</div>
+                <div class="tool-item"><code>OpenClaw</code>自主代理</div>
+                <div class="tool-item"><code>Copilot</code>GitHub Copilot</div>
+                <div class="tool-item"><code>Gemini CLI</code>Google CLI</div>
+                <div class="tool-item"><code>OpenCode</code>网页 IDE</div>
+                <div class="tool-item"><code>Kimi</code>月之暗面</div>
             </div>
         </div>
 
-        <!-- Chat Scenario -->
         <div class="section">
-            <h2>💬 Chat Scenario</h2>
+            <h2>💬 聊天比喻场景</h2>
             <div class="chat-example">
-                <div class="chat-line user">Hey Claude, activate Frontend Developer mode</div>
-                <div class="chat-line ai">Frontend Developer activated. Ready to build React components, implement responsive designs, and ensure accessibility compliance.</div>
-                <div class="chat-line user">Build me a dashboard with charts</div>
-                <div class="chat-line ai">I'll create a modern dashboard with D3.js charts, React state management, and responsive grid layout. Let's start with the component structure...</div>
+                <div class="chat-line user">Hey Claude，帮我激活前端开发者模式</div>
+                <div class="chat-line ai">前端开发者已激活。准备好构建 React 组件、实现响应式设计、确保无障碍访问。</div>
+                <div class="chat-line user">给我做个仪表盘，带图表</div>
+                <div class="chat-line ai">我来创建一个带 D3.js 图表的现代仪表盘，使用 React 状态管理和响应式网格...</div>
             </div>
         </div>
 
-        <!-- Explain -->
         <div class="section">
-            <h2>📚 Explain (ELI10)</h2>
+            <h2>📚 大白话解释</h2>
             <div class="explain-box">
-                <p><strong>What is The Agency?</strong> A collection of 226 specialized AI agents, each with unique personality and expertise. Think of it as assembling your dream team - these AI specialists never sleep, never complain, and always deliver.</p>
-
-                <p style="margin-top: 12px;"><strong>How do I use it?</strong> Install to your AI tool (Claude Code, Cursor, etc.) via the install script, then activate any agent by asking your AI assistant to "activate [Agent Name] mode".</p>
-
-                <p style="margin-top: 12px;"><strong>Why different agents?</strong> Generic AI prompts give generic results. These agents are battle-tested specialists with proven workflows, personality, and real deliverables.</p>
+                <p><strong>The Agency 是什么？</strong> 226 个专业 AI 专家的集合，每个都有独特人格和专业领域。想象成组建你的梦之队 - 这些 AI 专家不睡觉、不抱怨、永远交付。</p>
+                <p style="margin-top: 12px;"><strong>怎么用？</strong> 通过安装脚本安装到你的 AI 工具（Claude Code、Cursor 等），然后让你的 AI 助手激活"[专家名称]模式"。</p>
+                <p style="margin-top: 12px;"><strong>为什么需要不同专家？</strong> 通用的 AI 提示给出通用的结果。这些是经过验证的专业人士，有成熟的工作流、人格和真实的交付成果。</p>
             </div>
         </div>
 
         <footer>
-            <p>Based on 6-module framework: Hero · Architecture · Features · Toolbox · Chat · Explain</p>
+            <p>基于 6 模块全景拆解框架：Hero · Architecture · Features · Toolbox · Chat · Explain</p>
             <p style="margin-top:8px;">github.com/msitarzewski/agency-agents</p>
         </footer>
     </div>
