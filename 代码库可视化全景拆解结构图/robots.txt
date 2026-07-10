@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://flora-ai-skills-archive.vercel.app/sitemap.xml

@@ -3,709 +3,639 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Skill Archives</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>Flora AI Skills Archive | AI 技能包全景导航</title>
+    <meta name="description" content="Flora AI Skills Archive 汇总 14 个 AI 技能包，按产品管理、前端设计、开发流程、视频生成和 Agent 编排分类，帮助你判断场景、查看拆解并选择 Codex 使用路径。">
+    <link rel="canonical" href="https://flora-ai-skills-archive.vercel.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Flora AI Skills Archive">
+    <meta property="og:description" content="14 个 AI 技能包的全景导航、使用场景和 Codex 适配提示。">
+    <meta property="og:url" content="https://flora-ai-skills-archive.vercel.app/">
+    <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="#f5f4ed">
     <style>
         :root {
-            --bg: #F5F4ED;
-            --bg-dark: #E8E6DC;
-            --surface: #FDFCFA;
-            --text: #1A1A18;
-            --text-secondary: #5C5346;
-            --text-muted: #87867F;
-            --border: rgba(26,26,24,0.08);
-            --accent: #C96442;
-            --accent-light: #D97757;
-            --shadow-card: 0 2px 8px rgba(26,24,20,0.06);
-            --shadow-hover: 0 20px 60px -12px rgba(26,24,24,0.15);
+            --parchment: #f5f4ed;
+            --ivory: #faf9f5;
+            --white: #ffffff;
+            --warm-sand: #e8e6dc;
+            --border-warm: #e1ddd0;
+            --near-black: #141413;
+            --charcoal: #4d4c48;
+            --olive-gray: #5e5d59;
+            --stone-gray: #87867f;
+            --terracotta: #c96442;
+            --coral: #d97757;
+            --focus-blue: #2f7dd1;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-h: 100dvh;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            font-family: Georgia, "SF Pro Text", "PingFang SC", "Microsoft YaHei", serif;
+            background: var(--parchment);
+            color: var(--near-black);
+            line-height: 1.55;
+            min-width: 320px;
         }
 
-        /* Noise texture overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 1000;
+        a { color: inherit; }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid var(--focus-blue);
+            outline-offset: 3px;
         }
 
-        /* Ambient background */
-        .ambient-bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .ambient-orb {
+        .skip-link {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.4;
+            left: 16px;
+            top: 12px;
+            z-index: 10;
+            transform: translateY(-140%);
+            background: var(--near-black);
+            color: var(--white);
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
         }
 
-        .orb-1 {
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%);
-            top: -300px;
-            right: -200px;
-            animation: drift 30s ease-in-out infinite;
+        .skip-link:focus { transform: translateY(0); }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+            border: 0;
         }
 
-        .orb-2 {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, #D97757 0%, transparent 70%);
-            bottom: -100px;
-            left: -100px;
-            opacity: 0.2;
-            animation: drift 25s ease-in-out infinite reverse;
-        }
-
-        @keyframes drift {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -40px) rotate(5deg); }
-            66% { transform: translate(-20px, 30px) rotate(-3deg); }
-        }
-
-        /* Hero */
-        .hero {
-            min-h: 100dvh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 100px 24px 140px;
-            position: relative;
-        }
-
-        .hero-content {
-            max-width: 900px;
+        .container {
+            max-width: 1120px;
             margin: 0 auto;
-            position: relative;
-            z-index: 1;
+            padding: 40px 24px 80px;
         }
 
-        .hero h1 {
-            font-family: 'Clash Display', 'Outfit', sans-serif;
-            font-size: clamp(3rem, 8vw, 5.5rem);
-            font-weight: 600;
-            letter-spacing: -0.025em;
-            line-height: 1.05;
-            margin-bottom: 28px;
-            color: var(--text);
-            text-wrap: balance;
+        header {
+            padding: 32px 0 28px;
+            border-bottom: 1px solid var(--border-warm);
         }
 
-        .hero .subtitle {
-            font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-            color: var(--text-secondary);
-            max-width: 560px;
-            font-weight: 400;
-            line-height: 1.7;
-            margin-bottom: 40px;
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+            gap: 32px;
+            align-items: end;
         }
 
-        .badge-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
+        .eyebrow {
+            color: var(--terracotta);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
         }
 
-        .badge {
-            font-size: 0.75rem;
+        h1 {
+            font-size: clamp(2.35rem, 7vw, 4.85rem);
             font-weight: 500;
-            padding: 10px 18px;
-            border-radius: 100px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            letter-spacing: 0.02em;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
+            line-height: 1.02;
+            max-width: 850px;
         }
 
-        .badge:hover {
-            background: var(--text);
-            color: var(--bg);
-            border-color: var(--text);
-            transform: translateY(-2px);
+        .subtitle {
+            color: var(--olive-gray);
+            font-size: 17px;
+            max-width: 720px;
+            margin-top: 18px;
+        }
+
+        .hero-panel {
+            border: 1px solid var(--border-warm);
+            background: var(--ivory);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .hero-panel h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .hero-panel p {
+            color: var(--olive-gray);
+            font-size: 14px;
         }
 
         .stats-row {
-            display: flex;
-            gap: 56px;
-            padding-top: 48px;
-            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 32px 0;
         }
 
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        .stat {
+            border-top: 1px solid var(--border-warm);
+            padding-top: 16px;
         }
 
-        .stat-item .num {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: var(--text);
-            transition: all 0.3s ease;
+        .stat-num {
+            color: var(--terracotta);
+            font-size: 34px;
+            line-height: 1;
         }
 
-        .stat-item:hover .num {
-            transform: scale(1.05);
-            color: var(--accent);
-        }
-
-        .stat-item .label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 0.08em;
+        .stat-label {
+            color: var(--stone-gray);
+            font-size: 12px;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-        }
-
-        /* Sections */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px 140px;
-            position: relative;
-            z-index: 1;
+            margin-top: 8px;
         }
 
         .section {
-            margin-bottom: 100px;
+            margin-top: 44px;
         }
 
-        .section-header {
+        .section-heading {
             display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 44px;
-        }
-
-        .section-icon {
-            width: 52px;
-            height: 52px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .section-icon:hover {
-            transform: scale(1.08) rotate(4deg);
-            border-color: var(--accent);
-            box-shadow: 0 8px 24px rgba(201,100,66,0.15);
-        }
-
-        .section-title {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-        }
-
-        /* Grid - asymmetric */
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .category-grid .package-card:first-child {
-            grid-column: span 2;
-        }
-
-        .package-card {
-            display: block;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            padding: 32px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            box-shadow: var(--shadow-card);
-            min-height: 220px;
-        }
-
-        .package-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 28px;
-            background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            z-index: 0;
-        }
-
-        .package-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-            border-color: transparent;
-        }
-
-        .package-card:hover::before {
-            opacity: 1;
-        }
-
-        .package-card > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .package-card:hover h3,
-        .package-card:hover p,
-        .package-card:hover .meta,
-        .package-card:hover .category-tag {
-            color: white;
-        }
-
-        .package-card:hover .category-tag {
-            background: rgba(255,255,255,0.2);
-            border-color: transparent;
-        }
-
-        .package-card:hover .icon {
-            background: rgba(255,255,255,0.2);
-            border-color: transparent;
-        }
-
-        .package-card .header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .package-card .icon {
-            width: 48px;
-            height: 48px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .package-card:hover .icon {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .package-card h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            transition: color 0.3s ease;
-        }
-
-        .package-card .category-tag {
-            display: inline-block;
-            font-size: 0.72rem;
-            font-weight: 500;
-            padding: 8px 14px;
-            border-radius: 10px;
-            background: var(--bg-dark);
-            color: var(--text-muted);
-            margin-bottom: 18px;
-            letter-spacing: 0.04em;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .package-card p {
-            font-size: 0.92rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 24px;
-            transition: color 0.3s ease;
-        }
-
-        .package-card .meta {
-            display: flex;
+            justify-content: space-between;
             gap: 20px;
-            font-size: 0.76rem;
-            color: var(--text-muted);
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-            transition: color 0.3s ease;
-            font-family: 'JetBrains Mono', monospace;
+            align-items: end;
+            margin-bottom: 18px;
         }
 
-        .package-card:hover .meta {
-            border-color: rgba(255,255,255,0.2);
+        .section-heading h2 {
+            font-size: 24px;
+            font-weight: 500;
         }
 
-        /* Quick Access */
-        .quick-section {
+        .section-heading p {
+            color: var(--olive-gray);
+            font-size: 14px;
+            max-width: 560px;
+        }
+
+        .route-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 16px;
-            margin-top: 48px;
         }
 
-        .quick-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 28px 16px;
-            text-decoration: none;
-            color: var(--text-secondary);
-            text-align: center;
-            transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        .route {
+            border: 1px solid var(--border-warm);
+            background: var(--white);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .route strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .route span {
+            color: var(--olive-gray);
+            display: block;
+            font-size: 14px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: minmax(240px, 1fr) auto;
+            gap: 16px;
+            align-items: center;
+            margin: 22px 0;
+        }
+
+        .search {
+            width: 100%;
+            min-height: 48px;
+            border: 1px solid var(--border-warm);
+            border-radius: 10px;
+            background: var(--white);
+            color: var(--near-black);
+            padding: 0 16px;
+            font: inherit;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .filter-btn {
+            min-height: 40px;
+            border: 1px solid var(--border-warm);
+            border-radius: 999px;
+            background: var(--ivory);
+            color: var(--charcoal);
+            padding: 0 14px;
+            font: inherit;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .filter-btn[aria-pressed="true"] {
+            background: var(--near-black);
+            border-color: var(--near-black);
+            color: var(--white);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
             display: flex;
             flex-direction: column;
+            min-height: 245px;
+            background: var(--white);
+            border: 1px solid var(--border-warm);
+            border-radius: 12px;
+            padding: 22px;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(20, 20, 19, 0.08);
+            border-color: var(--terracotta);
+        }
+
+        .card-header {
+            display: flex;
             align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--near-black);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 17px;
+            flex: 0 0 auto;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .card-desc {
+            color: var(--charcoal);
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        .card-use {
+            color: var(--olive-gray);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 6px 10px;
+            background: var(--warm-sand);
+            border-radius: 6px;
+            color: var(--olive-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .card-cta {
+            color: var(--terracotta);
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 14px;
+        }
+
+        .no-results {
+            display: none;
+            border: 1px dashed var(--border-warm);
+            border-radius: 12px;
+            color: var(--olive-gray);
+            padding: 24px;
+            text-align: center;
+        }
+
+        .install-note {
+            background: var(--near-black);
+            color: var(--ivory);
+            border-radius: 12px;
+            padding: 22px;
+            display: grid;
             gap: 12px;
         }
 
-        .quick-card:hover {
-            color: var(--text);
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--accent);
-        }
-
-        .quick-card:hover .icon {
-            transform: scale(1.15) rotate(8deg);
-            color: var(--accent);
-        }
-
-        .quick-card .icon {
-            font-size: 26px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .quick-card h4 {
-            font-size: 0.88rem;
-            font-weight: 500;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 100px 24px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border);
-            position: relative;
-            z-index: 1;
-            background: var(--bg-dark);
-        }
-
-        /* Loading skeleton */
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        .skeleton {
-            background: linear-gradient(90deg, var(--bg) 25%, var(--bg-dark) 50%, var(--bg) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
+        .install-note h2 { font-size: 20px; }
+        .install-note p { color: #d8d5cb; }
+        .install-note code {
+            display: block;
+            overflow-x: auto;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--white);
+            padding: 12px;
             border-radius: 8px;
+            font-family: "SF Mono", ui-monospace, Menlo, monospace;
+            font-size: 13px;
         }
 
-        @media (max-width: 1024px) {
-            .category-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .category-grid .package-card:first-child {
-                grid-column: span 1;
-            }
-            .quick-section {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        footer {
+            text-align: center;
+            margin-top: 56px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border-warm);
+            color: var(--stone-gray);
+            font-size: 13px;
         }
 
-        @media (max-width: 768px) {
-            .hero { padding: 80px 20px 100px; }
-            .stats-row { flex-wrap: wrap; gap: 32px; }
-            .category-grid { grid-template-columns: 1fr; }
-            .quick-section { grid-template-columns: repeat(2, 1fr); }
-            .ambient-bg { display: none; }
+        @media (max-width: 820px) {
+            .container { padding: 28px 16px 56px; }
+            .hero-grid,
+            .controls,
+            .route-grid {
+                grid-template-columns: 1fr;
+            }
+            .filters { justify-content: flex-start; }
+            .section-heading {
+                display: block;
+            }
+            .section-heading p { margin-top: 8px; }
+        }
+
+        @media (max-width: 520px) {
+            .stats-row { gap: 10px; }
+            .stat-num { font-size: 28px; }
+            .grid { grid-template-columns: 1fr; }
+            .card { min-height: auto; }
         }
     </style>
 </head>
 <body>
-    <!-- Background -->
-    <div class="ambient-bg">
-        <div class="ambient-orb orb-1"></div>
-        <div class="ambient-orb orb-2"></div>
-    </div>
-
-    <div class="hero">
-        <div class="hero-content">
-            <div class="badge-row">
-                <span class="badge">11 Packages</span>
-                <span class="badge">200+ Skills</span>
-                <span class="badge">Updated 2025</span>
-            </div>
-            <h1>AI Skill Archives</h1>
-            <p class="subtitle">A visual panorama of AI skill packages across development, design, product, and content creation.</p>
-
-            <div class="stats-row">
-                <div class="stat-item">
-                    <span class="num">11</span>
-                    <span class="label">Packages</span>
-                </div>
-                <div class="stat-item">
-                    <span class="num">200+</span>
-                    <span class="label">Sub-skills</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <a class="skip-link" href="#archive">跳到技能包列表</a>
     <div class="container">
-        <!-- Frameworks -->
-        <div class="section">
-            <div class="section-header">
-                <div class="section-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"></rect></svg>
+        <header>
+            <div class="hero-grid">
+                <div>
+                    <p class="eyebrow">Flora AI Skills Archive</p>
+                    <h1>按场景选择 AI 技能包，而不是盲选目录</h1>
+                    <p class="subtitle">这里汇总 14 个技能包的可视化拆解，并补充适用场景、Codex 使用判断和快速筛选。适合产品、前端、Agent 工作流、视频生成和软件交付相关探索。</p>
                 </div>
-                <h2 class="section-title">Frameworks</h2>
+                <aside class="hero-panel" aria-labelledby="codex-note-title">
+                    <h2 id="codex-note-title">Codex 使用原则</h2>
+                    <p>优先安装单个明确技能；不要把归档仓库整体复制到 Codex。带运行时的包应走原项目安装脚本。</p>
+                </aside>
             </div>
-            <div class="category-grid">
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/impeccable-main/public/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">🎬</div>
-                        <h3>Impeccable</h3>
-                    </div>
-                    <span class="category-tag">Video Processing</span>
-                    <p>AI video generation with WebCodecs hardware acceleration and FFmpeg pipelines.</p>
-                    <div class="meta">
-                        <span>6 Layers</span>
-                        <span>Core Functions</span>
-                    </div>
-                </a>
+        </header>
 
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/MiroFish-main/frontend/public/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">🐟</div>
-                        <h3>MiroFish</h3>
-                    </div>
-                    <span class="category-tag">Swarm Intelligence</span>
-                    <p>Multi-agent simulation engine with WASM performance.</p>
-                    <div class="meta">
-                        <span>Multi-agent</span>
-                        <span>WASM</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Agents -->
-        <div class="section">
-            <div class="section-header">
-                <div class="section-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
+        <main>
+            <section class="stats-row" aria-label="归档统计">
+                <div class="stat">
+                    <div class="stat-num">14</div>
+                    <div class="stat-label">Skill Packages</div>
                 </div>
-                <h2 class="section-title">Agents</h2>
-            </div>
-            <div class="category-grid">
-                <a href="https://flora-ai-skills-archive.vercel.app/superpowers/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">⚡</div>
-                        <h3>Superpowers</h3>
-                    </div>
-                    <span class="category-tag">Claude Code Plugin</span>
-                    <p>50+ elite AI skill commands for code review, debugging, and UI design.</p>
-                    <div class="meta">
-                        <span>50+ Skills</span>
-                        <span>MCP</span>
-                    </div>
-                </a>
-
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/Agent-Skills/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">📚</div>
-                        <h3>Agent Skills</h3>
-                    </div>
-                    <span class="category-tag">Google Engineering</span>
-                    <p>AI coding agent engineering package with 20 specialized skills.</p>
-                    <div class="meta">
-                        <span>20 Skills</span>
-                        <span>7 Commands</span>
-                    </div>
-                </a>
-
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/gstack/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">🚀</div>
-                        <h3>gstack</h3>
-                    </div>
-                    <span class="category-tag">YC CEO Virtual Team</span>
-                    <p>Turns Claude Code into a virtual engineering team with 27 skills.</p>
-                    <div class="meta">
-                        <span>27 Skills</span>
-                        <span>7 Roles</span>
-                    </div>
-                </a>
-
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/taste-skill/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">🎨</div>
-                        <h3>Taste Skill</h3>
-                    </div>
-                    <span class="category-tag">Frontend Design</span>
-                    <p>Premium frontend code generation with 9 design styles.</p>
-                    <div class="meta">
-                        <span>9 Styles</span>
-                        <span>3 Parameters</span>
-                    </div>
-                </a>
-
-                <a href="https://flora-ai-skills-archive.vercel.app/claude-skills/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">🎯</div>
-                        <h3>Claude Code Built-in</h3>
-                    </div>
-                    <span class="category-tag">Anthropic</span>
-                    <p>33 built-in AI skills covering UI/UX, development, and review.</p>
-                    <div class="meta">
-                        <span>12 Design</span>
-                        <span>8 Dev</span>
-                    </div>
-                </a>
-
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/open-design/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">🎬</div>
-                        <h3>Open Design</h3>
-                    </div>
-                    <span class="category-tag">Open Claude Design</span>
-                    <p>Open-source Claude Design alternative with 16 agents and 31 skills.</p>
-                    <div class="meta">
-                        <span>16 Agents</span>
-                        <span>31 Skills</span>
-                    </div>
-                </a>
-
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/pixelle-video/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">🎥</div>
-                        <h3>Pixelle-Video</h3>
-                    </div>
-                    <span class="category-tag">AI Video</span>
-                    <p>Automated short video engine from topic to finished video.</p>
-                    <div class="meta">
-                        <span>5 Steps</span>
-                        <span>3+ Models</span>
-                    </div>
-                </a>
-
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/design-md-google/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">📐</div>
-                        <h3>DESIGN.md</h3>
-                    </div>
-                    <span class="category-tag">Google Design Spec</span>
-                    <p>AI coding agent design system format specification.</p>
-                    <div class="meta">
-                        <span>4 CLI</span>
-                        <span>Token</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Product -->
-        <div class="section">
-            <div class="section-header">
-                <div class="section-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect></svg>
+                <div class="stat">
+                    <div class="stat-num">200+</div>
+                    <div class="stat-label">Skills</div>
                 </div>
-                <h2 class="section-title">Product</h2>
-            </div>
-            <div class="category-grid">
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/Product-Manager-Skills/index-viz.html" class="package-card" target="_blank">
-                    <div class="header">
-                        <div class="icon">💼</div>
-                        <h3>Product Manager Skills</h3>
-                    </div>
-                    <span class="category-tag">PM Framework</span>
-                    <p>46 practical skills for AI product managers from top frameworks.</p>
-                    <div class="meta">
-                        <span>46 Skills</span>
-                        <span>6 Commands</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Quick Access -->
-        <div class="section">
-            <div class="section-header">
-                <div class="section-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <div class="stat">
+                    <div class="stat-num">6</div>
+                    <div class="stat-label">Review Modules</div>
                 </div>
-                <h2 class="section-title">Quick Access</h2>
-            </div>
-            <div class="quick-section">
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/taste-skill/index-viz.html" class="quick-card" target="_blank">
-                    <span class="icon">🎨</span>
-                    <h4>Taste</h4>
-                </a>
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/gstack/index-viz.html" class="quick-card" target="_blank">
-                    <span class="icon">🚀</span>
-                    <h4>gstack</h4>
-                </a>
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/impeccable-main/public/index-viz.html" class="quick-card" target="_blank">
-                    <span class="icon">🎬</span>
-                    <h4>Impeccable</h4>
-                </a>
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/open-design/index-viz.html" class="quick-card" target="_blank">
-                    <span class="icon">📐</span>
-                    <h4>Open Design</h4>
-                </a>
-                <a href="https://flora-ai-skills-archive.vercel.app/代码库可视化全景拆解结构图/pixelle-video/index-viz.html" class="quick-card" target="_blank">
-                    <span class="icon">🎥</span>
-                    <h4>Pixelle</h4>
-                </a>
-                <a href="https://flora-ai-skills-archive.vercel.app/claude-skills/index-viz.html" class="quick-card" target="_blank">
-                    <span class="icon">🎯</span>
-                    <h4>Claude</h4>
-                </a>
-            </div>
-        </div>
+            </section>
+
+            <section class="section" aria-labelledby="routes-title">
+                <div class="section-heading">
+                    <h2 id="routes-title">推荐路线</h2>
+                    <p>先按你的目标进入，再看具体包的 Architecture、Features、Toolbox、Chat 和 Explain。</p>
+                </div>
+                <div class="route-grid">
+                    <a class="route" href="Product-Manager-Skills/index.html">
+                        <strong>做产品方案和 PRD</strong>
+                        <span>先看 Product Manager Skills，再按需安装单个 PM skill。</span>
+                    </a>
+                    <a class="route" href="impeccable-main/public/index.html">
+                        <strong>优化前端体验</strong>
+                        <span>先看 Impeccable 和 Taste Skill，用 audit / critique / polish 类技能协作。</span>
+                    </a>
+                    <a class="route" href="superpowers/index.html">
+                        <strong>强化开发流程</strong>
+                        <span>先看 Superpowers 和 GStack，确认是否接受强流程约束后再安装。</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="section" id="archive" aria-labelledby="archive-title">
+                <div class="section-heading">
+                    <h2 id="archive-title">技能包导航</h2>
+                    <p>搜索名称、场景或标签；筛选只影响当前页面展示，不会跳转。</p>
+                </div>
+
+                <div class="controls" role="search">
+                    <label>
+                        <span class="visually-hidden">搜索技能包</span>
+                        <input class="search" id="search" type="search" placeholder="搜索：产品、前端、Codex、Agent、视频、设计..." autocomplete="off">
+                    </label>
+                    <div class="filters" aria-label="技能包分类筛选">
+                        <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">全部</button>
+                        <button class="filter-btn" type="button" data-filter="product">产品</button>
+                        <button class="filter-btn" type="button" data-filter="frontend">前端设计</button>
+                        <button class="filter-btn" type="button" data-filter="workflow">开发流程</button>
+                        <button class="filter-btn" type="button" data-filter="agent">Agent</button>
+                        <button class="filter-btn" type="button" data-filter="media">媒体</button>
+                    </div>
+                </div>
+
+                <div class="grid" id="card-grid">
+                    <a href="taste-skill/index.html" class="card" data-tags="frontend design codex visual ui">
+                        <div class="card-header"><div class="card-icon">🎨</div><h3>Taste Skill</h3></div>
+                        <p class="card-desc">9 个设计品味技能：minimalist-ui、industrial-brutalist-ui、high-end-visual-design 等。</p>
+                        <p class="card-use">适合：需要让 Codex 生成更有视觉品味、更少模板感的前端页面。</p>
+                        <div class="card-meta"><span class="tag">Frontend</span><span class="tag">Design</span><span class="tag">Codex</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="open-design/index.html" class="card" data-tags="agent design workflow">
+                        <div class="card-header"><div class="card-icon">🎯</div><h3>Open Design</h3></div>
+                        <p class="card-desc">16 个 AI Agent 的设计与协作拆解，覆盖 Claude Code、Cline、Windsurf 等。</p>
+                        <p class="card-use">适合：研究不同 AI 编程工具的设计分工和能力边界。</p>
+                        <div class="card-meta"><span class="tag">Agent</span><span class="tag">Design</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="pixelle-video/index.html" class="card" data-tags="media video genai">
+                        <div class="card-header"><div class="card-icon">🎬</div><h3>Pixelle-Video</h3></div>
+                        <p class="card-desc">AIDC-AI 视频生成技能包的结构拆解。</p>
+                        <p class="card-use">适合：评估视频生成技能的模块、工具链和交付场景。</p>
+                        <div class="card-meta"><span class="tag">Video</span><span class="tag">GenAI</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="impeccable-main/public/index.html" class="card" data-tags="frontend design audit critique polish accessibility">
+                        <div class="card-header"><div class="card-icon">✨</div><h3>Impeccable</h3></div>
+                        <p class="card-desc">前端设计质量技能和命令：audit、critique、polish、typeset、animate 等。</p>
+                        <p class="card-use">适合：审查和升级已有网站的视觉、响应式、可访问性和交付质量。</p>
+                        <div class="card-meta"><span class="tag">Audit</span><span class="tag">UI</span><span class="tag">A11y</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="gstack/index.html" class="card" data-tags="workflow codex engineering review qa">
+                        <div class="card-header"><div class="card-icon">🚀</div><h3>GStack</h3></div>
+                        <p class="card-desc">面向软件交付的角色化流程技能拆解。</p>
+                        <p class="card-use">适合：需要 plan、review、qa、ship 等工程流程协作时参考。</p>
+                        <div class="card-meta"><span class="tag">Workflow</span><span class="tag">Engineering</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="Agent-Skills/index.html" class="card" data-tags="agent skills">
+                        <div class="card-header"><div class="card-icon">🤖</div><h3>Agent Skills</h3></div>
+                        <p class="card-desc">Agent 技能包汇总与结构拆解。</p>
+                        <p class="card-use">适合：快速浏览 Agent 技能的基本分类和组织方式。</p>
+                        <div class="card-meta"><span class="tag">Agent</span><span class="tag">Skills</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="design-md-google/index.html" class="card" data-tags="frontend design system stitch">
+                        <div class="card-header"><div class="card-icon">📋</div><h3>DESIGN.md</h3></div>
+                        <p class="card-desc">Google Stitch 设计系统文件的技能包拆解。</p>
+                        <p class="card-use">适合：想把设计规则沉淀成 agent 可读规范时参考。</p>
+                        <div class="card-meta"><span class="tag">Design</span><span class="tag">System</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="claude-skills/index.html" class="card" data-tags="workflow codex skills claude">
+                        <div class="card-header"><div class="card-icon">💎</div><h3>Claude Skills</h3></div>
+                        <p class="card-desc">Claude 原生技能包汇总。</p>
+                        <p class="card-use">适合：对比 Claude skill 与 Codex skill 的使用差异。</p>
+                        <div class="card-meta"><span class="tag">Skills</span><span class="tag">Claude</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="superpowers/index.html" class="card" data-tags="workflow engineering tdd debug review">
+                        <div class="card-header"><div class="card-icon">⚡</div><h3>Superpowers</h3></div>
+                        <p class="card-desc">强流程软件开发技能包，覆盖 brainstorming、TDD、debug、review、worktree。</p>
+                        <p class="card-use">适合：希望 AI 严格按工程流程做事，而不是直接写代码。</p>
+                        <div class="card-meta"><span class="tag">TDD</span><span class="tag">Review</span><span class="tag">Workflow</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="Product-Manager-Skills/index.html" class="card" data-tags="product pm prd roadmap strategy">
+                        <div class="card-header"><div class="card-icon">📦</div><h3>Product Manager</h3></div>
+                        <p class="card-desc">46 个产品经理技能，覆盖 PRD、用户故事、路线图、定价、JTBD、SaaS 指标。</p>
+                        <p class="card-use">适合：产品方案、需求拆解、市场/客户研究和 PM 工作流。</p>
+                        <div class="card-meta"><span class="tag">PM</span><span class="tag">PRD</span><span class="tag">Strategy</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="MiroFish-main/frontend/public/index-viz.html" class="card" data-tags="agent simulation research">
+                        <div class="card-header"><div class="card-icon">🐟</div><h3>MiroFish</h3></div>
+                        <p class="card-desc">多智能体预测和模拟系统的静态拆解页。</p>
+                        <p class="card-use">适合：研究仿真型 AI 应用的流程、依赖和系统分层。</p>
+                        <div class="card-meta"><span class="tag">Simulation</span><span class="tag">Agent</span></div>
+                        <span class="card-cta">查看静态拆解</span>
+                    </a>
+
+                    <a href="gbrain-viz/index.html" class="card" data-tags="agent memory search graph">
+                        <div class="card-header"><div class="card-icon">🧠</div><h3>GBrain</h3></div>
+                        <p class="card-desc">AI Agent 记忆系统、自连线知识图谱和混合搜索拆解。</p>
+                        <p class="card-use">适合：研究 Agent 记忆、知识图谱和检索增强架构。</p>
+                        <div class="card-meta"><span class="tag">Memory</span><span class="tag">Graph</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="agency-viz/index.html" class="card" data-tags="agent agency roles tools">
+                        <div class="card-header"><div class="card-icon">🎭</div><h3>The Agency</h3></div>
+                        <p class="card-desc">226 个 AI Agent、18 个专业部门和多工具集成拆解。</p>
+                        <p class="card-use">适合：研究多角色 Agent 团队和部门化任务分工。</p>
+                        <div class="card-meta"><span class="tag">Agents</span><span class="tag">Roles</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+
+                    <a href="html-anything-viz/index.html" class="card" data-tags="frontend agent editor html">
+                        <div class="card-header"><div class="card-icon">🏄</div><h3>HTML Anything</h3></div>
+                        <p class="card-desc">Agent 时代 HTML 编辑器，包含 75 套 Skill 和 9 种交付场景。</p>
+                        <p class="card-use">适合：评估 HTML 生成、编辑器和多场景交付型工具。</p>
+                        <div class="card-meta"><span class="tag">Editor</span><span class="tag">HTML</span></div>
+                        <span class="card-cta">查看拆解</span>
+                    </a>
+                </div>
+                <p class="no-results" id="no-results">没有匹配的技能包。可以尝试搜索 “Codex”、“前端”、“产品”、“Agent”。</p>
+            </section>
+
+            <section class="section install-note" aria-labelledby="install-title">
+                <h2 id="install-title">安装建议</h2>
+                <p>这个站点是归档和拆解，不是单一安装包。Codex 中更稳的做法是安装具体来源包的具体技能。</p>
+                <code>npx skills add deanpeters/Product-Manager-Skills --skill prd-development -a codex -g</code>
+                <code>npx skills add https://github.com/Leonxlnx/taste-skill</code>
+            </section>
+        </main>
+
+        <footer>
+            <p>基于 6 模块全景拆解框架：Hero · Architecture · Features · Toolbox · Chat · Explain</p>
+            <p style="margin-top:8px">Built for Codex skill discovery and practical routing.</p>
+        </footer>
     </div>
 
-    <div class="footer">
-        <p>11 Skill Packages / Ongoing 2025</p>
-    </div>
+    <script>
+        const searchInput = document.querySelector('#search');
+        const cards = Array.from(document.querySelectorAll('.card[data-tags]'));
+        const buttons = Array.from(document.querySelectorAll('.filter-btn'));
+        const emptyState = document.querySelector('#no-results');
+        let activeFilter = 'all';
+
+        function applyFilters() {
+            const query = searchInput.value.trim().toLowerCase();
+            let visible = 0;
+
+            cards.forEach(card => {
+                const haystack = `${card.textContent} ${card.dataset.tags}`.toLowerCase();
+                const matchesQuery = !query || haystack.includes(query);
+                const matchesFilter = activeFilter === 'all' || card.dataset.tags.includes(activeFilter);
+                const show = matchesQuery && matchesFilter;
+                card.hidden = !show;
+                if (show) visible += 1;
+            });
+
+            emptyState.style.display = visible ? 'none' : 'block';
+        }
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                activeFilter = button.dataset.filter;
+                buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+                applyFilters();
+            });
+        });
+
+        searchInput.addEventListener('input', applyFilters);
+    </script>
 </body>
 </html>
