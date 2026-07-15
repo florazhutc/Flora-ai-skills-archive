@@ -256,6 +256,12 @@
             justify-content: flex-end;
         }
 
+        .results-status {
+            margin-top: 12px;
+            color: var(--olive-gray);
+            font-size: 14px;
+        }
+
         .filter-btn {
             min-height: 44px;
             border: 1px solid var(--border-warm);
@@ -290,6 +296,10 @@
             padding: 22px;
             text-decoration: none;
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card[hidden] {
+            display: none;
         }
 
         .card:hover {
@@ -532,13 +542,13 @@
             <section class="section" id="archive" aria-labelledby="archive-title">
                 <div class="section-heading">
                     <h2 id="archive-title">技能包导航</h2>
-                    <p>搜索名称、场景或标签；筛选只影响当前页面展示，不会跳转。</p>
+                    <p>输入关键词后按 Enter 打开首个结果；点击分类定位结果；点击卡片进入详情。</p>
                 </div>
 
                 <div class="controls" role="search">
                     <label>
                         <span class="visually-hidden">搜索技能包</span>
-                        <input class="search" id="search" type="search" placeholder="搜索：产品、前端、Codex、Agent、视频、设计..." autocomplete="off">
+                        <input class="search" id="search" type="search" placeholder="搜索：产品、前端、Codex、Agent、视频、设计..." autocomplete="off" aria-describedby="search-help results-status">
                     </label>
                     <div class="filters" aria-label="技能包分类筛选">
                         <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">全部</button>
@@ -549,6 +559,8 @@
                         <button class="filter-btn" type="button" data-filter="media">媒体</button>
                     </div>
                 </div>
+                <p class="results-status" id="search-help">搜索会即时筛选；按 Enter 可打开第一个匹配的技能包。</p>
+                <p class="visually-hidden" id="results-status" role="status" aria-live="polite"></p>
 
                 <div class="grid" id="card-grid">
                     <a href="taste-skill/index.html" class="card" data-tags="frontend design codex visual ui">
@@ -689,7 +701,7 @@
 
         function applyFilters() {
             const query = searchInput.value.trim().toLowerCase();
-            let visible = 0;
+            const visibleCards = [];
 
             cards.forEach(card => {
                 const haystack = `${card.textContent} ${card.dataset.tags}`.toLowerCase();
@@ -697,21 +709,44 @@
                 const matchesFilter = activeFilter === 'all' || card.dataset.tags.includes(activeFilter);
                 const show = matchesQuery && matchesFilter;
                 card.hidden = !show;
-                if (show) visible += 1;
+                if (show) visibleCards.push(card);
             });
 
-            emptyState.style.display = visible ? 'none' : 'block';
+            emptyState.style.display = visibleCards.length ? 'none' : 'block';
+            document.querySelector('#results-status').textContent = visibleCards.length
+                ? `找到 ${visibleCards.length} 个技能包。`
+                : '没有匹配的技能包。';
+            return visibleCards;
+        }
+
+        function focusFirstResult() {
+            const [firstMatch] = applyFilters();
+            if (!firstMatch) return;
+            firstMatch.scrollIntoView({
+                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                block: 'center'
+            });
+            firstMatch.focus({ preventScroll: true });
         }
 
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 activeFilter = button.dataset.filter;
                 buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-                applyFilters();
+                focusFirstResult();
             });
         });
 
         searchInput.addEventListener('input', applyFilters);
+        searchInput.addEventListener('keydown', event => {
+            if (event.key !== 'Enter') return;
+            const [firstMatch] = applyFilters();
+            if (!firstMatch) return;
+            event.preventDefault();
+            window.location.assign(firstMatch.href);
+        });
+
+        applyFilters();
     </script>
 </body>
 </html>
