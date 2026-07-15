@@ -33,9 +33,9 @@
     justify-content: space-between;
     gap: 20px;
     padding: 10px clamp(16px, 4vw, 48px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-    background: var(--ws-forest);
-    color: #fff;
+    border-bottom: 1px solid var(--ws-border);
+    background: rgba(248, 244, 236, 0.96);
+    color: var(--ws-forest);
     font-family: var(--ws-ui);
 }
 
@@ -48,31 +48,54 @@
 
 .ws-brand {
     min-height: 44px;
-    gap: 12px;
-    color: #fff;
+    gap: 14px;
+    color: var(--ws-forest);
     text-decoration: none;
 }
 
 .ws-brand__mark {
-    width: 42px;
-    height: 30px;
+    width: 64px;
+    height: 42px;
     flex: 0 0 auto;
 }
 
 .ws-brand__name {
-    display: grid;
-    gap: 2px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
     line-height: 1;
 }
 
-.ws-brand__name strong {
-    font-size: 12px;
-    letter-spacing: 0.2em;
+.ws-brand__wordmark {
+    display: grid;
+    gap: 5px;
+}
+
+.ws-brand__wordmark strong {
+    font-size: 15px;
+    letter-spacing: 0.26em;
     text-transform: uppercase;
 }
 
-.ws-brand__name span {
-    color: rgba(255, 255, 255, 0.72);
+.ws-brand__wordmark strong:last-child {
+    font-size: 13px;
+    letter-spacing: 0.48em;
+}
+
+.ws-brand__project {
+    display: grid;
+    min-height: 34px;
+    align-content: center;
+    gap: 3px;
+    padding-left: 16px;
+    border-left: 1px solid #c9c2b6;
+    color: var(--ws-muted);
+    font-size: 12px;
+    line-height: 1.15;
+}
+
+.ws-brand__project small {
+    color: var(--ws-muted);
     font-size: 11px;
 }
 
@@ -86,7 +109,7 @@
     align-items: center;
     border-radius: 999px;
     padding: 8px 14px;
-    color: #fff;
+    color: var(--ws-forest);
     font-size: 13px;
     font-weight: 700;
     text-decoration: none;
@@ -99,7 +122,7 @@
 
 .ws-project-bar a:focus-visible,
 .ws-project-footer a:focus-visible {
-    outline: 3px solid var(--ws-yellow);
+    outline: 3px solid #075e9e;
     outline-offset: 3px;
 }
 
@@ -224,6 +247,24 @@ section p a,
     .ws-project-bar__links {
         width: 100%;
         justify-content: space-between;
+    }
+
+    .ws-brand__mark {
+        width: 52px;
+        height: 35px;
+    }
+
+    .ws-brand__wordmark strong {
+        font-size: 13px;
+    }
+
+    .ws-brand__wordmark strong:last-child {
+        font-size: 11px;
+    }
+
+    .ws-brand__project {
+        padding-left: 12px;
+        font-size: 11px;
     }
 
     .ws-project-footer {
