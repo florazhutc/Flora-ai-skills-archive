@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://flora-ai-skills-archive.vercel.app/sitemap.xml
+Sitemap: https://wilderness-ai-skills-atlas.vercel.app/sitemap.xml
