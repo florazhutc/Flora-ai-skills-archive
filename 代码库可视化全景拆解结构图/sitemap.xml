@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/taste-skill/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/taste-skill/index.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/open-design/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/open-design/index.html</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/pixelle-video/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/pixelle-video/index.html</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/impeccable-main/public/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/impeccable-main/public/index.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/gstack/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/gstack/index.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/Agent-Skills/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/Agent-Skills/index.html</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/design-md-google/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/design-md-google/index.html</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/claude-skills/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/claude-skills/index.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/superpowers/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/superpowers/index.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/Product-Manager-Skills/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/Product-Manager-Skills/index.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/MiroFish-main/frontend/public/index-viz.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/MiroFish-main/frontend/public/index-viz.html</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/gbrain-viz/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/gbrain-viz/index.html</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/agency-viz/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/agency-viz/index.html</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://wilderness-ai-skills-atlas.vercel.app/html-anything-viz/index.html</loc>
+    <loc>https://ai-skills-atlas.wildernesstudio.com/html-anything-viz/index.html</loc>
     <priority>0.7</priority>
   </url>
 </urlset>

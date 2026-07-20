@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wilderness-ai-skills-atlas.vercel.app/sitemap.xml
+Sitemap: https://ai-skills-atlas.wildernesstudio.com/sitemap.xml
