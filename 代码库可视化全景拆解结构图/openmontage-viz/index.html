@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenMontage - Agentic 视频制作系统拆解</title>
+    <meta name="description" content="OpenMontage 开源 Agentic 视频制作系统拆解，覆盖 12 条生产流水线、七阶段工作流、Remotion / HyperFrames 双渲染运行时和 Codex 使用判断。">
+    <link rel="canonical" href="https://ai-skills-atlas.wildernesstudio.com/openmontage-viz/index.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="OpenMontage - Agentic 视频制作系统拆解">
+    <meta property="og:description" content="从需求研究到最终合成，理解 OpenMontage 如何把 AI 编程助手变成完整的视频制作团队。">
+    <meta property="og:url" content="https://ai-skills-atlas.wildernesstudio.com/openmontage-viz/index.html">
+    <meta name="theme-color" content="#073d2d">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/archive-brand.css">
+    <style>
+        :root {
+            --parchment: #f8f4ec;
+            --ivory: #fbf8f1;
+            --white: #ffffff;
+            --warm-sand: #e5ded2;
+            --border-warm: #e5ded2;
+            --near-black: #121212;
+            --charcoal: #3f3f3a;
+            --stone-gray: #5e5d59;
+            --terracotta: #9a4429;
+            --deep-forest: #073d2d;
+            --builder-yellow: #f5b82e;
+            --focus-blue: #075e9e;
+            --display: "Iowan Old Style", "Palatino Linotype", "Songti SC", Georgia, serif;
+            --ui: Inter, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-width: 320px;
+            background: var(--parchment);
+            color: var(--near-black);
+            font-family: var(--ui);
+            line-height: 1.65;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        a:focus-visible,
+        code:focus-visible {
+            outline: 3px solid var(--focus-blue);
+            outline-offset: 3px;
+        }
+
+        .archive-skip-link {
+            position: absolute;
+            top: 12px;
+            left: 16px;
+            z-index: 1200;
+            transform: translateY(-150%);
+            border-radius: 8px;
+            background: var(--near-black);
+            color: var(--white);
+            padding: 10px 14px;
+            text-decoration: none;
+        }
+
+        .archive-skip-link:focus {
+            transform: translateY(0);
+        }
+
+        .archive-detail-nav {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 10px clamp(16px, 4vw, 48px);
+            border-bottom: 1px solid var(--border-warm);
+            background: rgba(248, 244, 236, 0.96);
+            backdrop-filter: blur(12px);
+        }
+
+        .archive-nav-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .archive-detail-nav a {
+            display: inline-flex;
+            min-height: 44px;
+            align-items: center;
+            border: 1px solid var(--border-warm);
+            border-radius: 999px;
+            padding: 8px 13px;
+            color: var(--deep-forest);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: border-color 160ms ease, background 160ms ease;
+        }
+
+        .archive-detail-nav a:hover {
+            border-color: var(--terracotta);
+            background: var(--ivory);
+        }
+
+        .archive-detail-main {
+            outline: 0;
+        }
+
+        .archive-decision {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 36px 24px 8px;
+        }
+
+        .archive-decision-card {
+            min-width: 0;
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            background: var(--white);
+            padding: 22px;
+        }
+
+        .archive-decision-card p + p,
+        .archive-decision-card p + code {
+            margin-top: 10px;
+        }
+
+        .archive-decision-title {
+            color: var(--near-black);
+            font-size: 16px;
+            font-weight: 750;
+            line-height: 1.35;
+        }
+
+        .archive-decision-card code {
+            display: block;
+            overflow-x: auto;
+            border-radius: 10px;
+            background: var(--deep-forest);
+            color: #f9f4e9;
+            padding: 12px;
+            font-size: 12px;
+            line-height: 1.6;
+            white-space: nowrap;
+        }
+
+        .page-shell {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 48px 24px 88px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+            gap: 32px;
+            align-items: end;
+            padding: 48px 0 56px;
+            border-bottom: 1px solid var(--border-warm);
+        }
+
+        .eyebrow {
+            margin-bottom: 16px;
+            color: var(--terracotta);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--display);
+            font-weight: 500;
+        }
+
+        h1 {
+            max-width: 760px;
+            color: var(--deep-forest);
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            letter-spacing: -0.055em;
+            line-height: 0.92;
+        }
+
+        .hero-lead {
+            max-width: 760px;
+            margin-top: 24px;
+            color: var(--charcoal);
+            font-family: var(--display);
+            font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+            line-height: 1.45;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .hero-tag,
+        .pipeline-tag {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            background: var(--warm-sand);
+            color: var(--deep-forest);
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .hero-source {
+            border-radius: 20px;
+            background: var(--deep-forest);
+            color: var(--white);
+            padding: 28px;
+        }
+
+        .hero-source p {
+            color: rgba(255, 255, 255, 0.76);
+        }
+
+        .hero-source strong {
+            display: block;
+            margin-bottom: 10px;
+            font-family: var(--display);
+            font-size: 1.65rem;
+            font-weight: 500;
+        }
+
+        .hero-source a {
+            display: inline-flex;
+            min-height: 44px;
+            align-items: center;
+            margin-top: 18px;
+            border-radius: 999px;
+            background: var(--builder-yellow);
+            color: var(--deep-forest);
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1px;
+            overflow: hidden;
+            margin: 28px 0 72px;
+            border: 1px solid var(--border-warm);
+            border-radius: 18px;
+            background: var(--border-warm);
+        }
+
+        .stat {
+            background: var(--white);
+            padding: 24px;
+        }
+
+        .stat-num {
+            color: var(--terracotta);
+            font-family: var(--display);
+            font-size: clamp(2rem, 5vw, 3.6rem);
+            line-height: 1;
+        }
+
+        .stat-label {
+            margin-top: 8px;
+            color: var(--stone-gray);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .section {
+            margin-top: 72px;
+            scroll-margin-top: 88px;
+        }
+
+        .section-heading {
+            display: grid;
+            grid-template-columns: minmax(0, 0.8fr) minmax(280px, 1.2fr);
+            gap: 32px;
+            align-items: end;
+            margin-bottom: 28px;
+        }
+
+        .section-heading h2 {
+            color: var(--deep-forest);
+            font-size: clamp(2.25rem, 5vw, 4.6rem);
+            letter-spacing: -0.04em;
+            line-height: 1;
+        }
+
+        .section-heading p {
+            max-width: 650px;
+            color: var(--stone-gray);
+            font-size: 16px;
+        }
+
+        .flow {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .flow-step {
+            position: relative;
+            min-height: 164px;
+            border: 1px solid var(--border-warm);
+            border-radius: 16px;
+            background: var(--white);
+            padding: 18px;
+        }
+
+        .flow-step::after {
+            position: absolute;
+            top: 50%;
+            right: -9px;
+            z-index: 2;
+            width: 16px;
+            color: var(--terracotta);
+            content: "→";
+            font-weight: 800;
+            transform: translateY(-50%);
+        }
+
+        .flow-step:last-child::after {
+            display: none;
+        }
+
+        .flow-step span {
+            color: var(--terracotta);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .flow-step strong {
+            display: block;
+            margin: 12px 0 8px;
+            color: var(--deep-forest);
+            font-family: var(--display);
+            font-size: 1.25rem;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .flow-step p {
+            color: var(--stone-gray);
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .architecture-note {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .architecture-note article {
+            border-radius: 14px;
+            background: var(--warm-sand);
+            padding: 18px;
+        }
+
+        .architecture-note strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--deep-forest);
+        }
+
+        .architecture-note p {
+            color: var(--charcoal);
+            font-size: 13px;
+        }
+
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .pipeline-card {
+            display: flex;
+            min-height: 190px;
+            flex-direction: column;
+            border: 1px solid var(--border-warm);
+            border-radius: 18px;
+            background: var(--white);
+            padding: 22px;
+        }
+
+        .pipeline-card h3 {
+            margin: 14px 0 8px;
+            color: var(--deep-forest);
+            font-size: 1.45rem;
+            line-height: 1.2;
+        }
+
+        .pipeline-card p {
+            color: var(--stone-gray);
+            font-size: 13px;
+        }
+
+        .pipeline-card .pipeline-tag {
+            align-self: flex-start;
+            margin-top: auto;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .toolbox {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .tool-group {
+            border-radius: 18px;
+            background: var(--deep-forest);
+            color: var(--white);
+            padding: 26px;
+        }
+
+        .tool-group:nth-child(2),
+        .tool-group:nth-child(3) {
+            background: var(--white);
+            color: var(--near-black);
+            border: 1px solid var(--border-warm);
+        }
+
+        .tool-group h3 {
+            margin-bottom: 14px;
+            font-size: 1.6rem;
+        }
+
+        .tool-group ul {
+            display: grid;
+            gap: 10px;
+            padding-left: 20px;
+        }
+
+        .tool-group li {
+            color: inherit;
+            font-size: 14px;
+        }
+
+        .command-stack {
+            display: grid;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .command-stack code {
+            display: block;
+            overflow-x: auto;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            color: inherit;
+            padding: 11px 12px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .tool-group:nth-child(2) .command-stack code,
+        .tool-group:nth-child(3) .command-stack code {
+            background: var(--warm-sand);
+            color: var(--deep-forest);
+        }
+
+        .chat-stage {
+            border-radius: 24px;
+            background: var(--near-black);
+            color: var(--white);
+            padding: clamp(24px, 5vw, 48px);
+        }
+
+        .chat-line {
+            max-width: 72%;
+            margin-bottom: 14px;
+            border-radius: 18px;
+            padding: 14px 17px;
+            font-size: 14px;
+        }
+
+        .chat-line.user {
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+            background: var(--builder-yellow);
+            color: var(--deep-forest);
+        }
+
+        .chat-line.agent {
+            border-bottom-left-radius: 4px;
+            background: #30302e;
+            color: #f5f4ed;
+        }
+
+        .chat-line strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+
+        .chat-caption {
+            max-width: 760px;
+            margin-top: 24px;
+            color: #b0aea5;
+            font-size: 13px;
+        }
+
+        .explain-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .explain-card {
+            border: 1px solid var(--border-warm);
+            border-radius: 18px;
+            background: var(--ivory);
+            padding: 26px;
+        }
+
+        .explain-card h3 {
+            margin-bottom: 12px;
+            color: var(--deep-forest);
+            font-size: 1.55rem;
+        }
+
+        .explain-card p {
+            color: var(--charcoal);
+        }
+
+        .source-footer {
+            margin-top: 72px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border-warm);
+            color: var(--stone-gray);
+            font-size: 13px;
+        }
+
+        .source-footer p + p {
+            margin-top: 8px;
+        }
+
+        @media (max-width: 980px) {
+            .flow {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .flow-step::after {
+                display: none;
+            }
+
+            .pipeline-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .archive-decision,
+            .hero,
+            .section-heading,
+            .architecture-note,
+            .toolbox,
+            .explain-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hero {
+                align-items: start;
+            }
+
+            .section-heading {
+                align-items: start;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .archive-detail-nav {
+                position: relative;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .archive-nav-group {
+                width: 100%;
+            }
+
+            .archive-detail-nav a {
+                flex: 1 1 auto;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .page-shell {
+                padding-right: 16px;
+                padding-left: 16px;
+            }
+
+            .archive-decision {
+                padding-right: 16px;
+                padding-left: 16px;
+            }
+
+            .flow,
+            .pipeline-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-step {
+                min-height: auto;
+            }
+
+            .chat-line {
+                max-width: 92%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.001ms !important;
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a class="archive-skip-link" href="#main-content">跳到正文</a>
+    <header class="ws-project-bar" aria-label="Wilderness Studio 项目导航">
+        <a class="ws-brand" href="https://wildernesstudio.com/" aria-label="返回 Wilderness Studio">
+            <img class="ws-brand__mark" src="/wilderness-studio-mark.svg" alt="">
+            <span class="ws-brand__name">
+                <span class="ws-brand__wordmark"><strong>Wilderness</strong><strong>Studio</strong></span>
+                <span class="ws-brand__project">AI Skills Atlas<small>A Flora experiment</small></span>
+            </span>
+        </a>
+        <nav class="ws-project-bar__links" aria-label="项目链接">
+            <a href="/">图谱首页</a>
+            <a href="https://wildernesstudio.com/work">作品集 ↗</a>
+        </nav>
+    </header>
+
+    <nav class="archive-detail-nav" aria-label="归档页面导航">
+        <div class="archive-nav-group">
+            <a href="../index.html">← 返回首页</a>
+            <a href="../pixelle-video/index.html">上一包：Pixelle-Video</a>
+            <a href="../impeccable-main/public/index.html">下一包：Impeccable</a>
+        </div>
+        <div class="archive-nav-group">
+            <a href="#architecture">架构</a>
+            <a href="#pipelines">流水线</a>
+            <a href="#toolbox">工具箱</a>
+        </div>
+    </nav>
+
+    <main id="main-content" class="archive-detail-main" tabindex="-1">
+        <section class="archive-decision" id="archive-decision" aria-label="OpenMontage 使用判断">
+            <article class="archive-decision-card">
+                <p class="archive-decision-title">适合谁</p>
+                <p><strong>视频团队 / 内容创作者 / Agent 工程师</strong>：适合需要把研究、脚本、素材、剪辑和渲染串成可审计生产流程的人。</p>
+            </article>
+            <article class="archive-decision-card">
+                <p class="archive-decision-title">Codex 用法</p>
+                <p>它不是单个可安装 Skill。克隆项目后在 Codex 中打开仓库，让 Agent 先选流水线、读清单，再进入制作。</p>
+                <code tabindex="0">git clone https://github.com/calesthio/OpenMontage.git &amp;&amp; cd OpenMontage &amp;&amp; make setup</code>
+            </article>
+            <article class="archive-decision-card">
+                <p class="archive-decision-title">许可证 / 风险</p>
+                <p><strong>AGPL-3.0</strong>。运行需要 Python 3.10+、Node.js 18+ 和 FFmpeg；云端生成服务可能产生费用，外部素材仍需核对授权范围。</p>
+            </article>
+        </section>
+
+        <div class="page-shell">
+            <header class="hero">
+                <div>
+                    <p class="eyebrow">Agentic video production system</p>
+                    <h1>OpenMontage</h1>
+                    <p class="hero-lead">把 AI 编程助手变成一支完整的视频制作团队：先研究和提案，再写脚本、规划场景、生成或检索素材、剪辑合成，最后通过质量关卡交付。</p>
+                    <div class="hero-tags" aria-label="项目标签">
+                        <span class="hero-tag">Open Source</span>
+                        <span class="hero-tag">Codex</span>
+                        <span class="hero-tag">Remotion</span>
+                        <span class="hero-tag">HyperFrames</span>
+                        <span class="hero-tag">FFmpeg</span>
+                    </div>
+                </div>
+                <aside class="hero-source">
+                    <strong>先选流水线，再调用工具</strong>
+                    <p>OpenMontage 的编排者不是隐藏在后台的服务，而是你正在使用的 AI 编程助手。YAML 定义做什么，Markdown 技能说明怎么做，工具注册表决定用什么完成。</p>
+                    <a href="https://github.com/calesthio/OpenMontage">查看官方仓库 ↗</a>
+                </aside>
+            </header>
+
+            <section class="stats-row" aria-label="OpenMontage 项目统计">
+                <div class="stat"><div class="stat-num">12</div><div class="stat-label">生产流水线</div></div>
+                <div class="stat"><div class="stat-num">7</div><div class="stat-label">标准制作阶段</div></div>
+                <div class="stat"><div class="stat-num">2</div><div class="stat-label">渲染运行时</div></div>
+                <div class="stat"><div class="stat-num">0</div><div class="stat-label">必需付费 API 密钥</div></div>
+            </section>
+
+            <section class="section" id="architecture" aria-labelledby="architecture-title">
+                <div class="section-heading">
+                    <h2 id="architecture-title">系统架构</h2>
+                    <p>所有流水线共享一条可恢复的生产主线。Agent 读取结构化清单和阶段导演技能，在每个创意决策点保留人工审批，并把成本、选择和状态写入检查点。</p>
+                </div>
+                <div class="flow" aria-label="七阶段视频生产流程">
+                    <article class="flow-step"><span>01</span><strong>Research</strong><p>检索当前资料、受众问题和视觉参考。</p></article>
+                    <article class="flow-step"><span>02</span><strong>Proposal</strong><p>提出差异化概念、工具路径和成本预估。</p></article>
+                    <article class="flow-step"><span>03</span><strong>Script</strong><p>写脚本、旁白和信息节奏。</p></article>
+                    <article class="flow-step"><span>04</span><strong>Scene Plan</strong><p>把脚本拆成镜头、画面和时间线。</p></article>
+                    <article class="flow-step"><span>05</span><strong>Assets</strong><p>生成或检索影像、语音、音乐和图形。</p></article>
+                    <article class="flow-step"><span>06</span><strong>Edit</strong><p>筛选素材、安排节奏、混音和字幕。</p></article>
+                    <article class="flow-step"><span>07</span><strong>Compose</strong><p>渲染成片并执行画面、音频与交付审查。</p></article>
+                </div>
+                <div class="architecture-note">
+                    <article><strong>Pipeline YAML</strong><p>规定阶段、允许使用的工具、产物格式和成功关卡。</p></article>
+                    <article><strong>Director Skills</strong><p>用 Markdown 告诉 Agent 每个阶段该如何判断与执行。</p></article>
+                    <article><strong>Tool Registry</strong><p>按任务适配、质量、可靠性、成本、延迟等维度选择供应商。</p></article>
+                </div>
+            </section>
+
+            <section class="section" id="pipelines" aria-labelledby="pipelines-title">
+                <div class="section-heading">
+                    <h2 id="pipelines-title">12 条生产流水线</h2>
+                    <p>它不是一个固定的“文生视频”按钮。不同需求进入不同生产路径：真实素材优先、动画优先、真人素材优先或本地化优先。</p>
+                </div>
+                <div class="pipeline-grid">
+                    <article class="pipeline-card"><h3>Animated Explainer</h3><p>研究、旁白、视觉、音乐和字幕组成的数据或知识解说。</p><span class="pipeline-tag">教育 / 教程</span></article>
+                    <article class="pipeline-card"><h3>Animation</h3><p>动态图形、动态排版与抽象视觉序列。</p><span class="pipeline-tag">社交 / 概念</span></article>
+                    <article class="pipeline-card"><h3>Avatar Spokesperson</h3><p>以数字人或虚拟演讲者为核心的表达。</p><span class="pipeline-tag">培训 / 公告</span></article>
+                    <article class="pipeline-card"><h3>Character Animation</h3><p>SVG 角色绑定、姿势库和 GSAP 时间线驱动的本地角色动画。</p><span class="pipeline-tag">角色 / 表演</span></article>
+                    <article class="pipeline-card"><h3>Cinematic</h3><p>围绕情绪、世界观和镜头语言制作预告或品牌短片。</p><span class="pipeline-tag">Trailer / Teaser</span></article>
+                    <article class="pipeline-card"><h3>Clip Factory</h3><p>从一条长素材中识别、排序并批量输出短视频片段。</p><span class="pipeline-tag">内容重制</span></article>
+                    <article class="pipeline-card"><h3>Documentary Montage</h3><p>用开放档案与真实动态素材建立语料库，再检索剪辑成主题蒙太奇。</p><span class="pipeline-tag">真实素材</span></article>
+                    <article class="pipeline-card"><h3>Hybrid</h3><p>把用户已有素材与 AI 生成的辅助视觉组合在同一条时间线。</p><span class="pipeline-tag">混合制作</span></article>
+                    <article class="pipeline-card"><h3>Localization &amp; Dub</h3><p>为已有视频制作字幕、翻译、配音与多语言版本。</p><span class="pipeline-tag">本地化</span></article>
+                    <article class="pipeline-card"><h3>Podcast Repurpose</h3><p>把长播客提炼为适合社交平台的精彩片段和音频可视化视频。</p><span class="pipeline-tag">Podcast</span></article>
+                    <article class="pipeline-card"><h3>Screen Demo</h3><p>从产品操作过程制作结构清晰的软件演示与教程。</p><span class="pipeline-tag">产品演示</span></article>
+                    <article class="pipeline-card"><h3>Talking Head</h3><p>围绕真人口播、采访或演示素材完成剪辑、包装和字幕。</p><span class="pipeline-tag">真人素材</span></article>
+                </div>
+            </section>
+
+            <section class="section" id="toolbox" aria-labelledby="toolbox-title">
+                <div class="section-heading">
+                    <h2 id="toolbox-title">工具箱</h2>
+                    <p>零付费密钥路径已经覆盖旁白、开放素材、合成、后期和字幕；接入云端供应商后，再扩展图像、视频、音乐和高级语音生成。</p>
+                </div>
+                <div class="toolbox">
+                    <article class="tool-group">
+                        <h3>合成与后期</h3>
+                        <ul>
+                            <li>Remotion：React 场景、数据可视化与词级字幕</li>
+                            <li>HyperFrames：HTML / CSS / GSAP 动态图形</li>
+                            <li>FFmpeg：编码、混音、调色和字幕烧录</li>
+                            <li>Backlot：生产看板、素材审批和运行回放</li>
+                        </ul>
+                        <div class="command-stack">
+                            <code>python -m backlot open</code>
+                            <code>make demo</code>
+                        </div>
+                    </article>
+                    <article class="tool-group">
+                        <h3>零密钥生产路径</h3>
+                        <ul>
+                            <li>Piper TTS：本地离线旁白</li>
+                            <li>Archive.org、NASA、Wikimedia：开放档案影像</li>
+                            <li>内置字幕：生成词级时间轴</li>
+                            <li>本地 SVG / GSAP：角色动画</li>
+                        </ul>
+                    </article>
+                    <article class="tool-group">
+                        <h3>可选生成供应商</h3>
+                        <ul>
+                            <li>图像与视频：OpenAI、fal.ai、Atlas Cloud、Kling、Runway</li>
+                            <li>语音与音乐：ElevenLabs、Google、Suno</li>
+                            <li>免费素材扩展：Pexels、Pixabay、Unsplash</li>
+                            <li>供应商按七个维度评分，并留下决策日志</li>
+                        </ul>
+                    </article>
+                    <article class="tool-group">
+                        <h3>质量与控制</h3>
+                        <ul>
+                            <li>资产生成前展示成本预估和工具路径</li>
+                            <li>场景级 contact sheet 作为人工审批关卡</li>
+                            <li>JSON 检查点支持恢复生产</li>
+                            <li>ffprobe、抽帧、音频电平与字幕检查</li>
+                        </ul>
+                        <div class="command-stack">
+                            <code>make setup</code>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section" id="chat" aria-labelledby="chat-title">
+                <div class="section-heading">
+                    <h2 id="chat-title">它像怎样的视频团队？</h2>
+                    <p>关键不是一次性生成，而是把模糊要求逐步变成可审批、可计价、可恢复的生产计划。</p>
+                </div>
+                <div class="chat-stage">
+                    <div class="chat-line user"><strong>你</strong>这是一个我喜欢的 YouTube Short。保留它的节奏和钩子，但改成 45 秒的量子计算解说。</div>
+                    <div class="chat-line agent"><strong>OpenMontage Agent</strong>我会先分析转录、场景、关键帧和视觉风格，然后给你 3 个原创方向。现在只做研究和提案，不生成付费资产。</div>
+                    <div class="chat-line agent"><strong>OpenMontage Agent</strong>方向 B 最适合：Animated Explainer 流水线，Remotion 合成，Piper 旁白可实现零密钥版本。若改用云端图像，预计成本约为……</div>
+                    <div class="chat-line user"><strong>你</strong>批准方向 B，但画面只用开放档案和动态图形。</div>
+                    <div class="chat-line agent"><strong>OpenMontage Agent</strong>约束已写入场景计划。下一步会先提交逐场景素材板供你确认，再进入最终渲染和质量检查。</div>
+                    <p class="chat-caption">这段流程展示了 OpenMontage 的核心差异：参考驱动、先提案后花费、明确人工关卡，并把工具选择与约束写入可审计的生产状态。</p>
+                </div>
+            </section>
+
+            <section class="section" id="explain" aria-labelledby="explain-title">
+                <div class="section-heading">
+                    <h2 id="explain-title">大白话解释</h2>
+                    <p>把它看成“视频制作操作系统”比“视频生成模型”更准确。</p>
+                </div>
+                <div class="explain-grid">
+                    <article class="explain-card"><h3>它到底是什么？</h3><p>一套让 Codex、Claude Code、Cursor 等 AI 编程助手按真实制作流程工作的仓库。Agent 是制片与导演，流水线是生产制度，工具负责具体执行。</p></article>
+                    <article class="explain-card"><h3>和文生视频有什么不同？</h3><p>文生视频模型通常只负责生成一个片段；OpenMontage 还负责前期研究、脚本、选材、剪辑、合成、字幕、音频和交付审查。</p></article>
+                    <article class="explain-card"><h3>为什么零密钥也能做视频？</h3><p>因为它可以用 Piper 配音、开放档案提供真实动态素材、Remotion 或 HyperFrames 合成，再由 FFmpeg 完成后期。零密钥路径不依赖付费视频模型。</p></article>
+                    <article class="explain-card"><h3>什么时候不适合？</h3><p>如果只想快速生成一个独立镜头，直接调用视频模型更轻。OpenMontage 更适合需要多阶段控制、可追踪成本、人工审批和最终成片的任务。</p></article>
+                </div>
+            </section>
+
+            <footer class="source-footer">
+                <p>基于 6 模块全景拆解框架：Hero · Architecture · Features · Toolbox · Chat · Explain</p>
+                <p>来源：<a href="https://github.com/calesthio/OpenMontage">calesthio/OpenMontage</a> · AGPL-3.0 · 页面资料核对于 2026-07-29</p>
+            </footer>
+        </div>
+    </main>
+
+    <footer class="ws-project-footer">
+        <div>
+            <strong>Wilderness AI Skills Atlas</strong>
+            <p>由 Wilderness Studio 策展的 AI 技能图谱。保留来源、方法与风险判断，让工具服务于真实工作。</p>
+        </div>
+        <nav class="ws-project-footer__links" aria-label="页脚链接">
+            <a href="/">返回图谱</a>
+            <a href="https://github.com/florazhutc/Flora-ai-skills-archive">GitHub ↗</a>
+            <a href="https://wildernesstudio.com/">Wilderness Studio ↗</a>
+        </nav>
+    </footer>
+</body>
+</html>
