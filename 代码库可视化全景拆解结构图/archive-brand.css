@@ -101,6 +101,7 @@
 
 .ws-project-bar__links {
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .ws-project-bar__links a {
@@ -115,9 +116,41 @@
     text-decoration: none;
 }
 
-.ws-project-bar__links a:last-child {
+.ws-project-bar__links a:last-of-type {
     background: var(--ws-yellow);
     color: var(--ws-forest);
+}
+
+.ws-language-switcher {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 2px;
+    border: 1px solid var(--ws-border);
+    border-radius: 999px;
+    padding: 3px;
+    background: var(--ws-surface);
+}
+
+.ws-language-switcher button {
+    min-width: 42px;
+    min-height: 36px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ws-muted);
+    cursor: pointer;
+    font: 700 12px/1 var(--ws-ui);
+}
+
+.ws-language-switcher button[aria-pressed="true"] {
+    background: var(--ws-forest);
+    color: #fff;
+}
+
+.ws-language-switcher button:focus-visible {
+    outline: 3px solid #075e9e;
+    outline-offset: 2px;
 }
 
 .ws-project-bar a:focus-visible,

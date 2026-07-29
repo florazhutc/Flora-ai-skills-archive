@@ -15,7 +15,7 @@
     <meta name="theme-color" content="#073d2d">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/archive-brand.css">
-    <script type="application/ld+json">
+    <script id="collection-schema" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -476,15 +476,19 @@
     </style>
 </head>
 <body>
-    <a class="skip-link" href="#archive">跳到技能包列表</a>
-    <header class="ws-project-bar" aria-label="Wilderness Studio 项目导航">
-        <a class="ws-brand" href="https://wildernesstudio.com/" aria-label="返回 Wilderness Studio">
+    <a class="skip-link" href="#archive" data-i18n="skipLink">跳到技能包列表</a>
+    <header class="ws-project-bar" aria-label="Wilderness Studio 项目导航" data-i18n-aria-label="projectNavLabel">
+        <a class="ws-brand" href="https://wildernesstudio.com/" aria-label="返回 Wilderness Studio" data-i18n-aria-label="studioLinkLabel">
             <img class="ws-brand__mark" src="/wilderness-studio-mark.svg" alt="">
             <span class="ws-brand__name"><span class="ws-brand__wordmark"><strong>Wilderness</strong><strong>Studio</strong></span><span class="ws-brand__project">AI Skills Atlas<small>A Flora experiment</small></span></span>
         </a>
-        <nav class="ws-project-bar__links" aria-label="项目链接">
-            <a href="#archive">浏览归档</a>
-            <a href="https://wildernesstudio.com/work">查看作品集 ↗</a>
+        <nav class="ws-project-bar__links" aria-label="项目链接" data-i18n-aria-label="projectLinksLabel">
+            <a href="#archive" data-i18n="browseArchive">浏览归档</a>
+            <a href="https://wildernesstudio.com/work" data-i18n="viewWork">查看作品集 ↗</a>
+            <div class="ws-language-switcher" role="group" aria-label="语言选择" data-i18n-aria-label="languageLabel">
+                <button type="button" data-lang="zh" aria-pressed="true" aria-label="切换到中文">中</button>
+                <button type="button" data-lang="en" aria-pressed="false" aria-label="Switch to English">EN</button>
+            </div>
         </nav>
     </header>
     <div class="container">
@@ -492,211 +496,211 @@
             <div class="hero-grid">
                 <div>
                     <p class="eyebrow">Wilderness Studio · Experiment 01</p>
-                    <h1>把 AI 技能变成可判断、可选择、可复用的方法</h1>
-                    <p class="subtitle">这是一张面向实际工作的 AI Skills Atlas：汇总 15 个技能包的结构、适用场景、Codex 使用判断与风险提示，帮助你从目标出发，而不是从目录出发。</p>
+                    <h1 data-i18n="heroTitle">把 AI 技能变成可判断、可选择、可复用的方法</h1>
+                    <p class="subtitle" data-i18n="heroSubtitle">这是一张面向实际工作的 AI Skills Atlas：汇总 15 个技能包的结构、适用场景、Codex 使用判断与风险提示，帮助你从目标出发，而不是从目录出发。</p>
                     <p class="studio-proof">Built with AI. Directed by judgment.</p>
                 </div>
                 <aside class="hero-panel" aria-labelledby="codex-note-title">
-                    <h2 id="codex-note-title">如何使用这座归档</h2>
-                    <p>先按目标筛选，再查看适合谁、Codex 用法和许可证风险。优先安装单个明确技能，不要把整座归档复制到 Codex。</p>
+                    <h2 id="codex-note-title" data-i18n="howToTitle">如何使用这座归档</h2>
+                    <p data-i18n="howToText">先按目标筛选，再查看适合谁、Codex 用法和许可证风险。优先安装单个明确技能，不要把整座归档复制到 Codex。</p>
                 </aside>
             </div>
         </header>
 
         <main>
-            <section class="stats-row" aria-label="归档统计">
+            <section class="stats-row" aria-label="归档统计" data-i18n-aria-label="statsLabel">
                 <div class="stat">
                     <div class="stat-num">15</div>
-                    <div class="stat-label">技能包</div>
+                    <div class="stat-label" data-i18n="skillPacks">技能包</div>
                 </div>
                 <div class="stat">
                     <div class="stat-num">200+</div>
-                    <div class="stat-label">可浏览技能</div>
+                    <div class="stat-label" data-i18n="browsableSkills">可浏览技能</div>
                 </div>
                 <div class="stat">
                     <div class="stat-num">6</div>
-                    <div class="stat-label">判断模块</div>
+                    <div class="stat-label" data-i18n="decisionModules">判断模块</div>
                 </div>
             </section>
 
             <section class="section" aria-labelledby="routes-title">
                 <div class="section-heading">
-                    <h2 id="routes-title">推荐路线</h2>
-                    <p>先按你的目标进入，再看具体包的 Architecture、Features、Toolbox、Chat 和 Explain。</p>
+                    <h2 id="routes-title" data-i18n="routesTitle">推荐路线</h2>
+                    <p data-i18n="routesIntro">先按你的目标进入，再看具体包的 Architecture、Features、Toolbox、Chat 和 Explain。</p>
                 </div>
                 <div class="route-grid">
                     <a class="route" href="Product-Manager-Skills/index.html">
-                        <strong>做产品方案和 PRD</strong>
-                        <span>先看 Product Manager Skills，再按需安装单个 PM skill。</span>
+                        <strong data-i18n="routeProductTitle">做产品方案和 PRD</strong>
+                        <span data-i18n="routeProductText">先看 Product Manager Skills，再按需安装单个 PM skill。</span>
                     </a>
                     <a class="route" href="impeccable-main/public/index.html">
-                        <strong>优化前端体验</strong>
-                        <span>先看 Impeccable 和 Taste Skill，用 audit / critique / polish 类技能协作。</span>
+                        <strong data-i18n="routeFrontendTitle">优化前端体验</strong>
+                        <span data-i18n="routeFrontendText">先看 Impeccable 和 Taste Skill，用 audit / critique / polish 类技能协作。</span>
                     </a>
                     <a class="route" href="superpowers/index.html">
-                        <strong>强化开发流程</strong>
-                        <span>先看 Superpowers 和 GStack，确认是否接受强流程约束后再安装。</span>
+                        <strong data-i18n="routeWorkflowTitle">强化开发流程</strong>
+                        <span data-i18n="routeWorkflowText">先看 Superpowers 和 GStack，确认是否接受强流程约束后再安装。</span>
                     </a>
                 </div>
             </section>
 
             <section class="section" id="archive" aria-labelledby="archive-title">
                 <div class="section-heading">
-                    <h2 id="archive-title">技能包导航</h2>
-                    <p>输入关键词后按 Enter 打开首个结果；点击分类定位结果；点击卡片进入详情。</p>
+                    <h2 id="archive-title" data-i18n="archiveTitle">技能包导航</h2>
+                    <p data-i18n="archiveIntro">输入关键词后按 Enter 打开首个结果；点击分类定位结果；点击卡片进入详情。</p>
                 </div>
 
                 <div class="controls" role="search">
                     <label>
-                        <span class="visually-hidden">搜索技能包</span>
-                        <input class="search" id="search" type="search" placeholder="搜索：产品、前端、Codex、Agent、视频、设计..." autocomplete="off" aria-describedby="search-help results-status">
+                        <span class="visually-hidden" data-i18n="searchLabel">搜索技能包</span>
+                        <input class="search" id="search" type="search" placeholder="搜索：产品、前端、Codex、Agent、视频、设计..." data-i18n-placeholder="searchPlaceholder" autocomplete="off" aria-describedby="search-help results-status">
                     </label>
-                    <div class="filters" aria-label="技能包分类筛选">
-                        <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">全部</button>
-                        <button class="filter-btn" type="button" data-filter="product">产品</button>
-                        <button class="filter-btn" type="button" data-filter="frontend">前端设计</button>
-                        <button class="filter-btn" type="button" data-filter="workflow">开发流程</button>
+                    <div class="filters" aria-label="技能包分类筛选" data-i18n-aria-label="filterLabel">
+                        <button class="filter-btn" type="button" data-filter="all" aria-pressed="true" data-i18n="filterAll">全部</button>
+                        <button class="filter-btn" type="button" data-filter="product" data-i18n="filterProduct">产品</button>
+                        <button class="filter-btn" type="button" data-filter="frontend" data-i18n="filterFrontend">前端设计</button>
+                        <button class="filter-btn" type="button" data-filter="workflow" data-i18n="filterWorkflow">开发流程</button>
                         <button class="filter-btn" type="button" data-filter="agent">Agent</button>
-                        <button class="filter-btn" type="button" data-filter="media">媒体</button>
+                        <button class="filter-btn" type="button" data-filter="media" data-i18n="filterMedia">媒体</button>
                     </div>
                 </div>
-                <p class="results-status" id="search-help">搜索会即时筛选；按 Enter 可打开第一个匹配的技能包。</p>
+                <p class="results-status" id="search-help" data-i18n="searchHelp">搜索会即时筛选；按 Enter 可打开第一个匹配的技能包。</p>
                 <p class="visually-hidden" id="results-status" role="status" aria-live="polite"></p>
 
                 <div class="grid" id="card-grid">
                     <a href="taste-skill/index.html" class="card" data-tags="frontend design codex visual ui">
                         <div class="card-header"><div class="card-icon">🎨</div><h3>Taste Skill</h3></div>
-                        <p class="card-desc">9 个设计品味技能：minimalist-ui、industrial-brutalist-ui、high-end-visual-design 等。</p>
-                        <p class="card-use">适合：需要让 Codex 生成更有视觉品味、更少模板感的前端页面。</p>
+                        <p class="card-desc" data-i18n="tasteDesc">9 个设计品味技能：minimalist-ui、industrial-brutalist-ui、high-end-visual-design 等。</p>
+                        <p class="card-use" data-i18n="tasteUse">适合：需要让 Codex 生成更有视觉品味、更少模板感的前端页面。</p>
                         <div class="card-meta"><span class="tag">Frontend</span><span class="tag">Design</span><span class="tag">Codex</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="open-design/index.html" class="card" data-tags="agent design workflow">
                         <div class="card-header"><div class="card-icon">🎯</div><h3>Open Design</h3></div>
-                        <p class="card-desc">16 个 AI Agent 的设计与协作拆解，覆盖 Claude Code、Cline、Windsurf 等。</p>
-                        <p class="card-use">适合：研究不同 AI 编程工具的设计分工和能力边界。</p>
+                        <p class="card-desc" data-i18n="openDesignDesc">16 个 AI Agent 的设计与协作拆解，覆盖 Claude Code、Cline、Windsurf 等。</p>
+                        <p class="card-use" data-i18n="openDesignUse">适合：研究不同 AI 编程工具的设计分工和能力边界。</p>
                         <div class="card-meta"><span class="tag">Agent</span><span class="tag">Design</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="pixelle-video/index.html" class="card" data-tags="media video genai">
                         <div class="card-header"><div class="card-icon">🎬</div><h3>Pixelle-Video</h3></div>
-                        <p class="card-desc">AIDC-AI 视频生成技能包的结构拆解。</p>
-                        <p class="card-use">适合：评估视频生成技能的模块、工具链和交付场景。</p>
+                        <p class="card-desc" data-i18n="pixelleDesc">AIDC-AI 视频生成技能包的结构拆解。</p>
+                        <p class="card-use" data-i18n="pixelleUse">适合：评估视频生成技能的模块、工具链和交付场景。</p>
                         <div class="card-meta"><span class="tag">Video</span><span class="tag">GenAI</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="openmontage-viz/index.html" class="card" data-tags="media video agent workflow codex remotion hyperframes ffmpeg production">
                         <div class="card-header"><div class="card-icon">🎞️</div><h3>OpenMontage</h3></div>
-                        <p class="card-desc">12 条生产流水线组成的开源 Agentic 视频制作系统，覆盖研究、脚本、素材、剪辑与合成。</p>
-                        <p class="card-use">适合：用 Codex 编排完整视频生产流程，并保留成本、审批和质量关卡。</p>
+                        <p class="card-desc" data-i18n="openMontageDesc">12 条生产流水线组成的开源 Agentic 视频制作系统，覆盖研究、脚本、素材、剪辑与合成。</p>
+                        <p class="card-use" data-i18n="openMontageUse">适合：用 Codex 编排完整视频生产流程，并保留成本、审批和质量关卡。</p>
                         <div class="card-meta"><span class="tag">Video</span><span class="tag">Agent</span><span class="tag">Codex</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="impeccable-main/public/index.html" class="card" data-tags="frontend design audit critique polish accessibility">
                         <div class="card-header"><div class="card-icon">✨</div><h3>Impeccable</h3></div>
-                        <p class="card-desc">前端设计质量技能和命令：audit、critique、polish、typeset、animate 等。</p>
-                        <p class="card-use">适合：审查和升级已有网站的视觉、响应式、可访问性和交付质量。</p>
+                        <p class="card-desc" data-i18n="impeccableDesc">前端设计质量技能和命令：audit、critique、polish、typeset、animate 等。</p>
+                        <p class="card-use" data-i18n="impeccableUse">适合：审查和升级已有网站的视觉、响应式、可访问性和交付质量。</p>
                         <div class="card-meta"><span class="tag">Audit</span><span class="tag">UI</span><span class="tag">A11y</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="gstack/index.html" class="card" data-tags="workflow codex engineering review qa">
                         <div class="card-header"><div class="card-icon">🚀</div><h3>GStack</h3></div>
-                        <p class="card-desc">面向软件交付的角色化流程技能拆解。</p>
-                        <p class="card-use">适合：需要 plan、review、qa、ship 等工程流程协作时参考。</p>
+                        <p class="card-desc" data-i18n="gstackDesc">面向软件交付的角色化流程技能拆解。</p>
+                        <p class="card-use" data-i18n="gstackUse">适合：需要 plan、review、qa、ship 等工程流程协作时参考。</p>
                         <div class="card-meta"><span class="tag">Workflow</span><span class="tag">Engineering</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="Agent-Skills/index.html" class="card" data-tags="agent skills">
                         <div class="card-header"><div class="card-icon">🤖</div><h3>Agent Skills</h3></div>
-                        <p class="card-desc">Agent 技能包汇总与结构拆解。</p>
-                        <p class="card-use">适合：快速浏览 Agent 技能的基本分类和组织方式。</p>
+                        <p class="card-desc" data-i18n="agentSkillsDesc">Agent 技能包汇总与结构拆解。</p>
+                        <p class="card-use" data-i18n="agentSkillsUse">适合：快速浏览 Agent 技能的基本分类和组织方式。</p>
                         <div class="card-meta"><span class="tag">Agent</span><span class="tag">Skills</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="design-md-google/index.html" class="card" data-tags="frontend design system stitch">
                         <div class="card-header"><div class="card-icon">📋</div><h3>DESIGN.md</h3></div>
-                        <p class="card-desc">Google Stitch 设计系统文件的技能包拆解。</p>
-                        <p class="card-use">适合：想把设计规则沉淀成 agent 可读规范时参考。</p>
+                        <p class="card-desc" data-i18n="designMdDesc">Google Stitch 设计系统文件的技能包拆解。</p>
+                        <p class="card-use" data-i18n="designMdUse">适合：想把设计规则沉淀成 agent 可读规范时参考。</p>
                         <div class="card-meta"><span class="tag">Design</span><span class="tag">System</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="claude-skills/index.html" class="card" data-tags="workflow codex skills claude">
                         <div class="card-header"><div class="card-icon">💎</div><h3>Claude Skills</h3></div>
-                        <p class="card-desc">Claude 原生技能包汇总。</p>
-                        <p class="card-use">适合：对比 Claude skill 与 Codex skill 的使用差异。</p>
+                        <p class="card-desc" data-i18n="claudeSkillsDesc">Claude 原生技能包汇总。</p>
+                        <p class="card-use" data-i18n="claudeSkillsUse">适合：对比 Claude skill 与 Codex skill 的使用差异。</p>
                         <div class="card-meta"><span class="tag">Skills</span><span class="tag">Claude</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="superpowers/index.html" class="card" data-tags="workflow engineering tdd debug review">
                         <div class="card-header"><div class="card-icon">⚡</div><h3>Superpowers</h3></div>
-                        <p class="card-desc">强流程软件开发技能包，覆盖 brainstorming、TDD、debug、review、worktree。</p>
-                        <p class="card-use">适合：希望 AI 严格按工程流程做事，而不是直接写代码。</p>
+                        <p class="card-desc" data-i18n="superpowersDesc">强流程软件开发技能包，覆盖 brainstorming、TDD、debug、review、worktree。</p>
+                        <p class="card-use" data-i18n="superpowersUse">适合：希望 AI 严格按工程流程做事，而不是直接写代码。</p>
                         <div class="card-meta"><span class="tag">TDD</span><span class="tag">Review</span><span class="tag">Workflow</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="Product-Manager-Skills/index.html" class="card" data-tags="product pm prd roadmap strategy">
                         <div class="card-header"><div class="card-icon">📦</div><h3>Product Manager</h3></div>
-                        <p class="card-desc">46 个产品经理技能，覆盖 PRD、用户故事、路线图、定价、JTBD、SaaS 指标。</p>
-                        <p class="card-use">适合：产品方案、需求拆解、市场/客户研究和 PM 工作流。</p>
+                        <p class="card-desc" data-i18n="productManagerDesc">46 个产品经理技能，覆盖 PRD、用户故事、路线图、定价、JTBD、SaaS 指标。</p>
+                        <p class="card-use" data-i18n="productManagerUse">适合：产品方案、需求拆解、市场/客户研究和 PM 工作流。</p>
                         <div class="card-meta"><span class="tag">PM</span><span class="tag">PRD</span><span class="tag">Strategy</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="MiroFish-main/frontend/public/index-viz.html" class="card" data-tags="agent simulation research">
                         <div class="card-header"><div class="card-icon">🐟</div><h3>MiroFish</h3></div>
-                        <p class="card-desc">多智能体预测和模拟系统的静态拆解页。</p>
-                        <p class="card-use">适合：研究仿真型 AI 应用的流程、依赖和系统分层。</p>
+                        <p class="card-desc" data-i18n="miroFishDesc">多智能体预测和模拟系统的静态拆解页。</p>
+                        <p class="card-use" data-i18n="miroFishUse">适合：研究仿真型 AI 应用的流程、依赖和系统分层。</p>
                         <div class="card-meta"><span class="tag">Simulation</span><span class="tag">Agent</span></div>
-                        <span class="card-cta">查看静态拆解</span>
+                        <span class="card-cta" data-i18n="viewStaticBreakdown">查看静态拆解</span>
                     </a>
 
                     <a href="gbrain-viz/index.html" class="card" data-tags="agent memory search graph">
                         <div class="card-header"><div class="card-icon">🧠</div><h3>GBrain</h3></div>
-                        <p class="card-desc">AI Agent 记忆系统、自连线知识图谱和混合搜索拆解。</p>
-                        <p class="card-use">适合：研究 Agent 记忆、知识图谱和检索增强架构。</p>
+                        <p class="card-desc" data-i18n="gbrainDesc">AI Agent 记忆系统、自连线知识图谱和混合搜索拆解。</p>
+                        <p class="card-use" data-i18n="gbrainUse">适合：研究 Agent 记忆、知识图谱和检索增强架构。</p>
                         <div class="card-meta"><span class="tag">Memory</span><span class="tag">Graph</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="agency-viz/index.html" class="card" data-tags="agent agency roles tools">
                         <div class="card-header"><div class="card-icon">🎭</div><h3>The Agency</h3></div>
-                        <p class="card-desc">226 个 AI Agent、18 个专业部门和多工具集成拆解。</p>
-                        <p class="card-use">适合：研究多角色 Agent 团队和部门化任务分工。</p>
+                        <p class="card-desc" data-i18n="agencyDesc">226 个 AI Agent、18 个专业部门和多工具集成拆解。</p>
+                        <p class="card-use" data-i18n="agencyUse">适合：研究多角色 Agent 团队和部门化任务分工。</p>
                         <div class="card-meta"><span class="tag">Agents</span><span class="tag">Roles</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
 
                     <a href="html-anything-viz/index.html" class="card" data-tags="frontend agent editor html">
                         <div class="card-header"><div class="card-icon">🏄</div><h3>HTML Anything</h3></div>
-                        <p class="card-desc">Agent 时代 HTML 编辑器，包含 75 套 Skill 和 9 种交付场景。</p>
-                        <p class="card-use">适合：评估 HTML 生成、编辑器和多场景交付型工具。</p>
+                        <p class="card-desc" data-i18n="htmlAnythingDesc">Agent 时代 HTML 编辑器，包含 75 套 Skill 和 9 种交付场景。</p>
+                        <p class="card-use" data-i18n="htmlAnythingUse">适合：评估 HTML 生成、编辑器和多场景交付型工具。</p>
                         <div class="card-meta"><span class="tag">Editor</span><span class="tag">HTML</span></div>
-                        <span class="card-cta">查看拆解</span>
+                        <span class="card-cta" data-i18n="viewBreakdown">查看拆解</span>
                     </a>
                 </div>
-                <p class="no-results" id="no-results">没有匹配的技能包。可以尝试搜索 “Codex”、“前端”、“产品”、“Agent”。</p>
+                <p class="no-results" id="no-results" data-i18n="noResults">没有匹配的技能包。可以尝试搜索 “Codex”、“前端”、“产品”、“Agent”。</p>
             </section>
 
             <section class="section install-note" aria-labelledby="install-title">
-                <h2 id="install-title">安装建议</h2>
-                <p>这个站点是归档和拆解，不是单一安装包。Codex 中更稳的做法是安装具体来源包的具体技能。</p>
+                <h2 id="install-title" data-i18n="installTitle">安装建议</h2>
+                <p data-i18n="installText">这个站点是归档和拆解，不是单一安装包。Codex 中更稳的做法是安装具体来源包的具体技能。</p>
                 <code>npx skills add deanpeters/Product-Manager-Skills --skill prd-development -a codex -g</code>
                 <code>npx skills add https://github.com/Leonxlnx/taste-skill</code>
             </section>
         </main>
 
         <footer>
-            <p>Wilderness Studio 的 AI 方法实验：把技能、工作流与判断标准整理成可复用的工作系统。</p>
+            <p data-i18n="footerText">Wilderness Studio 的 AI 方法实验：把技能、工作流与判断标准整理成可复用的工作系统。</p>
             <p style="margin-top:8px"><a href="https://wildernesstudio.com/">Wilderness Studio</a> · <a href="https://github.com/florazhutc/Flora-ai-skills-archive">GitHub</a> · Built for practical AI skill discovery.</p>
         </footer>
     </div>
@@ -706,7 +710,154 @@
         const cards = Array.from(document.querySelectorAll('.card[data-tags]'));
         const buttons = Array.from(document.querySelectorAll('.filter-btn'));
         const emptyState = document.querySelector('#no-results');
+        const languageButtons = Array.from(document.querySelectorAll('[data-lang]'));
+        const textElements = Array.from(document.querySelectorAll('[data-i18n]'));
+        const placeholderElements = Array.from(document.querySelectorAll('[data-i18n-placeholder]'));
+        const ariaLabelElements = Array.from(document.querySelectorAll('[data-i18n-aria-label]'));
+        const originalText = Object.fromEntries(textElements.map(element => [element.dataset.i18n, element.textContent]));
+        const originalPlaceholders = Object.fromEntries(placeholderElements.map(element => [element.dataset.i18nPlaceholder, element.placeholder]));
+        const originalAriaLabels = Object.fromEntries(ariaLabelElements.map(element => [element.dataset.i18nAriaLabel, element.getAttribute('aria-label')]));
+        const pageMetadata = {
+            zh: {
+                title: 'Wilderness AI Skills Atlas | AI 技能图谱',
+                description: 'Wilderness AI Skills Atlas 汇总 15 个 AI 技能包，按产品管理、前端设计、开发流程、视频生成和 Agent 编排分类，帮助你判断场景、查看拆解并选择 Codex 使用路径。',
+                schemaDescription: '由 Wilderness Studio 策展的 AI 技能选择、拆解与实践归档。'
+            },
+            en: {
+                title: 'Wilderness AI Skills Atlas | AI Skill Map',
+                description: 'Explore 15 curated AI skill packs for product management, frontend design, development workflows, video generation, and agent orchestration, with practical guidance for Codex.',
+                schemaDescription: 'A Wilderness Studio archive for evaluating, understanding, and applying AI skills in real work.'
+            }
+        };
+        const english = {
+            skipLink: 'Skip to the skill archive',
+            projectNavLabel: 'Wilderness Studio project navigation',
+            studioLinkLabel: 'Back to Wilderness Studio',
+            projectLinksLabel: 'Project links',
+            browseArchive: 'Browse archive',
+            viewWork: 'View work ↗',
+            languageLabel: 'Language',
+            heroTitle: 'Turn AI skills into methods you can evaluate, choose, and reuse',
+            heroSubtitle: 'A practical AI Skills Atlas covering the structure, use cases, Codex fit, and risks of 15 skill packs—so you can start with your goal, not a directory.',
+            howToTitle: 'How to use this archive',
+            howToText: 'Filter by your goal, then review who each pack is for, how it works with Codex, and any licensing risks. Install one clearly defined skill at a time instead of copying the entire archive into Codex.',
+            statsLabel: 'Archive statistics',
+            skillPacks: 'Skill packs',
+            browsableSkills: 'Browsable skills',
+            decisionModules: 'Decision modules',
+            routesTitle: 'Recommended paths',
+            routesIntro: 'Start with your goal, then explore each pack’s Architecture, Features, Toolbox, Chat, and Explain sections.',
+            routeProductTitle: 'Build product plans and PRDs',
+            routeProductText: 'Start with Product Manager Skills, then install individual PM skills as needed.',
+            routeFrontendTitle: 'Improve frontend experience',
+            routeFrontendText: 'Start with Impeccable and Taste Skill, then collaborate with audit, critique, and polish skills.',
+            routeWorkflowTitle: 'Strengthen development workflows',
+            routeWorkflowText: 'Review Superpowers and GStack, then install them only if their process constraints fit your team.',
+            archiveTitle: 'Skill pack directory',
+            archiveIntro: 'Enter a keyword and press Enter to open the first result. Use categories to narrow the list, then select a card for details.',
+            searchLabel: 'Search skill packs',
+            searchPlaceholder: 'Search: product, frontend, Codex, agent, video, design…',
+            filterLabel: 'Filter skill pack categories',
+            filterAll: 'All',
+            filterProduct: 'Product',
+            filterFrontend: 'Frontend',
+            filterWorkflow: 'Workflow',
+            filterMedia: 'Media',
+            searchHelp: 'Results filter as you type. Press Enter to open the first matching skill pack.',
+            viewBreakdown: 'View breakdown',
+            viewStaticBreakdown: 'View static breakdown',
+            tasteDesc: 'Nine visual-taste skills, including minimalist-ui, industrial-brutalist-ui, and high-end-visual-design.',
+            tasteUse: 'Best for: helping Codex create more distinctive frontend work with less template-like design.',
+            openDesignDesc: 'A design and collaboration breakdown of 16 AI agents across Claude Code, Cline, Windsurf, and more.',
+            openDesignUse: 'Best for: comparing design roles and capability boundaries across AI coding tools.',
+            pixelleDesc: 'A structural breakdown of the AIDC-AI video-generation skill pack.',
+            pixelleUse: 'Best for: evaluating video-generation modules, toolchains, and delivery scenarios.',
+            openMontageDesc: 'An open-source agentic video-production system with 12 pipelines spanning research, scripting, assets, editing, and compositing.',
+            openMontageUse: 'Best for: orchestrating end-to-end video production in Codex with cost, approval, and quality gates.',
+            impeccableDesc: 'Frontend quality skills and commands including audit, critique, polish, typeset, and animate.',
+            impeccableUse: 'Best for: reviewing and upgrading an existing site’s visuals, responsiveness, accessibility, and delivery quality.',
+            gstackDesc: 'A role-based workflow skill pack for software delivery.',
+            gstackUse: 'Best for: collaborating through engineering stages such as plan, review, QA, and ship.',
+            agentSkillsDesc: 'A curated overview and structural breakdown of agent skill packs.',
+            agentSkillsUse: 'Best for: quickly understanding how agent skills are grouped and organized.',
+            designMdDesc: 'A skill-pack breakdown of the Google Stitch design-system file format.',
+            designMdUse: 'Best for: turning design rules into specifications that agents can read and follow.',
+            claudeSkillsDesc: 'A curated collection of native Claude skills.',
+            claudeSkillsUse: 'Best for: comparing how Claude skills and Codex skills differ in practice.',
+            superpowersDesc: 'A process-intensive software-development skill pack covering brainstorming, TDD, debugging, review, and worktrees.',
+            superpowersUse: 'Best for: making AI follow a rigorous engineering process instead of jumping straight into code.',
+            productManagerDesc: 'Forty-six product-management skills spanning PRDs, user stories, roadmaps, pricing, JTBD, and SaaS metrics.',
+            productManagerUse: 'Best for: product planning, requirement breakdowns, market and customer research, and PM workflows.',
+            miroFishDesc: 'A static breakdown of a multi-agent forecasting and simulation system.',
+            miroFishUse: 'Best for: studying the workflows, dependencies, and system layers behind simulation-based AI products.',
+            gbrainDesc: 'A breakdown of AI-agent memory, self-linking knowledge graphs, and hybrid search.',
+            gbrainUse: 'Best for: studying agent memory, knowledge graphs, and retrieval-augmented architectures.',
+            agencyDesc: 'A breakdown of 226 AI agents, 18 specialist departments, and multi-tool integrations.',
+            agencyUse: 'Best for: studying multi-role agent teams and department-based task allocation.',
+            htmlAnythingDesc: 'An agent-era HTML editor with 75 skills and nine delivery scenarios.',
+            htmlAnythingUse: 'Best for: evaluating HTML generation, editor workflows, and multi-format delivery tools.',
+            noResults: 'No matching skill packs. Try “Codex”, “frontend”, “product”, or “agent”.',
+            installTitle: 'Installation guidance',
+            installText: 'This site is an archive and breakdown, not a single installable package. In Codex, the safer approach is to install a specific skill from its original source.',
+            footerText: 'A Wilderness Studio experiment in AI methods—turning skills, workflows, and decision criteria into reusable working systems.'
+        };
         let activeFilter = 'all';
+        let currentLanguage = 'zh';
+
+        function updateMetadata(language) {
+            const metadata = pageMetadata[language];
+            document.title = metadata.title;
+            document.querySelector('meta[name="description"]').content = metadata.description;
+            document.querySelector('meta[property="og:title"]').content = metadata.title;
+            document.querySelector('meta[property="og:description"]').content = metadata.description;
+
+            const schemaElement = document.querySelector('#collection-schema');
+            const schema = JSON.parse(schemaElement.textContent);
+            schema.inLanguage = language === 'en' ? 'en' : 'zh-CN';
+            schema.description = metadata.schemaDescription;
+            schemaElement.textContent = JSON.stringify(schema);
+        }
+
+        function setLanguage(language) {
+            currentLanguage = language === 'en' ? 'en' : 'zh';
+            document.documentElement.lang = currentLanguage === 'en' ? 'en' : 'zh-CN';
+
+            textElements.forEach(element => {
+                const key = element.dataset.i18n;
+                element.textContent = currentLanguage === 'en' ? english[key] : originalText[key];
+            });
+            placeholderElements.forEach(element => {
+                const key = element.dataset.i18nPlaceholder;
+                element.placeholder = currentLanguage === 'en' ? english[key] : originalPlaceholders[key];
+            });
+            ariaLabelElements.forEach(element => {
+                const key = element.dataset.i18nAriaLabel;
+                element.setAttribute('aria-label', currentLanguage === 'en' ? english[key] : originalAriaLabels[key]);
+            });
+            languageButtons.forEach(button => {
+                const isActive = button.dataset.lang === currentLanguage;
+                button.setAttribute('aria-pressed', String(isActive));
+                button.setAttribute('aria-label', button.dataset.lang === 'zh'
+                    ? (isActive ? '当前语言：中文' : '切换到中文')
+                    : (isActive ? 'Current language: English' : 'Switch to English'));
+            });
+
+            updateMetadata(currentLanguage);
+
+            const url = new URL(window.location.href);
+            if (currentLanguage === 'en') {
+                url.searchParams.set('lang', 'en');
+            } else {
+                url.searchParams.delete('lang');
+            }
+            window.history.replaceState(null, '', url);
+            try {
+                window.localStorage.setItem('wilderness-atlas-language', currentLanguage);
+            } catch (error) {
+                // Language switching still works when storage is unavailable.
+            }
+            applyFilters();
+        }
 
         function applyFilters() {
             const query = searchInput.value.trim().toLowerCase();
@@ -715,7 +866,7 @@
             cards.forEach(card => {
                 const haystack = `${card.textContent} ${card.dataset.tags}`.toLowerCase();
                 const matchesQuery = !query || haystack.includes(query);
-                const matchesFilter = activeFilter === 'all' || card.dataset.tags.includes(activeFilter);
+                const matchesFilter = activeFilter === 'all' || card.dataset.tags.split(/\s+/).includes(activeFilter);
                 const show = matchesQuery && matchesFilter;
                 card.hidden = !show;
                 if (show) visibleCards.push(card);
@@ -723,8 +874,10 @@
 
             emptyState.style.display = visibleCards.length ? 'none' : 'block';
             document.querySelector('#results-status').textContent = visibleCards.length
-                ? `找到 ${visibleCards.length} 个技能包。`
-                : '没有匹配的技能包。';
+                ? (currentLanguage === 'en'
+                    ? `${visibleCards.length} skill pack${visibleCards.length === 1 ? '' : 's'} found.`
+                    : `找到 ${visibleCards.length} 个技能包。`)
+                : (currentLanguage === 'en' ? 'No matching skill packs.' : '没有匹配的技能包。');
             return visibleCards;
         }
 
@@ -746,6 +899,10 @@
             });
         });
 
+        languageButtons.forEach(button => {
+            button.addEventListener('click', () => setLanguage(button.dataset.lang));
+        });
+
         searchInput.addEventListener('input', applyFilters);
         searchInput.addEventListener('keydown', event => {
             if (event.key !== 'Enter') return;
@@ -755,7 +912,14 @@
             window.location.assign(firstMatch.href);
         });
 
-        applyFilters();
+        let storedLanguage = 'zh';
+        try {
+            storedLanguage = window.localStorage.getItem('wilderness-atlas-language') || 'zh';
+        } catch (error) {
+            // Keep Chinese as the default when storage is unavailable.
+        }
+        const requestedLanguage = new URLSearchParams(window.location.search).get('lang');
+        setLanguage(requestedLanguage === 'en' || requestedLanguage === 'zh' ? requestedLanguage : storedLanguage);
     </script>
 </body>
 </html>
